@@ -6,7 +6,7 @@ There are multiple goals for this project, all dictated by lack of instrumentati
 
 * Capture display (e.g. paint) events for various elements of web view (e.g. images, text, video, fonts, etc.)
 * Group together multiple display events for elements of web page that represent same design/product components
-* Group together multiple components to reflect various experience/perception phases that user goes through and we hope to achieve on the p
+* Group together multiple components to reflect various experience/perception phases that user goes through and we hope to achieve on the page
 
 ## Glossary
 <dl>
