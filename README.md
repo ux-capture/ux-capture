@@ -7,9 +7,9 @@ There are multiple goals for this project, all dictated by lack of instrumentati
 * Capture display (e.g. paint) and interactivity (e.g. click handlers attached) events for various elements of web view (e.g. images, text, video, fonts, buttons, etc.)
 * Group together multiple display events for elements of web page that represent same design/product components
 * Group together multiple components to reflect various experience/perception phases that user goes through and we hope to achieve on the page
-* Collect captured events and [UX speed metrics](#UX_speed_metrics) for all users using RUM (Real User Measurement) tools
-* Calibrate in-browser instrumentation by recording page load video using synthetic tools and deriving same [UX speed metrics](#UX_speed_metrics)
-* Create uniform instrumentation for both [page views](#page_view) and [interactive views](#interactive_view), to be usable with any back-end and front-end framework
+* Collect captured events and [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user") for all users using RUM (Real User Measurement) tools
+* Calibrate in-browser instrumentation by recording page load video using synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user")
+* Create uniform instrumentation for both [_page views_](#page_view "view resulting in full browser navigation and re-creation of browser DOM") and [_interactive views_](#interactive_view "view resulting in partial updates of browser DOM"), to be usable with any back-end and front-end framework
 
 ## Glossary
 <dl>
