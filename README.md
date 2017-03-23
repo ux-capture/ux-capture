@@ -22,7 +22,7 @@ Below is the list of instrumentation methods with examples:
 
 #### Image elements
 Image tracking requires two measurements, one within the `onload` callback of the image itself and another within inline `<script>` tag directly after the image.
-```
+```javascript
 <img src="hero.jpg" onload="performance.mark('ux-image-onload-logo')">
 <script>performance.mark('ux-image-inline-logo')</script>
 ```
@@ -33,7 +33,7 @@ References:
 
 #### Text without custom font
 Text that does not use a custom font can be instrumented by supplying one inline `<script>` tag directly after the text:
-```
+```javascript
 <script>
 performance.mark("ux-text-headline");
 </script>
