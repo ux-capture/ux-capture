@@ -1,7 +1,7 @@
 # UX Capture
 Browser instrumentation helper that makes it easier to capture UX speed metrics.
 
-## Goals
+## Project Goals
 There are multiple goals for this project, all dictated by lack of instrumentation inside human brains and lack of real rendering instrumentation of painting events in the browser (closes thing to human's eyes that we currently have).
 
 * Capture display (e.g. paint) and interactivity (e.g. click handlers attached) events for various elements of web view (e.g. images, text, video, fonts, buttons, etc.)
@@ -10,6 +10,39 @@ There are multiple goals for this project, all dictated by lack of instrumentati
 * Collect captured events and [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user") for all users using RUM (Real User Measurement) tools
 * Calibrate in-browser instrumentation by recording page load video using synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user")
 * Create uniform instrumentation for both [_page views_](#page_view "view resulting in full browser navigation and re-creation of browser DOM") and [_interactive views_](#interactive_view "view resulting in partial updates of browser DOM"), to be usable with any back-end and front-end framework
+
+## Instrumentation
+
+### Individual Element Instrumentation
+Each element that needs to be instrumented might require multiple snippets of code injected into a page to measure several events which in turn are aggregated into element-level measurements using _element aggregation algorythm_ (can vary for different element instrumentation methods, but "latest of events" is generally a good default).
+
+Number of snippets and exact code to be added to the page depends on the type of element being measured and must be determined experimentally or discovered in industry white papers or blogs as there is currently no direct method of instrumenting the display timings in modern browsers.
+
+Below is the list of instrumentation methods with examples:
+
+#### Image elements
+Image tracking requires two measurements, one within the `onload` callback of the image itself and another within inline `<script>` tag directly after the image.
+```
+<img src="hero.jpg" onload="performance.mark('ux-image-onload-logo')">
+<script>performance.mark('ux-image-inline-logo')</script>
+```
+Element aggregation algorythm: latest of the two (`inline` and `onload`) measurements.
+
+References:
+* Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/), published on May 12, 2015
+
+#### Text without custom font
+Text that does not use a custom font can be instrumented by supplying one inline `<script>` tag directly after the text:
+```
+<script>
+performance.mark("ux-text-headline");
+</script>
+```
+Element aggregation algorythm: no aggregation, just one event.
+
+References:
+* Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
+
 
 ## Glossary
 <dl>
