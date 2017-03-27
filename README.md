@@ -44,6 +44,18 @@ Element aggregation algorythm: no aggregation, just one event.
 References:
 * Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
 
+#### Event handler attachment
+Some user activity requires custom JavaScript handler code to be attached to an event on the page, e.g. `click` of the button (e.g. it's only "available" when visible AND clickable). Instrumenting handler attachment is straightforward, just include the call right after handler attachment in JavaScript code.
+```javascript
+var button_element = document.getElementById("mybutton");
+button_element.addEventListener("click", myActionHandler);
+performance.mark("ux-handler-myaction");
+```
+
+Element aggregation algorythm: no aggregation, just one event.
+
+References:
+* _???_
 
 ## Glossary
 <dl>
