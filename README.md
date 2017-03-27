@@ -1,3 +1,6 @@
+# UX Capture
+Browser instrumentation helper that makes it easier to capture UX speed metrics.
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [UX Capture](#ux-capture)
@@ -12,9 +15,6 @@
 	- [Glossary](#glossary)
 
 <!-- /TOC -->
-
-# UX Capture
-Browser instrumentation helper that makes it easier to capture UX speed metrics.
 
 ## Project Goals
 There are multiple goals for this project, all dictated by lack of instrumentation inside human brains and lack of real rendering instrumentation of painting events in the browser (closes thing to human's eyes that we currently have).
