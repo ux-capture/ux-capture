@@ -57,6 +57,35 @@ Element aggregation algorythm: no aggregation, just one event.
 References:
 * _???_
 
+### Aggregating component metrics
+Most design components on web page consist of multiple elements, e.g. tweet contains text, name of the person tweeting and their userpic.
+
+On this level, it is very business-specific and needs attention of a product manager and/or graphics designer to identify. It is suggested to conduct business interviews to identify the elements and to group them into components accordingly.
+
+Most common way / algorythm to aggregate performance metrics for individual tracked elements is to take timing of the latest element that showed up and treat it as completion timing for compoment overall, but business decision can be made to track earliest element (e.g. "as long as something is visible"), although these are less common and can create more variability in measurement.
+
+Component-level aggregation might be an advanced detail and can be skipped early on with element timings aggregated directly into experience/perception phases, but can be useful for modularity and more detailed analysis across the system.
+
+### Aggregating experience/perception phase metrics
+It is critical to group metrics into categories that are not specific to individual pages, but can be used universally across the property and just comprised of different components / elements on each page.
+
+Well known example of such "category" is ___first meaningful paint___ which has different meaning on differeng parts of user experience, but represents a universal improvement over "first paint" [_technical metric_](#technical_performance_metrics "performance metrics that represent time spent executing various technical components of the application as opposed to metrics representing speed of the human-computer interface as it is perceived by the user").
+
+This can be taken further to represent user's intent in more detail. Each view can be broken down into several phases which all contribute to keeping user on task and giving them best experience in terms of percieved speed.
+
+Here are 4 phases defining parts of experience that matter to business from different perspectives:
+1. Destination verified (`ux-destination-verified`)
+2. Primary content displayed (`ux-primary-content-displayed`)
+3. Primary action available (`ux-primary-action-available`)
+4. Secondary content displayed (`ux-secondary-content-displayed`)
+
+Each phase's component or element metrics (marks) can be combined and reported as measures:
+```javascript
+// assuming logo's onload event was last to fire among all element timers for this phase
+performance.measure('ux-destination-verified', 0, 'ux-image-onload-logo');
+```
+the can be then collected using RUM beacon or using synthetic testing tool like WebPageTest or [Chrome Developer Tools' Timeline tab](https://twitter.com/igrigorik/status/690636030727159808).
+
 ## Glossary
 <dl>
   <dt id="technical_performance_metrics">technical performance metrics</dt>
