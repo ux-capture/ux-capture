@@ -1,18 +1,17 @@
 # UX Capture
 Browser instrumentation helper that makes it easier to capture UX speed metrics.
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [UX Capture](#ux-capture)
-	- [Project Goals](#project-goals)
-	- [Instrumentation](#instrumentation)
-		- [Individual Element Instrumentation](#individual-element-instrumentation)
-			- [Image elements](#image-elements)
-			- [Text without custom font](#text-without-custom-font)
-			- [Event handler attachment](#event-handler-attachment)
-		- [Aggregating component metrics](#aggregating-component-metrics)
-		- [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
-	- [Glossary](#glossary)
+- [Project Goals](#project-goals)
+- [Instrumentation](#instrumentation)
+	- [Individual Element Instrumentation](#individual-element-instrumentation)
+		- [Image elements](#image-elements)
+		- [Text without custom font](#text-without-custom-font)
+		- [Event handler attachment](#event-handler-attachment)
+	- [Aggregating component metrics](#aggregating-component-metrics)
+	- [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
+- [Glossary](#glossary)
 
 <!-- /TOC -->
 
