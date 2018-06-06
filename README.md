@@ -38,7 +38,7 @@ The intent of this library is to help developers group several technical events 
 
 * :ballot_box_with_check: Record individual events (marks) ([#3](https://github.com/sergeychernyshev/ux-capture/issues/3))
 * :ballot_box_with_check: Group marks into zones ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
-  * :white_large_square: Wait for all events and record a groups of events (measures) ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
+  * :ballot_box_with_check: Wait for all events and record a groups of events (measures) ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
 * :ballot_box_with_check: Chrome timeline support ([#2](https://github.com/sergeychernyshev/ux-capture/issues/2))
 * :white_large_square:Support adding items to zone as page loads (e.g. after initial initialization lower on the page, e.g. when server-side framework requires more granular control, e.g. instrumentation is only know inside included file lower than the header. Must happen definitely before at least on of the marks in the same zone fire completing the zone.)
 * :white_large_square:Allow replacing categories/placeholders with specific marks (e.g. when specific marks and their number is known only after an AJAX call or other time-consuming execution)
