@@ -54,8 +54,8 @@ The intent of this library is to help developers group several technical events 
 * :white_large_square:Framework bindings for easier integration
   * :white_large_square:React
 * :white_large_square:Sample pages illustrating instrumentation
-  * :white_large_square:basic (on CodePen?)
-  * :white_large_square:advanced (on CodePen?)
+  * :white_large_square:basic ([#5](https://github.com/sergeychernyshev/ux-capture/issues/5))
+  * :white_large_square:advanced
 
 ## Instrumentation
 
