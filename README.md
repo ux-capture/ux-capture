@@ -46,10 +46,9 @@ The intent of this library is to help developers group several technical events 
 * :white_large_square:Ensure there is no double-reporting between automated external beacon and completion callback beacon (e.g. define unique pageview ID)
 * :white_large_square:Fire an optional callback on each mark to allow for custom recording
 * :white_large_square:Fire an optional callback on each measure to allow for custom recording
-* :white_large_square:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp)
+* :white_large_square:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp) ([#9](https://github.com/sergeychernyshev/ux-capture/issues/9))
 * :white_large_square:Report when zones are not complete before beacon fires / navigation happens in interactive view
 * :white_large_square:Support customizing namespace for the API singleton, e.g. MYUX.mark() instead of UX.mark()
-* :white_large_square:Support W3C navigations when browser and deconstructs the DOM, updates the URL, makes a request for base HTML and then fully reconstructs it on next page.
 * :white_large_square:Support SPA applications that navigate between views (and optionally use history API to update browser URLs without deconstructing the DOM)
 * :white_large_square:Framework bindings for easier integration
   * :white_large_square:React
