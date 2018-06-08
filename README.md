@@ -4,17 +4,19 @@ Browser instrumentation helper that makes it easier to capture UX speed metrics.
 
 <!-- TOC depthFrom:2 depthTo:6 orderedList:false updateOnSave:true withLinks:true -->
 
-* [Project Goals](#project-goals)
-* [JS library](#js-library)
-  * [Features](#features)
-* [Instrumentation](#instrumentation)
-  * [Individual Element Instrumentation](#individual-element-instrumentation)
-    * [Image elements](#image-elements)
-    * [Text without custom font](#text-without-custom-font)
-    * [Event handler attachment](#event-handler-attachment)
-  * [Aggregating component metrics](#aggregating-component-metrics)
-  * [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
-* [Glossary](#glossary)
+- [Project Goals](#project-goals)
+- [JS library](#js-library)
+  - [Features](#features)
+  - [Configuring UX capture library (first prototype)](#configuring-ux-capture-library-first-prototype)
+  - [Sample page](#sample-page)
+- [Instrumentation](#instrumentation)
+  - [Individual Element Instrumentation](#individual-element-instrumentation)
+    - [Image elements](#image-elements)
+    - [Text without custom font](#text-without-custom-font)
+    - [Event handler attachment](#event-handler-attachment)
+  - [Aggregating component metrics](#aggregating-component-metrics)
+  - [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
+- [Glossary](#glossary)
 
 <!-- /TOC -->
 
@@ -22,13 +24,13 @@ Browser instrumentation helper that makes it easier to capture UX speed metrics.
 
 There are multiple goals for this project, all dictated by lack of instrumentation inside human brains and lack of real rendering instrumentation of painting events in the browser (closes thing to human's eyes that we currently have).
 
-* Capture display (e.g. paint) and interactivity (e.g. click handlers attached) events for various elements of web view (e.g. images, text, video, fonts, buttons, etc.)
-* Group together multiple display events for elements of web page that represent same design/product components
-* Group together multiple components to reflect various experience/perception phases that user goes through and we hope to achieve on the page
-* Collect captured events and [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user") for all users using RUM (Real User Measurement) tools
-* Calibrate in-browser instrumentation by recording page load video using synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user")
-* Create uniform instrumentation for both [_page views_](#page_view "view resulting in full browser navigation and re-creation of browser DOM") and [_interactive views_](#interactive_view "view resulting in partial updates of browser DOM"), to be usable with any back-end and front-end framework
-* Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30) that aims at adding instrumentation directly into browser
+- Capture display (e.g. paint) and interactivity (e.g. click handlers attached) events for various elements of web view (e.g. images, text, video, fonts, buttons, etc.)
+- Group together multiple display events for elements of web page that represent same design/product components
+- Group together multiple components to reflect various experience/perception phases that user goes through and we hope to achieve on the page
+- Collect captured events and [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user") for all users using RUM (Real User Measurement) tools
+- Calibrate in-browser instrumentation by recording page load video using synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user")
+- Create uniform instrumentation for both [_page views_](#page_view "view resulting in full browser navigation and re-creation of browser DOM") and [_interactive views_](#interactive_view "view resulting in partial updates of browser DOM"), to be usable with any back-end and front-end framework
+- Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30) that aims at adding instrumentation directly into browser
 
 ## JS library
 
@@ -36,25 +38,72 @@ The intent of this library is to help developers group several technical events 
 
 ### Features
 
-* :ballot_box_with_check: Record individual events (marks) ([#3](https://github.com/sergeychernyshev/ux-capture/issues/3))
-* :ballot_box_with_check: Group marks into zones ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
-  * :ballot_box_with_check: Wait for all events and record a groups of events (measures) ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
-* :ballot_box_with_check: Chrome timeline support ([#2](https://github.com/sergeychernyshev/ux-capture/issues/2))
-* :white_large_square:Support adding items to zone as page loads (e.g. after initial initialization lower on the page, e.g. when server-side framework requires more granular control, e.g. instrumentation is only know inside included file lower than the header. Must happen definitely before at least on of the marks in the same zone fire completing the zone.) ([#7](https://github.com/sergeychernyshev/ux-capture/issues/7))
-* :white_large_square:Allow replacing categories/placeholders with specific marks (e.g. when specific marks and their number is known only after an AJAX call or other time-consuming execution) ([#8](https://github.com/sergeychernyshev/ux-capture/issues/8))
-* :white_large_square:Fire a callback when all zones are complete (e.g. to report numbers before the automated beacon, which listens for other things fires)
-* :white_large_square:Ensure there is no double-reporting between automated external beacon and completion callback beacon (e.g. define unique pageview ID)
-* :white_large_square:Fire an optional callback on each mark to allow for custom recording
-* :white_large_square:Fire an optional callback on each measure to allow for custom recording
-* :white_large_square:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp) ([#9](https://github.com/sergeychernyshev/ux-capture/issues/9))
-* :white_large_square:Report when zones are not complete before beacon fires / navigation happens in interactive view
-* :white_large_square:Support customizing namespace for the API singleton, e.g. MYUX.mark() instead of UX.mark()
-* :white_large_square:Support SPA applications that navigate between views (and optionally use history API to update browser URLs without deconstructing the DOM)
-* :white_large_square:Framework bindings for easier integration
-  * :white_large_square:React
-* :white_large_square:Sample pages illustrating instrumentation
-  * :white_large_square:basic ([#5](https://github.com/sergeychernyshev/ux-capture/issues/5))
-  * :white_large_square:advanced
+- :ballot_box_with_check: Record individual events (marks) ([#3](https://github.com/sergeychernyshev/ux-capture/issues/3))
+- :ballot_box_with_check: Group marks into zones ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
+  - :ballot_box_with_check: Wait for all events and record a groups of events (measures) ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
+- :ballot_box_with_check: Chrome timeline support ([#2](https://github.com/sergeychernyshev/ux-capture/issues/2))
+- :white_large_square:Support adding items to zone as page loads (e.g. after initial initialization lower on the page, e.g. when server-side framework requires more granular control, e.g. instrumentation is only know inside included file lower than the header. Must happen definitely before at least on of the marks in the same zone fire completing the zone.) ([#7](https://github.com/sergeychernyshev/ux-capture/issues/7))
+- :white_large_square:Allow replacing categories/placeholders with specific marks (e.g. when specific marks and their number is known only after an AJAX call or other time-consuming execution) ([#8](https://github.com/sergeychernyshev/ux-capture/issues/8))
+- :white_large_square:Fire a callback when all zones are complete (e.g. to report numbers before the automated beacon, which listens for other things fires)
+- :white_large_square:Ensure there is no double-reporting between automated external beacon and completion callback beacon (e.g. define unique pageview ID)
+- :white_large_square:Fire an optional callback on each mark to allow for custom recording
+- :white_large_square:Fire an optional callback on each measure to allow for custom recording
+- :white_large_square:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp) ([#9](https://github.com/sergeychernyshev/ux-capture/issues/9))
+- :white_large_square:Report when zones are not complete before beacon fires / navigation happens in interactive view
+- :white_large_square:Support customizing namespace for the API singleton, e.g. MYUX.mark() instead of UX.mark()
+- :white_large_square:Support SPA applications that navigate between views (and optionally use history API to update browser URLs without deconstructing the DOM)
+- :white_large_square:Framework bindings for easier integration
+  - :white_large_square:React
+- :white_large_square:Sample pages illustrating instrumentation
+  - :ballot_box_with_check:basic ([#5](https://github.com/sergeychernyshev/ux-capture/issues/5))
+  - :white_large_square:advanced
+
+### Configuring UX capture library (first prototype)
+
+WARNING: current version of the library is a first prototype that only works in modern browsers that support ES6 and all the necessary browser APIs, DO NOT USE IN PRODUCTION!
+
+Inline the library into HTML using server-side include technology appropriate for your platform:
+
+```php
+<head>
+    <title>My Page</title>
+...
+```
+
+It is important to have this code available very early on the page as we need to instrument events that happen as early as HTML parsing and waiting for network might artificially skew events timings on the page and lead to race conditions. Future versions might remove this dependency by queueing up the calls.
+
+After library is included, call `expect()` method on global `UX` object passing an array of all (future versions will change that) the expected zone configurations like so:
+
+```html
+    <script>
+        UX.expect([
+            {
+                label: "ux-verify-destination",
+                marks: ["ux-text-title"]
+            },
+            {
+                label: "ux-primary-content",
+                marks: ["ux-text-intro", "ux-text-story", "ux-image-onload-kitten", "ux-image-inline-kitten"]
+            },
+            {
+                label: "ux-primary-action",
+                marks: ["ux-text-story-details-link", "ux-handler-moreclickable"]
+            },
+            {
+                label: "ux-secondary-content",
+                marks: ["ux-text-page2"]
+            }
+        ]);
+    </script>
+</head>
+```
+
+Each individual zone configuration object contains of zone's `label` that will be used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event label strings that zone groups together, each individual label will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
+
+### Sample page
+
+This repository contains a sample page that implements basic instrumentation for your reference:
+https://cdn.rawgit.com/sergeychernyshev/ux-capture/0f76d715/js/index.html
 
 ## Instrumentation
 
@@ -71,29 +120,29 @@ Below is the list of instrumentation methods with examples:
 Image tracking requires two measurements, one within the `onload` callback of the image itself and another within inline `<script>` tag directly after the image.
 
 ```javascript
-<img src="hero.jpg" onload="performance.mark('ux-image-onload-logo')">
-<script>performance.mark('ux-image-inline-logo')</script>
+<img src="hero.jpg" onload="UX.mark('ux-image-onload-logo')">
+<script>UX.mark('ux-image-inline-logo')</script>
 ```
 
 Element aggregation algorythm: latest of the two (`inline` and `onload`) measurements.
 
 References:
 
-* Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/), published on May 12, 2015
+- Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/), published on May 12, 2015
 
 #### Text without custom font
 
 Text that does not use a custom font can be instrumented by supplying one inline `<script>` tag directly after the text:
 
 ```javascript
-<script>performance.mark("ux-text-headline");</script>
+<script>UX.mark("ux-text-headline");</script>
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
 
 References:
 
-* Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
+- Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
 
 #### Event handler attachment
 
@@ -102,7 +151,7 @@ Some user activity requires custom JavaScript handler code to be attached to an 
 ```javascript
 var button_element = document.getElementById("mybutton");
 button_element.addEventListener("click", myActionHandler);
-performance.mark("ux-handler-myaction");
+UX.mark("ux-handler-myaction");
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
@@ -140,6 +189,8 @@ performance.measure("ux-destination-verified", 0, "ux-image-onload-logo");
 ```
 
 the can be then collected using RUM beacon or using synthetic testing tool like WebPageTest or [Chrome Developer Tools' Timeline tab](https://twitter.com/igrigorik/status/690636030727159808).
+
+This is done automatically by the library and no additional instrumentation is necessary
 
 ## Glossary
 
