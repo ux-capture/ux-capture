@@ -16,6 +16,7 @@ Browser instrumentation helper that makes it easier to capture UX speed metrics.
     - [Event handler attachment](#event-handler-attachment)
   - [Aggregating component metrics](#aggregating-component-metrics)
   - [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
+- [Testing results](#testing-results)
 - [Glossary](#glossary)
 
 <!-- /TOC -->
@@ -191,6 +192,21 @@ performance.measure("ux-destination-verified", 0, "ux-image-onload-logo");
 the can be then collected using RUM beacon or using synthetic testing tool like WebPageTest or [Chrome Developer Tools' Timeline tab](https://twitter.com/igrigorik/status/690636030727159808).
 
 This is done automatically by the library and no additional instrumentation is necessary
+
+## Testing results
+
+To confirm that your instrumentation was successful, open your page in Chrome Developer Tools' Performance tab and hit reload to capture the timeline.
+
+Verify that individual marks are captured as timestamps on the timeline (small vertical lines on Frames band), hovering over each should show the label used for the mark.
+
+Also verify that measures are captured (long horizontal bars under User Timing band, starting at navigation and ending at the last mark comprizing the zone).
+
+Note that you might need to zoom in on the timeline to see these marks and measures.
+![Chrome DevTools Performance Timeline with marks and measures](docs/basic-results-sample-chromedevtools.png)
+
+You can also run W3C Performance Timeline API [`performance.getEntriesByType()`](https://www.w3.org/TR/performance-timeline-2/#extensions-to-the-performance-interface) method with `"mark"` and `"measure"` parameters to retrieve marks and measures respectively.
+
+![Chrome DevTools console showing captured performance marks and measures](docs/basic-results-sample-chromedevtools-console.png)
 
 ## Glossary
 
