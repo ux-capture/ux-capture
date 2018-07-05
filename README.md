@@ -45,10 +45,10 @@ The intent of this library is to help developers group several technical events 
 - :ballot_box_with_check: Chrome timeline support ([#2](https://github.com/sergeychernyshev/ux-capture/issues/2))
 - :white_large_square:Support adding items to zone as page loads (e.g. after initial initialization lower on the page, e.g. when server-side framework requires more granular control, e.g. instrumentation is only know inside included file lower than the header. Must happen definitely before at least on of the marks in the same zone fire completing the zone.) ([#7](https://github.com/sergeychernyshev/ux-capture/issues/7))
 - :white_large_square:Allow replacing categories/placeholders with specific marks (e.g. when specific marks and their number is known only after an AJAX call or other time-consuming execution) ([#8](https://github.com/sergeychernyshev/ux-capture/issues/8))
-- :white_large_square:Fire a callback when all zones are complete (e.g. to report numbers before the automated beacon, which listens for other things fires)
+- :white_large_square:Fire an optional callback when all zones are complete (e.g. to report numbers before the automated beacon, which listens for other things fires) ([#10](https://github.com/sergeychernyshev/ux-capture/issues/10))
 - :white_large_square:Ensure there is no double-reporting between automated external beacon and completion callback beacon (e.g. define unique pageview ID)
-- :white_large_square:Fire an optional callback on each mark to allow for custom recording
-- :white_large_square:Fire an optional callback on each measure to allow for custom recording
+- :white_large_square:Fire an optional callback on each mark to allow for custom recording ([#11](https://github.com/sergeychernyshev/ux-capture/issues/11))
+- :white_large_square:Fire an optional callback on each measure to allow for custom recording ([#12](https://github.com/sergeychernyshev/ux-capture/issues/12))
 - :white_large_square:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp) ([#9](https://github.com/sergeychernyshev/ux-capture/issues/9))
 - :white_large_square:Report when zones are not complete before beacon fires / navigation happens in interactive view
 - :white_large_square:Support customizing namespace for the API singleton, e.g. MYUX.mark() instead of UX.mark()
