@@ -1,0 +1,25 @@
+{
+  "name": "ux-capture",
+  "version": "1.0.0",
+  "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meetup/ux-capture.git"
+  },
+  "keywords": [
+    "webeprf"
+  ],
+  "author": "Meetup",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meetup/ux-capture/issues"
+  },
+  "homepage": "https://github.com/meetup/ux-capture#readme"
+}
