@@ -2,7 +2,7 @@
   "name": "ux-capture",
   "version": "1.0.0",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
-  "main": "index.js",
+  "main": "js/ux-capture.js",
   "directories": {
     "doc": "docs"
   },
@@ -11,9 +11,15 @@
     "url": "git+https://github.com/meetup/ux-capture.git"
   },
   "keywords": [
-    "webeprf"
+    "webperf",
+    "perfmatters",
+    "web",
+    "performance",
+    "ux",
+    "speed",
+    "user-timing"
   ],
-  "author": "Meetup",
+  "author": "Sergey Chernyshev",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/meetup/ux-capture/issues"
