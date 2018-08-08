@@ -7,7 +7,7 @@ branches:
   only:
     - master
 
-script: npm run build
+script: npm run build; cat js/ux-capture.min.js
 
 deploy:
   provider: npm

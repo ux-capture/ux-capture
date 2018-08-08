@@ -1,6 +1,6 @@
 {
   "name": "ux-capture",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
   "main": "js/ux-capture.js",
   "directories": {
@@ -20,7 +20,7 @@
     "user-timing"
   ],
   "scripts": {
-    "build": "babel js/ux-capture.js  | uglifyjs >js/ux-capture.min.js",
+    "build": "babel js/ux-capture.js | uglifyjs >js/ux-capture.min.js",
     "build:clean": "rm js/ux-capture.min.js"
   },
   "author": "Sergey Chernyshev",
