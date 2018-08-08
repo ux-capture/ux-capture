@@ -1,6 +1,14 @@
 window.UX = (function() {
   let expectedZones = [];
 
+  const isUserTimingSupported =
+    typeof performance !== "undefined" &&
+    typeof performance.mark !== "undefined" &&
+    typeof performance.measure !== "undefined";
+
+  const isConsoleTimeStampSupported =
+    typeof console !== "undefined" && typeof console.timeStamp !== "undefined";
+
   let getMark = markLabel =>
     expectedZones.reduce((expectedMark, expectedZone) => {
       // already found in previous zone, no need to be iterating over current zone's marks
@@ -24,8 +32,10 @@ window.UX = (function() {
             mark =>
               new Promise((resolve, reject) => {
                 mark.record = () => {
-                  // record the mark using W3C User Timing API
-                  performance.mark(mark.label);
+                  if (isUserTimingSupported) {
+                    // record the mark using W3C User Timing API
+                    performance.mark(mark.label);
+                  }
 
                   /**
                    * Report same mark on Chrome/Firefox timeline
@@ -37,7 +47,9 @@ window.UX = (function() {
                    * (we'd provide a helper to highlight discrepancy, but unfortunately,
                    * there is no way to know when in timeline did navigationStart event occured)
                    */
-                  console.timeStamp(mark.label);
+                  if (isConsoleTimeStampSupported) {
+                    console.timeStamp(mark.label);
+                  }
 
                   // remember last mark that was recorded within a zone, overriding previous one
                   zone.lastMarkLabel = mark.label;
@@ -49,12 +61,14 @@ window.UX = (function() {
 
           // only if all marks were recorded (and promises resolved), go ahead and record the measure ending with last recorded mark
           Promise.all(promises).then(() => {
-            // record a measure using W3C User Timing API
-            performance.measure(
-              zone.label,
-              "navigationStart",
-              zone.lastMarkLabel
-            );
+            if (isUserTimingSupported) {
+              // record a measure using W3C User Timing API
+              performance.measure(
+                zone.label,
+                "navigationStart",
+                zone.lastMarkLabel
+              );
+            }
           });
 
           return zone;
