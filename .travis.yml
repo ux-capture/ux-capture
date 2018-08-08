@@ -9,6 +9,8 @@ branches:
 
 script: npm run build; cat js/ux-capture.min.js
 
+before_deploy: rm .gitignore
+
 deploy:
   provider: npm
   email: "web-platform-bot@meetup.com"
