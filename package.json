@@ -29,11 +29,6 @@
     "url": "https://github.com/meetup/ux-capture/issues"
   },
   "homepage": "https://github.com/meetup/ux-capture#readme",
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
