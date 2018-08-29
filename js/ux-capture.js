@@ -96,7 +96,7 @@ window.UX = (function() {
       }
     },
     config: function(configuration) {
-      if (typeof configuration !== "object") {
+      if (!configuration || typeof configuration !== "object") {
         return;
       }
 
