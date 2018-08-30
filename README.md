@@ -116,7 +116,7 @@ To accomplish that, you can call `UX.config()` method and pass it a configuratio
 ### Sample page
 
 This repository contains a sample page that implements basic instrumentation for your reference:
-https://cdn.rawgit.com/sergeychernyshev/ux-capture/0f76d715/js/index.html
+https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/js/index.html
 
 ## Instrumentation
 
