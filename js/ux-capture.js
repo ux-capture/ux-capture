@@ -19,6 +19,9 @@ window.UX = (function() {
           );
     }, null);
 
+  let onMark;
+  let onMeasure;
+
   return {
     expect: function(zones) {
       expectedZones = zones.map(zone => {
@@ -35,6 +38,11 @@ window.UX = (function() {
                   if (isUserTimingSupported) {
                     // record the mark using W3C User Timing API
                     performance.mark(mark.label);
+
+                    // if callback is specified, call it with mark label
+                    if (onMark) {
+                      onMark(mark.label);
+                    }
                   }
 
                   /**
@@ -68,6 +76,11 @@ window.UX = (function() {
                 "navigationStart",
                 zone.lastMarkLabel
               );
+
+              // if callback is specified, call it with zone label
+              if (onMeasure) {
+                onMeasure(zone.label);
+              }
             }
           });
 
@@ -80,6 +93,19 @@ window.UX = (function() {
 
       if (mark) {
         mark.record();
+      }
+    },
+    config: function(configuration) {
+      if (!configuration || typeof configuration !== "object") {
+        return;
+      }
+
+      if (typeof configuration.onMark === "function") {
+        onMark = configuration.onMark;
+      }
+
+      if (typeof configuration.onMeasure === "function") {
+        onMeasure = configuration.onMeasure;
       }
     }
   };

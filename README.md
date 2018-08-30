@@ -8,6 +8,7 @@ Browser instrumentation helper that makes it easier to capture UX speed metrics.
 - [JS library](#js-library)
   - [Features](#features)
   - [Configuring UX capture library (first prototype)](#configuring-ux-capture-library-first-prototype)
+    - [Setting Custom Handlers](#setting-custom-handlers)
   - [Sample page](#sample-page)
 - [Instrumentation](#instrumentation)
   - [Individual Element Instrumentation](#individual-element-instrumentation)
@@ -47,8 +48,8 @@ The intent of this library is to help developers group several technical events 
 - :white_large_square:Allow replacing categories/placeholders with specific marks (e.g. when specific marks and their number is known only after an AJAX call or other time-consuming execution) ([#8](https://github.com/sergeychernyshev/ux-capture/issues/8))
 - :white_large_square:Fire an optional callback when all zones are complete (e.g. to report numbers before the automated beacon, which listens for other things fires) ([#10](https://github.com/sergeychernyshev/ux-capture/issues/10))
 - :white_large_square:Ensure there is no double-reporting between automated external beacon and completion callback beacon (e.g. define unique pageview ID)
-- :white_large_square:Fire an optional callback on each mark to allow for custom recording ([#11](https://github.com/sergeychernyshev/ux-capture/issues/11))
-- :white_large_square:Fire an optional callback on each measure to allow for custom recording ([#12](https://github.com/sergeychernyshev/ux-capture/issues/12))
+- :ballot_box_with_check:Fire an optional callback on each mark to allow for custom recording ([#11](https://github.com/sergeychernyshev/ux-capture/issues/11))
+- :ballot_box_with_check:Fire an optional callback on each measure to allow for custom recording ([#12](https://github.com/sergeychernyshev/ux-capture/issues/12))
 - :ballot_box_with_check:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp) ([#9](https://github.com/sergeychernyshev/ux-capture/issues/9))
 - :white_large_square:Report when zones are not complete before beacon fires / navigation happens in interactive view
 - :white_large_square:Support customizing namespace for the API singleton, e.g. MYUX.mark() instead of UX.mark()
@@ -100,6 +101,17 @@ After library is included, call `expect()` method on global `UX` object passing 
 ```
 
 Each individual zone configuration object contains of zone's `label` that will be used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event label strings that zone groups together, each individual label will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
+
+#### Setting Custom Handlers
+
+In cases when monitoring solution you use does not support W3C UserTiming API natively, you might want to provide a custom method of recording the results.
+
+You can do that by specifying custom handlers for `mark` and `measure` events which will read data from UserTiming API, format the results accordingly and pass them to your service.
+
+To accomplish that, you can call `UX.config()` method and pass it a configuration object. Following keys are currently supported:
+
+- `onMark` - provides a custom handler to be called every time a mark is recorded with the name of the mark as only argument
+- `onMeasure` - provides a custom handler to be called every time a measure is recorded with the name of the measure as only argument
 
 ### Sample page
 

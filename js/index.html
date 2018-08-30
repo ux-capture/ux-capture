@@ -7,6 +7,24 @@
     <script src="ux-capture.js"></script>
 
     <script>
+        // sample custom reporter function for collected measures
+        const customMeasureRecordingFunction = (name) => {
+            // there can be multiple entries with the same name, get the latest
+            const measure = performance.getEntriesByType('measure').filter(
+                (entry) => entry.name === name
+            ).pop();
+
+            if (typeof measure.duration !== "undefined") {
+                // in real world you might be sending this to your custom monitoring solution
+                // (because it does not support W3C UserTiming API natively)
+                console.log("Measure", name, ":", measure.duration);
+            }
+        };
+
+        UX.config({
+            onMeasure: customMeasureRecordingFunction
+        });
+
         UX.expect([
             {
                 label: "ux-verify-destination",
