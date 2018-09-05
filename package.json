@@ -33,7 +33,6 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "expect": "^23.5.0",
     "jest": "^23.5.0",
     "uglify-es": "^3.3.9",
     "usertiming": "^0.1.8"
