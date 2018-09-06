@@ -22,7 +22,8 @@
   "scripts": {
     "build": "babel js/ux-capture.js | uglifyjs >js/ux-capture.min.js",
     "build:clean": "rm js/ux-capture.min.js",
-    "test": "jest test/*.test.js"
+    "test": "jest test/*.test.js",
+    "test:watch": "jest test/*.test.js --watch --verbose"
   },
   "author": "Sergey Chernyshev",
   "license": "MIT",
