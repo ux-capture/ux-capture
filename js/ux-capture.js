@@ -87,8 +87,11 @@
           Promise.all(promises).then(() => {
             if (isUserTimingSupported) {
               // record a measure using W3C User Timing API
-              // null start mark defaults to navigationStart - makes it work in environments where names mark is not set
-              window.performance.measure(zone.label, null, zone.lastMarkLabel);
+              window.performance.measure(
+                zone.label,
+                "navigationStart",
+                zone.lastMarkLabel
+              );
 
               // if callback is specified, call it with zone label
               if (onMeasure) {
