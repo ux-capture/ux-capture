@@ -1,29 +1,45 @@
-window.UX = (function() {
-  let expectedZones = [];
+(function(window) {
+  const initUXCapture = function(window) {
+    // allow running in Node.js environment
+    if (typeof window === "undefined") {
+      window = {};
+    }
 
-  const isUserTimingSupported =
-    typeof performance !== "undefined" &&
-    typeof performance.mark !== "undefined" &&
-    typeof performance.measure !== "undefined";
+    // prepare base UX Capture object
+    if (typeof window.UX === "undefined") {
+      window.UX = {};
+    }
 
-  const isConsoleTimeStampSupported =
-    typeof console !== "undefined" && typeof console.timeStamp !== "undefined";
+    const isUserTimingSupported =
+      typeof window.performance !== "undefined" &&
+      typeof window.performance.mark !== "undefined" &&
+      typeof window.performance.measure !== "undefined";
 
-  let getMark = markLabel =>
-    expectedZones.reduce((expectedMark, expectedZone) => {
-      // already found in previous zone, no need to be iterating over current zone's marks
-      return expectedMark
-        ? expectedMark
-        : expectedZone.marks.find(
-            expectedMark => expectedMark.label === markLabel
-          );
-    }, null);
+    const isConsoleTimeStampSupported =
+      typeof window.console !== "undefined" &&
+      typeof window.console.timeStamp !== "undefined";
 
-  let onMark;
-  let onMeasure;
+    let expectedZones = [];
 
-  return {
-    expect: function(zones) {
+    let getMark = markLabel =>
+      expectedZones.reduce((expectedMark, expectedZone) => {
+        // already found in previous zone, no need to be iterating over current zone's marks
+        return expectedMark
+          ? expectedMark
+          : expectedZone.marks.find(
+              expectedMark => expectedMark.label === markLabel
+            );
+      }, null);
+
+    let onMark;
+    let onMeasure;
+
+    /**
+     * Sets expected marks and corresponding zones for current view
+     *
+     * @TODO re-evaluate if we should allow multiple executions of this method
+     */
+    window.UX.expect = function(zones) {
       expectedZones = zones.map(zone => {
         // only create promises if zone contains any marks, otherwise just ignore it
         if (zone.marks && zone.marks.length > 0) {
@@ -37,7 +53,7 @@ window.UX = (function() {
                 mark.record = () => {
                   if (isUserTimingSupported) {
                     // record the mark using W3C User Timing API
-                    performance.mark(mark.label);
+                    window.performance.mark(mark.label);
 
                     // if callback is specified, call it with mark label
                     if (onMark) {
@@ -48,7 +64,7 @@ window.UX = (function() {
                   /**
                    * Report same mark on Chrome/Firefox timeline
                    *
-                   * keep in mind, these timestams are counted from timeline recording start
+                   * keep in mind, these timestamps are counted from timeline recording start
                    * while UserTiming marks are counted from navigationStart event
                    * however visually, they all will be offset by the same amount of time and align vertically on the charts
                    *
@@ -71,7 +87,7 @@ window.UX = (function() {
           Promise.all(promises).then(() => {
             if (isUserTimingSupported) {
               // record a measure using W3C User Timing API
-              performance.measure(
+              window.performance.measure(
                 zone.label,
                 "navigationStart",
                 zone.lastMarkLabel
@@ -87,15 +103,17 @@ window.UX = (function() {
           return zone;
         }
       });
-    },
-    mark: function(markLabel) {
+    };
+
+    window.UX.mark = function(markLabel) {
       const mark = getMark(markLabel);
 
       if (mark) {
         mark.record();
       }
-    },
-    config: function(configuration) {
+    };
+
+    window.UX.config = function(configuration) {
       if (!configuration || typeof configuration !== "object") {
         return;
       }
@@ -107,6 +125,26 @@ window.UX = (function() {
       if (typeof configuration.onMeasure === "function") {
         onMeasure = configuration.onMeasure;
       }
-    }
+    };
+
+    return window.UX;
   };
-})();
+
+  // Export initializer function for UX Capture to the appropriate location.
+  if (typeof define === "function" && define.amd) {
+    // AMD / RequireJS
+    define([], function() {
+      return initUXCapture;
+    });
+  } else if (
+    typeof module !== "undefined" &&
+    typeof module.exports !== "undefined"
+  ) {
+    // Node.js
+    module.exports = initUXCapture;
+  } else {
+    // When included directly via a script tag in the browser,
+    // run initialization function with window object.
+    initUXCapture(window);
+  }
+})(typeof window !== "undefined" ? window : undefined);

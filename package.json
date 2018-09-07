@@ -21,7 +21,9 @@
   ],
   "scripts": {
     "build": "babel js/ux-capture.js | uglifyjs >js/ux-capture.min.js",
-    "build:clean": "rm js/ux-capture.min.js"
+    "build:clean": "rm js/ux-capture.min.js",
+    "test": "jest test/*.test.js",
+    "test:watch": "jest test/*.test.js --watch --verbose"
   },
   "author": "Sergey Chernyshev",
   "license": "MIT",
@@ -32,6 +34,8 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "uglify-es": "^3.3.9"
+    "jest": "^23.5.0",
+    "uglify-es": "^3.3.9",
+    "usertiming": "^0.1.8"
   }
 }
