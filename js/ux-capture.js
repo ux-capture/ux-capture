@@ -5,12 +5,12 @@
       window = {};
     }
 
-    // prepare base UX Capture object
-    if (typeof window.UX === "undefined") {
-      window.UX = {};
-    } else {
+    // already have UX Capture object defined, reuse it
+    if (typeof window.UX !== "undefined") {
       return window.UX;
     }
+
+    window.UX = {};
 
     const isUserTimingSupported =
       typeof window.performance !== "undefined" &&

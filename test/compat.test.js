@@ -19,7 +19,7 @@ describe("Compatibility", () => {
     }).not.toThrow();
   });
 
-  it("Should not throw an error when called with", () => {
+  it("Should not throw an error when window.UX is already defined", () => {
     expect(() => {
       require("../js/ux-capture")(window);
       require("../js/ux-capture")(window);
