@@ -18,6 +18,10 @@ const MOCK_MARK_1_2 = "ux-mock-mark_1_2";
 
 const MOCK_UNEXPECTED_MARK = "ux-unexpected-mark";
 
+const MOCK_MEASURE_2 = "ux-mock-measure_2";
+const MOCK_MEASURE_3 = "ux-mock-measure_3";
+const MOCK_MARK_MULTIPLE = "ux-mock-mark_multiple";
+
 describe("UX.mark()", () => {
   const mockOnMarkCallback = jest.fn();
 
@@ -25,6 +29,14 @@ describe("UX.mark()", () => {
     {
       label: MOCK_MEASURE_1,
       marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
+    },
+    {
+      label: MOCK_MEASURE_2,
+      marks: [MOCK_MARK_MULTIPLE]
+    },
+    {
+      label: MOCK_MEASURE_3,
+      marks: [MOCK_MARK_MULTIPLE]
     }
   ]);
 
@@ -46,7 +58,7 @@ describe("UX.mark()", () => {
       expect(
         window.performance
           .getEntriesByType("measure")
-          .find(mark => mark.name === MOCK_MEASURE_1)
+          .find(measure => measure.name === MOCK_MEASURE_1)
       ).toBeTruthy();
       done();
     }, 0);
@@ -82,5 +94,22 @@ describe("UX.mark()", () => {
     ).not.toBeTruthy();
   });
 
-  // it("should not fire native mark if UserTiming api is not available", () => {});
+  it("should contribute to multiple measures if same mark is defined for multiple zones", done => {
+    UX.mark(MOCK_MARK_MULTIPLE);
+
+    // use setTimeout to release thread for Promise.all() to fire for measures
+    setTimeout(() => {
+      expect(
+        window.performance
+          .getEntriesByType("measure")
+          .find(measure => measure.name === MOCK_MEASURE_2)
+      ).toBeTruthy();
+      expect(
+        window.performance
+          .getEntriesByType("measure")
+          .find(measure => measure.name === MOCK_MEASURE_3)
+      ).toBeTruthy();
+      done();
+    }, 0);
+  });
 });
