@@ -6,33 +6,23 @@ window.performance.timing = {
   navigationStart: window.performance.now()
 };
 
+// using console.timeStamp for testing only
+console.timeStamp = jest.fn();
+
 // set up global UX object
 const UX = require("../js/ux-capture")(window);
-
-const MOCK_MARK_LABEL = "ux-mock-mark";
-const MOCK_MEASURE_LABEL = "ux-mock-measure";
 
 describe("UX Capture", () => {
   it("should be available as UX global variable", () => {
     expect(UX);
   });
 
-  UX.expect([
-    {
-      label: MOCK_MEASURE_LABEL,
-      marks: [MOCK_MARK_LABEL]
-    }
-  ]);
-
-  describe("UX.mark()", () => {
-    it("must mark user timing api timeline", () => {
-      UX.mark(MOCK_MARK_LABEL);
-
-      expect(
-        window.performance
-          .getEntriesByType("mark")
-          .filter(mark => mark.name === MOCK_MARK_LABEL).length
-      ).toBe(1);
-    });
+  describe("Measures", () => {
+    // it("Must wait for all marks declared", () => {});
+    // it("must end with the latest mark and start with 0", () => {});
   });
+
+  // ???????????
+  // Must fire a native mark even if it is not expected? (Should this be supported? Should we use it for technical marking? Not sure)
+  // ??? Should fire custom callbacks even if UserTiming api is not supported? Is that true? How will it measure time? Should be available though a polyfill instead?
 });

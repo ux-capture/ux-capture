@@ -5,10 +5,12 @@
       window = {};
     }
 
-    // prepare base UX Capture object
-    if (typeof window.UX === "undefined") {
-      window.UX = {};
+    // already have UX Capture object defined, reuse it
+    if (typeof window.UX !== "undefined") {
+      return window.UX;
     }
+
+    window.UX = {};
 
     const isUserTimingSupported =
       typeof window.performance !== "undefined" &&
@@ -40,6 +42,10 @@
      * @TODO re-evaluate if we should allow multiple executions of this method
      */
     window.UX.expect = function(zones) {
+      if (typeof zones === "undefined" || !Array.isArray(zones)) {
+        return false;
+      }
+
       expectedZones = zones.map(zone => {
         // only create promises if zone contains any marks, otherwise just ignore it
         if (zone.marks && zone.marks.length > 0) {
@@ -83,9 +89,9 @@
               })
           );
 
-          // only if all marks were recorded (and promises resolved), go ahead and record the measure ending with last recorded mark
-          Promise.all(promises).then(() => {
-            if (isUserTimingSupported) {
+          if (isUserTimingSupported) {
+            // only if all marks were recorded (and promises resolved), go ahead and record the measure ending with last recorded mark
+            Promise.all(promises).then(() => {
               // record a measure using W3C User Timing API
               window.performance.measure(
                 zone.label,
@@ -97,8 +103,8 @@
               if (onMeasure) {
                 onMeasure(zone.label);
               }
-            }
-          });
+            });
+          }
 
           return zone;
         }
@@ -120,10 +126,14 @@
 
       if (typeof configuration.onMark === "function") {
         onMark = configuration.onMark;
+      } else {
+        onMark = null;
       }
 
       if (typeof configuration.onMeasure === "function") {
         onMeasure = configuration.onMeasure;
+      } else {
+        onMeasure = null;
       }
     };
 
