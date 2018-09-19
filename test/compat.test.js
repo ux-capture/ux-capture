@@ -1,5 +1,5 @@
 // set up global UX object without a window
-const UX = require("../js/ux-capture")();
+const UX = require("../js/src/ux-capture")();
 
 const MOCK_MEASURE_1 = "ux-mock-measure_1";
 const MOCK_MARK_1_1 = "ux-mock-mark_1_1";
@@ -21,8 +21,8 @@ describe("Compatibility", () => {
 
   it("Should not throw an error when window.UX is already defined", () => {
     expect(() => {
-      require("../js/ux-capture")(window);
-      require("../js/ux-capture")(window);
+      require("../js/src/ux-capture")(window);
+      require("../js/src/ux-capture")(window);
     }).not.toThrow();
   });
 });

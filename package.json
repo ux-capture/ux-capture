@@ -20,7 +20,8 @@
     "user-timing"
   ],
   "scripts": {
-    "build": "babel js/ux-capture.js | uglifyjs >js/ux-capture.min.js",
+    "build": "webpack",
+    "watch": "webpack --watch",
     "build:clean": "rm js/ux-capture.min.js",
     "test": "jest test/*.test.js",
     "test:watch": "jest test/*.test.js --watch --verbose --coverage",
@@ -33,10 +34,15 @@
   },
   "homepage": "https://github.com/meetup/ux-capture#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "jest": "^23.5.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "jest": "^23.6.0",
     "uglify-es": "^3.3.9",
-    "usertiming": "^0.1.8"
+    "usertiming": "^0.1.8",
+    "webpack": "^4.18.1",
+    "webpack-cli": "^3.1.0",
+    "@babel/core": "^7.0.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0"
   }
 }
