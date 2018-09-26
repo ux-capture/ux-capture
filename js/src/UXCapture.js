@@ -5,7 +5,7 @@ export default class UXCapture {
   static attachTo(window) {
     // allow running in Node.js environment
     if (typeof window === "undefined") {
-      window = {};
+      throw new Error("Must provide a valid window object");
     }
 
     // already have UX Capture object defined, reuse it
