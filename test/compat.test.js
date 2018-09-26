@@ -8,7 +8,7 @@ const MOCK_MARK_1_2 = "ux-mock-mark_1_2";
 describe("Compatibility", () => {
   UX.expect([
     {
-      label: MOCK_MEASURE_1,
+      name: MOCK_MEASURE_1,
       marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
     }
   ]);

@@ -27,15 +27,15 @@ describe("UX.mark()", () => {
 
   UX.expect([
     {
-      label: MOCK_MEASURE_1,
+      name: MOCK_MEASURE_1,
       marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
     },
     {
-      label: MOCK_MEASURE_2,
+      name: MOCK_MEASURE_2,
       marks: [MOCK_MARK_MULTIPLE]
     },
     {
-      label: MOCK_MEASURE_3,
+      name: MOCK_MEASURE_3,
       marks: [MOCK_MARK_MULTIPLE]
     }
   ]);

@@ -20,7 +20,7 @@ describe("UX.expect()", () => {
   it("must create dependencies between marks and measures using promises", () => {
     UX.expect([
       {
-        label: MOCK_MEASURE_1,
+        name: MOCK_MEASURE_1,
         marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
       }
     ]);
@@ -53,7 +53,7 @@ describe("UX.expect()", () => {
 
     UX.expect([
       {
-        label: MOCK_MEASURE_1,
+        name: MOCK_MEASURE_1,
         marks: []
       }
     ]);

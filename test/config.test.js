@@ -31,23 +31,23 @@ const MOCK_MARK_5_1 = "ux-mock-mark_5_1";
 describe("UX.config()", () => {
   UX.expect([
     {
-      label: MOCK_MEASURE_1,
+      name: MOCK_MEASURE_1,
       marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
     },
     {
-      label: MOCK_MEASURE_2,
+      name: MOCK_MEASURE_2,
       marks: [MOCK_MARK_2_1]
     },
     {
-      label: MOCK_MEASURE_3,
+      name: MOCK_MEASURE_3,
       marks: [MOCK_MARK_3_1]
     },
     {
-      label: MOCK_MEASURE_4,
+      name: MOCK_MEASURE_4,
       marks: [MOCK_MARK_4_1]
     },
     {
-      label: MOCK_MEASURE_5,
+      name: MOCK_MEASURE_5,
       marks: [MOCK_MARK_5_1]
     }
   ]);

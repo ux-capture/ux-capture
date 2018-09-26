@@ -80,19 +80,19 @@ After library is included, call `expect()` method on global `UX` object passing 
     <script>
         UX.expect([
             {
-                label: "ux-verify-destination",
+                name: "ux-verify-destination",
                 marks: ["ux-text-title"]
             },
             {
-                label: "ux-primary-content",
+                name: "ux-primary-content",
                 marks: ["ux-text-intro", "ux-text-story", "ux-image-onload-kitten", "ux-image-inline-kitten"]
             },
             {
-                label: "ux-primary-action",
+                name: "ux-primary-action",
                 marks: ["ux-text-story-details-link", "ux-handler-moreclickable"]
             },
             {
-                label: "ux-secondary-content",
+                name: "ux-secondary-content",
                 marks: ["ux-text-page2"]
             }
         ]);
@@ -100,7 +100,7 @@ After library is included, call `expect()` method on global `UX` object passing 
 </head>
 ```
 
-Each individual zone configuration object contains of zone's `label` that will be used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event label strings that zone groups together, each individual label will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
+Each individual zone configuration object contains of zone's `name` that will be used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event name strings that zone groups together, each individual name will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
 
 #### Setting Custom Handlers
 
@@ -209,7 +209,7 @@ This is done automatically by the library and no additional instrumentation is n
 
 To confirm that your instrumentation was successful, open your page in Chrome Developer Tools' Performance tab and hit reload to capture the timeline.
 
-Verify that individual marks are captured as timestamps on the timeline (small vertical lines on Frames band), hovering over each should show the label used for the mark.
+Verify that individual marks are captured as timestamps on the timeline (small vertical lines on Frames band), hovering over each should show the name used for the mark.
 
 Also verify that measures are captured (long horizontal bars under User Timing band, starting at navigation and ending at the last mark comprizing the zone).
 
