@@ -1,7 +1,5 @@
 import ExpectedMark from "./ExpectedMark";
-import Zone from "./Zone";
-
-let _instance = null;
+import View from "./View";
 
 export default class UXCapture {
   static attachTo(window) {
@@ -18,73 +16,12 @@ export default class UXCapture {
     // assign singleton instance to window object
     window.UX = new UXCapture(window);
 
-    _instance = window.UX;
-
     return window.UX;
   }
 
-  static isUserTimingSupported() {
-    return (
-      typeof _instance.window.performance !== "undefined" &&
-      typeof _instance.window.performance.mark !== "undefined" &&
-      typeof _instance.window.performance.measure !== "undefined"
-    );
-  }
-
-  static isConsoleTimeStampSupported() {
-    return (
-      typeof _instance.window.console !== "undefined" &&
-      typeof _instance.window.console.timeStamp !== "undefined"
-    );
-  }
-
-  constructor(window) {
-    this.window = window;
-
+  constructor() {
     this.onMark = null;
     this.onMeasure = null;
-  }
-
-  static recordMeasure(zone, lastMark) {
-    if (UXCapture.isUserTimingSupported()) {
-      // record a measure using W3C User Timing API
-      _instance.window.performance.measure(
-        zone.getLabel(),
-        "navigationStart",
-        lastMark.getLabel()
-      );
-    }
-
-    // if callback is specified, call it with zone label
-    if (_instance.onMeasure) {
-      _instance.onMeasure(zone.getLabel());
-    }
-  }
-
-  static recordMark(mark) {
-    if (UXCapture.isUserTimingSupported()) {
-      // record the mark using W3C User Timing API
-      _instance.window.performance.mark(mark.label);
-    }
-
-    /**
-     * Report same mark on Chrome/Firefox timeline
-     *
-     * keep in mind, these timestamps are counted from timeline recording start
-     * while UserTiming marks are counted from navigationStart event
-     * however visually, they all will be offset by the same amount of time and align vertically on the charts
-     *
-     * (we'd provide a helper to highlight discrepancy, but unfortunately,
-     * there is no way to know when in timeline did navigationStart event occured)
-     */
-    if (UXCapture.isConsoleTimeStampSupported()) {
-      _instance.window.console.timeStamp(mark.getLabel());
-    }
-
-    // if callback is specified, call it with mark label
-    if (_instance.onMark) {
-      _instance.onMark(mark.getLabel());
-    }
   }
 
   /**
@@ -92,16 +29,29 @@ export default class UXCapture {
    *
    * @TODO re-evaluate if we should allow multiple executions of this method
    */
-  expect(zones) {
-    if (typeof zones === "undefined" || !Array.isArray(zones)) {
+  expect(zoneConfigs) {
+    if (typeof zoneConfigs === "undefined" || !Array.isArray(zoneConfigs)) {
       return false;
     }
 
-    Zone.setExpectedZones(zones);
+    // create a view object for initial, server-side rendered page view
+    const pageView = new View({
+      onMark: mark => {
+        if (this.onMark) {
+          this.onMark(mark);
+        }
+      },
+      onMeasure: measure => {
+        if (this.onMeasure) {
+          this.onMeasure(measure);
+        }
+      },
+      zoneConfigs
+    });
   }
 
-  mark(label) {
-    const mark = ExpectedMark.get(label);
+  mark(name) {
+    const mark = ExpectedMark.get(name);
 
     if (mark) {
       mark.record();

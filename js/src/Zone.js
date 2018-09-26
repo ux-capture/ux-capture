@@ -1,57 +1,84 @@
 import ExpectedMark from "./ExpectedMark";
 import UXCapture from "./UXCapture";
 
-// array holding current, global set of expected zones
-let expectedZones = [];
-
 /**
  * Zone represents collection of elements groupped together and corresponding phase of page load
  *
  * Only one set of zones can be tracked for the same view at one point in time
  */
 export default class Zone {
-  static setExpectedZones(zones) {
-    expectedZones = zones.map(zone => {
-      // only create promises if zone contains any marks, otherwise just ignore it
-      if (zone.marks && zone.marks.length > 0) {
-        const expectedZone = new Zone(zone.label, zone.marks);
-
-        return expectedZone;
-      }
-    });
-  }
-
   // constructs individual zone object
-  constructor(label, marks, elements = []) {
-    this.label = label;
+  constructor(config) {
+    // {
+    //   name: "ux-destination-verified",
+    //   marks: ["ux-image-online-logo", "ux-image-inline-logo"]
+    //   selectors: ["img.logo"],
+    //   startMark: "navigationStart",
+    //   onMeasure: measureName => {}
+    //   onMark: markName => {}
+    // }
 
-    const promises = [];
+    // name to be used for UserTiming measures
+    this.measureName = config.name;
+
+    // callback to execute when Zone is complete
+    this.onMeasure = config.onMeasure;
+
+    // callback for marks to call when they are complete
+    this.onMark = config.onMark;
+
+    // array of mark names that were recorded so far
+    this.recordedMarkNames = [];
+
+    this.startMarkName = config.startMarkName || "navigationStart";
 
     // look up existing mark object or create a new one
-    this.marks = marks.map(markLabel => {
-      const mark = ExpectedMark.get(markLabel) || new ExpectedMark(markLabel);
 
-      mark.requiredForZone(this);
+    // now just string names for UserTiming marks
+    // in the future, different types of events, e.g. ImageElement("logo"), PaintTimer("first-paint")
+    this.marks = config.marks.map(markName => {
+      const mark = ExpectedMark.get(markName) || new ExpectedMark(markName);
 
-      const promise = mark.getPromise();
-
-      // remember last recorded mark
-      promise.then(() => {
-        this.lastMark = mark;
-      });
-
-      promises.push(promise);
+      mark.onComplete(mark => this.checkCompletion(mark));
 
       return mark;
     });
-
-    // only if all marks were recorded (and promises resolved), go ahead and record the measure ending with last recorded mark
-    Promise.all(promises).then(() => {
-      UXCapture.recordMeasure(this, this.lastMark);
-    });
   }
 
-  getLabel() {
-    return this.label;
+  /**
+   * Callback to be called by each mark in the zone upon recording
+   *
+   * @param {Mark} recordedMark latest mark recorded
+   */
+  checkCompletion(recordedMark) {
+    this.recordedMarkNames[recordedMark.name] = true;
+
+    // if callback is specified, call it with mark name
+    if (this.onMark) {
+      this.onMark(recordedMark.name);
+    }
+
+    // check if all marks for the zone were completed
+    const isComplete = this.marks.every(
+      mark => this.recordedMarkNames[mark.name]
+    );
+
+    if (isComplete) {
+      if (
+        typeof window.performance !== "undefined" &&
+        typeof window.performance.measure !== "undefined"
+      ) {
+        window.performance.measure(
+          this.measureName,
+          this.startMarkName,
+          recordedMark.name
+        );
+      }
+
+      // if callback is specified, call it with zone name
+      if (this.onMeasure) {
+        this.onMeasure(this.measureName);
+      }
+    }
   }
 }
