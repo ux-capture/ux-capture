@@ -10,6 +10,7 @@ Browser instrumentation helper that makes it easier to capture UX speed metrics.
   - [Configuring UX capture library (first prototype)](#configuring-ux-capture-library-first-prototype)
     - [Setting Custom Handlers](#setting-custom-handlers)
   - [Sample page](#sample-page)
+  - [Release notes](#release-notes)
 - [Instrumentation](#instrumentation)
   - [Individual Element Instrumentation](#individual-element-instrumentation)
     - [Image elements](#image-elements)
@@ -117,6 +118,14 @@ To accomplish that, you can call `UX.config()` method and pass it a configuratio
 
 This repository contains a sample page that implements basic instrumentation for your reference:
 https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/js/index.html
+
+### Release notes
+
+- v2.0.0 (9/28/2018)
+  - BREAKING CHANGE: updated expected zone configuration to use `name` instead of `label` as key to align with timing API conventions. Update your expect calls.
+  - Now using webpack for bundling. No more source file to use, make sure to inline `js/ux-capture.min.js` file in your HTML.
+  - Fixed a bug with hanging measures if mark is used in multiple places.
+  - Replaced Promises with callbacks internally.
 
 ## Instrumentation
 
