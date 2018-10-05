@@ -46,7 +46,7 @@ export default class Zone {
         }
 
         if (this.checkCompletion(mark)) {
-          this.onComplete(mark);
+          this.complete(mark);
         }
       });
 
@@ -71,7 +71,7 @@ export default class Zone {
    *
    * @param {ExpectedMark} lastMark last mark that triggered completion
    */
-  onComplete(lastMark) {
+  complete(lastMark) {
     if (
       typeof window.performance !== "undefined" &&
       typeof window.performance.measure !== "undefined"
