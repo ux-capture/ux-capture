@@ -1,6 +1,8 @@
 import ExpectedMark from "./ExpectedMark";
 import View from "./View";
 
+const NOOP = () => {};
+
 export default class UXCapture {
   static attachTo(window) {
     // require a valid window object to be passed in
@@ -20,8 +22,8 @@ export default class UXCapture {
   }
 
   constructor() {
-    this.onMark = null;
-    this.onMeasure = null;
+    this.onMark = NOOP;
+    this.onMeasure = NOOP;
   }
 
   /**
@@ -36,20 +38,10 @@ export default class UXCapture {
 
     // create a view object for initial, server-side rendered page view
     const pageView = new View({
-      // checking config every time inside onMark & onMeasure callbacks
-      // allows making UX.config() call after UX.expect() calls
-      onMark: mark => {
-        // if onMark method provided at the moment of marking, call it
-        if (this.onMark) {
-          this.onMark(mark);
-        }
-      },
-      onMeasure: measure => {
-        // if onMeasure method provided at the moment of measure completion, call it
-        if (this.onMeasure) {
-          this.onMeasure(measure);
-        }
-      },
+      // calling currently configured onMark & onMeasure handlers inside View's callbacks
+      // allows making UX.config() call after UX.expect() call
+      onMark: mark => this.onMark(mark),
+      onMeasure: measure => this.onMeasure(measure),
       zoneConfigs
     });
   }
@@ -70,13 +62,13 @@ export default class UXCapture {
     if (typeof configuration.onMark === "function") {
       this.onMark = configuration.onMark;
     } else {
-      this.onMark = null;
+      this.onMark = NOOP;
     }
 
     if (typeof configuration.onMeasure === "function") {
       this.onMeasure = configuration.onMeasure;
     } else {
-      this.onMeasure = null;
+      this.onMeasure = NOOP;
     }
   }
 }
