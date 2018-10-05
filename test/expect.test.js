@@ -17,7 +17,7 @@ const MOCK_MARK_1_1 = "ux-mock-mark_1_1";
 const MOCK_MARK_1_2 = "ux-mock-mark_1_2";
 
 describe("UX.expect()", () => {
-  it("must create dependencies between marks and measures using promises", () => {
+  it("must create dependencies between marks and measures", () => {
     UX.expect([
       {
         name: MOCK_MEASURE_1,
@@ -46,7 +46,7 @@ describe("UX.expect()", () => {
     }).not.toThrow();
   });
 
-  it("should not trigger a measure when empty marks array is passed", done => {
+  it("should not trigger a measure when empty marks array is passed", () => {
     const mockOnMeasureCallback = jest.fn();
 
     UX.config({ onMeasure: mockOnMeasureCallback });
@@ -58,10 +58,6 @@ describe("UX.expect()", () => {
       }
     ]);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(mockOnMeasureCallback).not.toHaveBeenCalled();
-      done();
-    }, 0);
+    expect(mockOnMeasureCallback).not.toHaveBeenCalled();
   });
 });

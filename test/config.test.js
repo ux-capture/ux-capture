@@ -75,18 +75,14 @@ describe("UX.config()", () => {
     expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_1_1);
   });
 
-  it("Should be able to configure onMeasure handler", done => {
+  it("Should be able to configure onMeasure handler", () => {
     mockOnMeasureCallback.mockClear();
 
     UX.config({ onMeasure: mockOnMeasureCallback });
 
     UX.mark(MOCK_MARK_2_1);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(mockOnMeasureCallback).toHaveBeenCalledWith(MOCK_MEASURE_2);
-      done();
-    }, 0);
+    expect(mockOnMeasureCallback).toHaveBeenCalledWith(MOCK_MEASURE_2);
   });
 
   it("Should remove custom onMark callback if it's not defined on configuration object", () => {
@@ -103,7 +99,7 @@ describe("UX.config()", () => {
     expect(mockOnMarkCallback).not.toHaveBeenCalledWith(MOCK_MARK_3_1);
   });
 
-  it("Should remove custom onMeasure callback if it's not defined on configuration object", done => {
+  it("Should remove custom onMeasure callback if it's not defined on configuration object", () => {
     // configured onMeasure callback
     UX.config({ onMeasure: mockOnMeasureCallback });
 
@@ -117,10 +113,6 @@ describe("UX.config()", () => {
 
     expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_4_1);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(mockOnMeasureCallback).not.toHaveBeenCalledWith(MOCK_MEASURE_4);
-      done();
-    }, 0);
+    expect(mockOnMeasureCallback).not.toHaveBeenCalledWith(MOCK_MEASURE_4);
   });
 });

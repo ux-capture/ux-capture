@@ -50,18 +50,14 @@ describe("UX.mark()", () => {
     ).toBeTruthy();
   });
 
-  it("should trigger recording of a measure if last mark in chain", done => {
+  it("should trigger recording of a measure if last mark in chain", () => {
     UX.mark(MOCK_MARK_1_2);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(
-        window.performance
-          .getEntriesByType("measure")
-          .find(measure => measure.name === MOCK_MEASURE_1)
-      ).toBeTruthy();
-      done();
-    }, 0);
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_1)
+    ).toBeTruthy();
   });
 
   it("should fire a console.timeStamp it is available", () => {
@@ -94,22 +90,18 @@ describe("UX.mark()", () => {
     ).not.toBeTruthy();
   });
 
-  it("should contribute to multiple measures if same mark is defined for multiple zones", done => {
+  it("should contribute to multiple measures if same mark is defined for multiple zones", () => {
     UX.mark(MOCK_MARK_MULTIPLE);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures
-    setTimeout(() => {
-      expect(
-        window.performance
-          .getEntriesByType("measure")
-          .find(measure => measure.name === MOCK_MEASURE_2)
-      ).toBeTruthy();
-      expect(
-        window.performance
-          .getEntriesByType("measure")
-          .find(measure => measure.name === MOCK_MEASURE_3)
-      ).toBeTruthy();
-      done();
-    }, 0);
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_2)
+    ).toBeTruthy();
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_3)
+    ).toBeTruthy();
   });
 });
