@@ -31,7 +31,7 @@ export default class UXCapture {
    */
   expect(zoneConfigs) {
     if (typeof zoneConfigs === "undefined" || !Array.isArray(zoneConfigs)) {
-      return false;
+      throw new Error("Must provide an array of zone configuration objects");
     }
 
     // create a view object for initial, server-side rendered page view

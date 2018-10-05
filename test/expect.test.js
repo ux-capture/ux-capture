@@ -34,10 +34,10 @@ describe("UX.expect()", () => {
     ).toBeTruthy();
   });
 
-  it("must not throw errors if no zones passed in", () => {
+  it("must throw am error if no zones passed in", () => {
     expect(() => {
       UX.expect();
-    }).not.toThrow();
+    }).toThrow();
   });
 
   it("must not throw errors if empty zones list is passed in", () => {
