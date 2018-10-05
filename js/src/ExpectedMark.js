@@ -1,7 +1,7 @@
 import UXCapture from "./UXCapture";
 
 // all marks expected so far
-const expectedMarks = [];
+const _expectedMarks = [];
 
 /**
  * Class describes expected marks
@@ -9,25 +9,36 @@ const expectedMarks = [];
  */
 export default class ExpectedMark {
   static get(name) {
-    const mark = expectedMarks.find(mark => mark.name === name);
+    return _expectedMarks.find(mark => mark.name === name);
+  }
+
+  /**
+   * Checks if mark already exists in the list of expected marks
+   * Otherwise, creates a new one and adds it to the list
+   *
+   * @param {string} name
+   */
+  static create(name) {
+    let mark = ExpectedMark.get(name);
+
+    if (!mark) {
+      mark = new ExpectedMark(name);
+      _expectedMarks.push(mark);
+    }
 
     return mark;
   }
 
-  constructor(name, callback) {
+  constructor(name) {
     this.name = name;
 
     // list of zone callbacks to call on completion
-    this.onCompleteListeners = [];
-
-    if (!ExpectedMark.get(this.name)) {
-      expectedMarks.push(this);
-    }
+    this.onMarkListeners = [];
   }
 
   // registers zone callback
-  onComplete(callback) {
-    this.onCompleteListeners.push(callback);
+  onComplete(onMark) {
+    this.onMarkListeners.push(onMark);
   }
 
   record() {
@@ -57,7 +68,7 @@ export default class ExpectedMark {
     }
 
     // call all registered zone callbacks
-    this.onCompleteListeners.forEach(onCompleteListener =>
+    this.onMarkListeners.forEach(onCompleteListener =>
       onCompleteListener(this)
     );
   }

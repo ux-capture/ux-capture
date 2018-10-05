@@ -3,7 +3,7 @@ import View from "./View";
 
 export default class UXCapture {
   static attachTo(window) {
-    // allow running in Node.js environment
+    // require a valid window object to be passed in
     if (typeof window === "undefined") {
       throw new Error("Must provide a valid window object");
     }
@@ -36,12 +36,16 @@ export default class UXCapture {
 
     // create a view object for initial, server-side rendered page view
     const pageView = new View({
+      // checking config every time inside onMark & onMeasure callbacks
+      // allows making UX.config() call after UX.expect() calls
       onMark: mark => {
+        // if onMark method provided at the moment of marking, call it
         if (this.onMark) {
           this.onMark(mark);
         }
       },
       onMeasure: measure => {
+        // if onMeasure method provided at the moment of measure completion, call it
         if (this.onMeasure) {
           this.onMeasure(measure);
         }

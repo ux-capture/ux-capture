@@ -37,9 +37,18 @@ export default class Zone {
     // now just string names for UserTiming marks
     // in the future, different types of events, e.g. ImageElement("logo"), PaintTimer("first-paint")
     this.marks = config.marks.map(markName => {
-      const mark = ExpectedMark.get(markName) || new ExpectedMark(markName);
+      const mark = ExpectedMark.create(markName);
 
-      mark.onComplete(mark => this.checkCompletion(mark));
+      mark.onComplete(mark => {
+        // if Zone's onMark callback is specified, call it with mark name
+        if (this.onMark) {
+          this.onMark(mark.name);
+        }
+
+        if (this.checkCompletion(mark)) {
+          this.onComplete(mark);
+        }
+      });
 
       return mark;
     });
@@ -53,32 +62,30 @@ export default class Zone {
   checkCompletion(recordedMark) {
     this.recordedMarkNames[recordedMark.name] = true;
 
-    // if callback is specified, call it with mark name
-    if (this.onMark) {
-      this.onMark(recordedMark.name);
+    // check if all marks for the zone were completed
+    return this.marks.every(mark => this.recordedMarkNames[mark.name]);
+  }
+
+  /**
+   * Records measure on Performance Timeline and calls onMeasure callback if specified
+   *
+   * @param {ExpectedMark} lastMark last mark that triggered completion
+   */
+  onComplete(lastMark) {
+    if (
+      typeof window.performance !== "undefined" &&
+      typeof window.performance.measure !== "undefined"
+    ) {
+      window.performance.measure(
+        this.measureName,
+        this.startMarkName,
+        lastMark.name
+      );
     }
 
-    // check if all marks for the zone were completed
-    const isComplete = this.marks.every(
-      mark => this.recordedMarkNames[mark.name]
-    );
-
-    if (isComplete) {
-      if (
-        typeof window.performance !== "undefined" &&
-        typeof window.performance.measure !== "undefined"
-      ) {
-        window.performance.measure(
-          this.measureName,
-          this.startMarkName,
-          recordedMark.name
-        );
-      }
-
-      // if callback is specified, call it with zone name
-      if (this.onMeasure) {
-        this.onMeasure(this.measureName);
-      }
+    // if callback is specified, call it with zone name
+    if (this.onMeasure) {
+      this.onMeasure(this.measureName);
     }
   }
 }
