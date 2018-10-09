@@ -17,10 +17,6 @@ export default class UXCapture {
    * @TODO re-evaluate if we should allow multiple executions of this method
    */
   expect(zoneConfigs) {
-    if (typeof zoneConfigs === "undefined" || !Array.isArray(zoneConfigs)) {
-      throw new Error("Must provide an array of zone configuration objects");
-    }
-
     // create a view object for initial, server-side rendered page view
     const pageView = new View({
       // calling currently configured onMark & onMeasure handlers inside View's callbacks
