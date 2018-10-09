@@ -10,7 +10,8 @@ window.performance.timing = {
 console.timeStamp = jest.fn();
 
 // set up global UX object
-const UX = require("../js/src/ux-capture")(window);
+const UXCapture = require("../js/src/ux-capture");
+const UX = new UXCapture();
 
 const MOCK_MEASURE_1 = "ux-mock-measure_1";
 const MOCK_MARK_1_1 = "ux-mock-mark_1_1";

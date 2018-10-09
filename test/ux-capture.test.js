@@ -10,7 +10,8 @@ window.performance.timing = {
 console.timeStamp = jest.fn();
 
 // set up global UX object
-const UX = require("../js/src/ux-capture")(window);
+const UXCapture = require("../js/src/ux-capture");
+const UX = new UXCapture();
 
 describe("UX Capture", () => {
   it("should be available as UX global variable", () => {

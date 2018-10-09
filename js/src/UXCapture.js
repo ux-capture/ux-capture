@@ -4,26 +4,11 @@ import View from "./View";
 const NOOP = () => {};
 
 export default class UXCapture {
-  static attachTo(window) {
-    // require a valid window object to be passed in
-    if (typeof window === "undefined") {
-      throw new Error("Must provide a valid window object");
-    }
-
-    // already have UX Capture object defined, reuse it
-    if (typeof window.UX !== "undefined") {
-      return window.UX;
-    }
-
-    // assign singleton instance to window object
-    window.UX = new UXCapture(window);
-
-    return window.UX;
-  }
-
   constructor() {
     this.onMark = NOOP;
     this.onMeasure = NOOP;
+
+    window.UX = this;
   }
 
   /**
