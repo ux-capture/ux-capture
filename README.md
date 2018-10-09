@@ -121,7 +121,7 @@ https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/js/index.html
 
 ### Release notes
 
-- v2.0.0 (10/5/2018)
+- v2.0.0 (October 9, 2018)
   - BREAKING CHANGE: updated expected zone configuration to use `name` instead of `label` as key to align with timing API conventions. Update your expect calls.
   - Now using webpack for bundling. No more source file to use, make sure to inline `js/ux-capture.min.js` file in your HTML.
   - Fixed a bug with hanging measures if mark is used in multiple places.
