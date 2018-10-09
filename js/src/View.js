@@ -1,5 +1,8 @@
 import Zone from "./Zone";
 
+/**
+ * View is a collection of zones representing one page view or interactive view
+ */
 export default class View {
   constructor({ onMark, onMeasure, zoneConfigs }) {
     this.expectedZones = zoneConfigs.map(zoneConfig => {
