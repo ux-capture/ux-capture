@@ -10,7 +10,8 @@ window.performance.timing = {
 console.timeStamp = jest.fn();
 
 // set up global UX object
-const UX = require("../js/ux-capture")(window);
+const UXCapture = require("../js/src/ux-capture");
+const UX = new UXCapture();
 
 const MOCK_MEASURE_1 = "ux-mock-measure_1";
 const MOCK_MARK_1_1 = "ux-mock-mark_1_1";
@@ -18,13 +19,25 @@ const MOCK_MARK_1_2 = "ux-mock-mark_1_2";
 
 const MOCK_UNEXPECTED_MARK = "ux-unexpected-mark";
 
+const MOCK_MEASURE_2 = "ux-mock-measure_2";
+const MOCK_MEASURE_3 = "ux-mock-measure_3";
+const MOCK_MARK_MULTIPLE = "ux-mock-mark_multiple";
+
 describe("UX.mark()", () => {
   const mockOnMarkCallback = jest.fn();
 
   UX.expect([
     {
-      label: MOCK_MEASURE_1,
+      name: MOCK_MEASURE_1,
       marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
+    },
+    {
+      name: MOCK_MEASURE_2,
+      marks: [MOCK_MARK_MULTIPLE]
+    },
+    {
+      name: MOCK_MEASURE_3,
+      marks: [MOCK_MARK_MULTIPLE]
     }
   ]);
 
@@ -38,18 +51,14 @@ describe("UX.mark()", () => {
     ).toBeTruthy();
   });
 
-  it("should trigger recording of a measure if last mark in chain", done => {
+  it("should trigger recording of a measure if last mark in chain", () => {
     UX.mark(MOCK_MARK_1_2);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(
-        window.performance
-          .getEntriesByType("measure")
-          .find(mark => mark.name === MOCK_MEASURE_1)
-      ).toBeTruthy();
-      done();
-    }, 0);
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_1)
+    ).toBeTruthy();
   });
 
   it("should fire a console.timeStamp it is available", () => {
@@ -82,5 +91,18 @@ describe("UX.mark()", () => {
     ).not.toBeTruthy();
   });
 
-  // it("should not fire native mark if UserTiming api is not available", () => {});
+  it("should contribute to multiple measures if same mark is defined for multiple zones", () => {
+    UX.mark(MOCK_MARK_MULTIPLE);
+
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_2)
+    ).toBeTruthy();
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_3)
+    ).toBeTruthy();
+  });
 });

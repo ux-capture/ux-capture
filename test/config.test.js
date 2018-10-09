@@ -10,7 +10,8 @@ window.performance.timing = {
 console.timeStamp = jest.fn();
 
 // set up global UX object
-const UX = require("../js/ux-capture")(window);
+const UXCapture = require("../js/src/ux-capture");
+const UX = new UXCapture();
 
 const MOCK_MEASURE_1 = "ux-mock-measure_1";
 const MOCK_MARK_1_1 = "ux-mock-mark_1_1";
@@ -31,23 +32,23 @@ const MOCK_MARK_5_1 = "ux-mock-mark_5_1";
 describe("UX.config()", () => {
   UX.expect([
     {
-      label: MOCK_MEASURE_1,
+      name: MOCK_MEASURE_1,
       marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
     },
     {
-      label: MOCK_MEASURE_2,
+      name: MOCK_MEASURE_2,
       marks: [MOCK_MARK_2_1]
     },
     {
-      label: MOCK_MEASURE_3,
+      name: MOCK_MEASURE_3,
       marks: [MOCK_MARK_3_1]
     },
     {
-      label: MOCK_MEASURE_4,
+      name: MOCK_MEASURE_4,
       marks: [MOCK_MARK_4_1]
     },
     {
-      label: MOCK_MEASURE_5,
+      name: MOCK_MEASURE_5,
       marks: [MOCK_MARK_5_1]
     }
   ]);
@@ -55,14 +56,24 @@ describe("UX.config()", () => {
   const mockOnMarkCallback = jest.fn();
   const mockOnMeasureCallback = jest.fn();
 
-  it("Should not break if non-object is passed", () => {
+  it("Should throw an error if non-object is passed", () => {
     expect(() => {
       UX.config();
-    }).not.toThrow();
+    }).toThrow();
+  });
 
+  it("Should throw an error if onMark callback is not a function", () => {
     expect(() => {
-      UX.config("");
-    }).not.toThrow();
+      UX.config({ onMark: "not a function" });
+      UX.mark(MOCK_MARK_1_1);
+    }).toThrow();
+  });
+
+  it("Should throw an error if onMeasure callback is not a function", () => {
+    expect(() => {
+      UX.config({ onMeasure: "not a function" });
+      UX.mark(MOCK_MARK_2_1);
+    }).toThrow();
   });
 
   it("Should be able to configure onMark handler", () => {
@@ -75,18 +86,14 @@ describe("UX.config()", () => {
     expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_1_1);
   });
 
-  it("Should be able to configure onMeasure handler", done => {
+  it("Should be able to configure onMeasure handler", () => {
     mockOnMeasureCallback.mockClear();
 
     UX.config({ onMeasure: mockOnMeasureCallback });
 
     UX.mark(MOCK_MARK_2_1);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(mockOnMeasureCallback).toHaveBeenCalledWith(MOCK_MEASURE_2);
-      done();
-    }, 0);
+    expect(mockOnMeasureCallback).toHaveBeenCalledWith(MOCK_MEASURE_2);
   });
 
   it("Should remove custom onMark callback if it's not defined on configuration object", () => {
@@ -103,7 +110,7 @@ describe("UX.config()", () => {
     expect(mockOnMarkCallback).not.toHaveBeenCalledWith(MOCK_MARK_3_1);
   });
 
-  it("Should remove custom onMeasure callback if it's not defined on configuration object", done => {
+  it("Should remove custom onMeasure callback if it's not defined on configuration object", () => {
     // configured onMeasure callback
     UX.config({ onMeasure: mockOnMeasureCallback });
 
@@ -117,10 +124,6 @@ describe("UX.config()", () => {
 
     expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_4_1);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(mockOnMeasureCallback).not.toHaveBeenCalledWith(MOCK_MEASURE_4);
-      done();
-    }, 0);
+    expect(mockOnMeasureCallback).not.toHaveBeenCalledWith(MOCK_MEASURE_4);
   });
 });

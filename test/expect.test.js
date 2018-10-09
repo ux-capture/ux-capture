@@ -10,17 +10,18 @@ window.performance.timing = {
 console.timeStamp = jest.fn();
 
 // set up global UX object
-const UX = require("../js/ux-capture")(window);
+const UXCapture = require("../js/src/ux-capture");
+const UX = new UXCapture();
 
 const MOCK_MEASURE_1 = "ux-mock-measure_1";
 const MOCK_MARK_1_1 = "ux-mock-mark_1_1";
 const MOCK_MARK_1_2 = "ux-mock-mark_1_2";
 
 describe("UX.expect()", () => {
-  it("must create dependencies between marks and measures using promises", () => {
+  it("must create dependencies between marks and measures", () => {
     UX.expect([
       {
-        label: MOCK_MEASURE_1,
+        name: MOCK_MEASURE_1,
         marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
       }
     ]);
@@ -34,10 +35,10 @@ describe("UX.expect()", () => {
     ).toBeTruthy();
   });
 
-  it("must not throw errors if no zones passed in", () => {
+  it("must throw am error if no zones passed in", () => {
     expect(() => {
       UX.expect();
-    }).not.toThrow();
+    }).toThrow();
   });
 
   it("must not throw errors if empty zones list is passed in", () => {
@@ -46,22 +47,18 @@ describe("UX.expect()", () => {
     }).not.toThrow();
   });
 
-  it("should not trigger a measure when empty marks array is passed", done => {
+  it("should not trigger a measure when empty marks array is passed", () => {
     const mockOnMeasureCallback = jest.fn();
 
     UX.config({ onMeasure: mockOnMeasureCallback });
 
     UX.expect([
       {
-        label: MOCK_MEASURE_1,
+        name: MOCK_MEASURE_1,
         marks: []
       }
     ]);
 
-    // use setTimeout to release thread for Promise.all() to fire for measures.
-    setTimeout(() => {
-      expect(mockOnMeasureCallback).not.toHaveBeenCalled();
-      done();
-    }, 0);
+    expect(mockOnMeasureCallback).not.toHaveBeenCalled();
   });
 });
