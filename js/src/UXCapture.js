@@ -62,8 +62,6 @@ export default class UXCapture {
 
   config(configuration) {
     const { onMark = NOOP, onMeasure = NOOP } = configuration;
-    const finalConfig = { onMark, onMeasure };
-
-    Object.assign(this, finalConfig);
+    Object.assign(this, { onMark, onMeasure });
   }
 }
