@@ -27,9 +27,6 @@ export default class Zone {
     // callback for marks to call when they are complete
     this.onMark = config.onMark;
 
-    // array of mark names that were recorded so far
-    this.recordedMarkNames = [];
-
     this.startMarkName = config.startMarkName || "navigationStart";
 
     // look up existing mark object or create a new one
@@ -45,7 +42,7 @@ export default class Zone {
           this.onMark(mark.name);
         }
 
-        if (this.checkCompletion(mark)) {
+        if (this.checkCompletion()) {
           this.complete(mark);
         }
       });
@@ -55,15 +52,22 @@ export default class Zone {
   }
 
   /**
-   * Callback to be called by each mark in the zone upon recording
-   *
-   * @param {Mark} recordedMark latest mark recorded
+   * Check if all marks for the zone have already been recorded
    */
-  checkCompletion(recordedMark) {
-    this.recordedMarkNames[recordedMark.name] = true;
+  checkCompletion() {
+    if (
+      typeof window.performance === "undefined" ||
+      typeof window.performance.getEntriesByType === "undefined"
+    ) {
+      return false;
+    }
 
-    // check if all marks for the zone were completed
-    return this.marks.every(mark => this.recordedMarkNames[mark.name]);
+    const recordedMarks = window.performance.getEntriesByType("mark");
+
+    // check if all marks for the zone were already recorded
+    return this.marks.every(mark =>
+      recordedMarks.find(recordedMark => recordedMark.name === mark.name)
+    );
   }
 
   /**
