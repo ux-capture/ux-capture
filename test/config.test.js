@@ -55,14 +55,24 @@ describe("UX.config()", () => {
   const mockOnMarkCallback = jest.fn();
   const mockOnMeasureCallback = jest.fn();
 
-  it("Should not break if non-object is passed", () => {
+  it("Should throw an error if non-object is passed", () => {
     expect(() => {
       UX.config();
-    }).not.toThrow();
+    }).toThrow();
+  });
 
+  it("Should throw an error if onMark callback is not a function", () => {
     expect(() => {
-      UX.config("");
-    }).not.toThrow();
+      UX.config({ onMark: "not a function" });
+      UX.mark(MOCK_MARK_1_1);
+    }).toThrow();
+  });
+
+  it("Should throw an error if onMeasure callback is not a function", () => {
+    expect(() => {
+      UX.config({ onMeasure: "not a function" });
+      UX.mark(MOCK_MARK_2_1);
+    }).toThrow();
   });
 
   it("Should be able to configure onMark handler", () => {

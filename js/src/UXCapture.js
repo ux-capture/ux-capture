@@ -40,8 +40,14 @@ export default class UXCapture {
     const pageView = new View({
       // calling currently configured onMark & onMeasure handlers inside View's callbacks
       // allows making UX.config() call after UX.expect() call
-      onMark: mark => this.onMark(mark),
-      onMeasure: measure => this.onMeasure(measure),
+      onMark: mark => {
+        // console.log(this.onMark);
+        this.onMark(mark);
+      },
+      onMeasure: measure => {
+        // console.log(this.onMeasure);
+        this.onMeasure(measure);
+      },
       zoneConfigs
     });
   }
@@ -55,20 +61,9 @@ export default class UXCapture {
   }
 
   config(configuration) {
-    if (!configuration || typeof configuration !== "object") {
-      return;
-    }
+    const { onMark = NOOP, onMeasure = NOOP } = configuration;
+    const finalConfig = { onMark, onMeasure };
 
-    if (typeof configuration.onMark === "function") {
-      this.onMark = configuration.onMark;
-    } else {
-      this.onMark = NOOP;
-    }
-
-    if (typeof configuration.onMeasure === "function") {
-      this.onMeasure = configuration.onMeasure;
-    } else {
-      this.onMeasure = NOOP;
-    }
+    Object.assign(this, finalConfig);
   }
 }
