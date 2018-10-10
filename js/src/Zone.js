@@ -21,6 +21,18 @@ export default class Zone {
     // name to be used for UserTiming measures
     this.measureName = config.name;
 
+    // handling deprecated "label" keys in backwards-compatible way
+    if (config.label) {
+      console.warn(
+        "[ux-capture] Deprecation Warning: `label` keys on configuration object were renamed to `name` as of verision v2.0.0",
+        "Will be removed in v3.0.0"
+      );
+
+      if (!config.name) {
+        this.measureName = config.label;
+      }
+    }
+
     // callback to execute when Zone is complete
     this.onMeasure = config.onMeasure;
 
