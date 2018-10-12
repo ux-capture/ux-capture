@@ -26,6 +26,11 @@ describe("UX.expect()", () => {
       }
     ]);
 
+    // this effectively removes asynchronicity from UX.mark() which
+    // uses rAF->setTimeout->mark.record() chain
+    jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => cb());
+    jest.spyOn(window, "setTimeout").mockImplementation(cb => cb());
+
     UX.mark(MOCK_MARK_1_1);
 
     expect(

@@ -23,6 +23,9 @@ const MOCK_MEASURE_2 = "ux-mock-measure_2";
 const MOCK_MEASURE_3 = "ux-mock-measure_3";
 const MOCK_MARK_MULTIPLE = "ux-mock-mark_multiple";
 
+const MOCK_MEASURE_4 = "ux-mock-measure_4";
+const MOCK_MARK_4_1 = "ux-mock-mark_4_1";
+
 describe("UX.mark()", () => {
   const mockOnMarkCallback = jest.fn();
 
@@ -38,8 +41,17 @@ describe("UX.mark()", () => {
     {
       name: MOCK_MEASURE_3,
       marks: [MOCK_MARK_MULTIPLE]
+    },
+    {
+      name: MOCK_MEASURE_4,
+      marks: [MOCK_MARK_4_1]
     }
   ]);
+
+  // this effectively removes asynchronicity from UX.mark() which
+  // uses rAF->setTimeout->mark.record() chain
+  jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => cb());
+  jest.spyOn(window, "setTimeout").mockImplementation(cb => cb());
 
   it("must mark user timing api timeline", () => {
     UX.mark(MOCK_MARK_1_1);
@@ -61,7 +73,7 @@ describe("UX.mark()", () => {
     ).toBeTruthy();
   });
 
-  it("should fire a console.timeStamp it is available", () => {
+  it("should fire a console.timeStamp if it's available", () => {
     console.timeStamp.mockClear();
 
     UX.mark(MOCK_MARK_1_1);
@@ -83,7 +95,6 @@ describe("UX.mark()", () => {
     mockOnMarkCallback.mockClear();
 
     UX.mark(MOCK_UNEXPECTED_MARK);
-
     expect(
       window.performance
         .getEntriesByType("mark")
@@ -103,6 +114,21 @@ describe("UX.mark()", () => {
       window.performance
         .getEntriesByType("measure")
         .find(measure => measure.name === MOCK_MEASURE_3)
+    ).toBeTruthy();
+  });
+
+  it("must work when called without waiting for next paint flag", () => {
+    UX.mark(MOCK_MARK_4_1, false);
+
+    expect(
+      window.performance
+        .getEntriesByType("mark")
+        .find(mark => mark.name === MOCK_MARK_4_1)
+    ).toBeTruthy();
+    expect(
+      window.performance
+        .getEntriesByType("measure")
+        .find(measure => measure.name === MOCK_MEASURE_4)
     ).toBeTruthy();
   });
 });

@@ -14,6 +14,11 @@ describe("Compatibility", () => {
     }
   ]);
 
+  // this effectively removes asynchronicity from UX.mark() which
+  // uses rAF->setTimeout->mark.record() chain
+  jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => cb());
+  jest.spyOn(window, "setTimeout").mockImplementation(cb => cb());
+
   it("UX.mark() must not throw an error if UserTiming API is not available", () => {
     expect(() => {
       UX.mark(MOCK_MARK_1_1);
