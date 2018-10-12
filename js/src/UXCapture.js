@@ -33,11 +33,15 @@ export default class UXCapture {
     });
   }
 
-  mark(name) {
+  mark(name, waitForNextPaint = true) {
     const mark = ExpectedMark.get(name);
 
     if (mark) {
-      mark.record();
+      if (waitForNextPaint) {
+        mark.waitForNextPaintAndRecord();
+      } else {
+        mark.record();
+      }
     }
   }
 
