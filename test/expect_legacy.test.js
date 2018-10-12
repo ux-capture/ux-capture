@@ -17,9 +17,16 @@ const MOCK_MEASURE_2_LABEL = "ux-mock-measure_2_label";
 const MOCK_MEASURE_2_NAME = "ux-mock-measure_2_name";
 const MOCK_MARK_2_1 = "ux-mock-mark_2_1";
 
+const semver = require("semver");
+const MODULE_VERSION = require("../package.json").version;
+
 console.warn = jest.fn();
 
 describe("UX.expect() legacy support until version 3.0.0", () => {
+  it("support must only be kept until v3.0.0", () => {
+    expect(semver.lt(MODULE_VERSION, "3.0.0")).toBeTruthy();
+  });
+
   it("must work with legacy `label` key instead of new `name` key", () => {
     UX.expect([
       {
