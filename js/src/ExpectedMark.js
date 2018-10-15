@@ -59,10 +59,10 @@ export default class ExpectedMark {
       window.console.timeStamp("[DEBUG] original call for " + this.name);
     }
 
-    window.requestAnimationFrame(() => setTimeout(() => this.record()));
+    window.requestAnimationFrame(() => setTimeout(this.record));
   }
 
-  record() {
+  record = () => {
     if (
       typeof window.performance !== "undefined" &&
       typeof window.performance.measure !== "undefined"
@@ -92,5 +92,5 @@ export default class ExpectedMark {
     this.onMarkListeners.forEach(onCompleteListener =>
       onCompleteListener(this)
     );
-  }
+  };
 }
