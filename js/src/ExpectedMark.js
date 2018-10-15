@@ -65,7 +65,7 @@ export default class ExpectedMark {
   record = () => {
     if (
       typeof window.performance !== "undefined" &&
-      typeof window.performance.measure !== "undefined"
+      typeof window.performance.mark !== "undefined"
     ) {
       // record the mark using W3C User Timing API
       window.performance.mark(this.name);

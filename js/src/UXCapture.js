@@ -2,11 +2,14 @@ import ExpectedMark from "./ExpectedMark";
 import View from "./View";
 
 const NOOP = () => {};
+const INTERACTION_START_MARK = "interactionStart";
+const NAVIGATION_START_MARK = "navigationStart";
 
 export default class UXCapture {
   constructor() {
     this.onMark = NOOP;
     this.onMeasure = NOOP;
+    this.startMark = NAVIGATION_START_MARK;
 
     window.UX = this;
   }
@@ -30,7 +33,8 @@ export default class UXCapture {
       onMeasure: measure => {
         this.onMeasure(measure);
       },
-      zoneConfigs
+      startMark: this.startMark,
+      zoneConfigs,
     });
   }
 
@@ -66,8 +70,13 @@ export default class UXCapture {
    * @param {object} configuration
    */
   config(configuration) {
-    const { onMark = NOOP, onMeasure = NOOP } = configuration;
-    Object.assign(this, { onMark, onMeasure });
+    const { onMark = NOOP, onMeasure = NOOP, interactive = false } = configuration;
+
+    if (interactive) {
+      this.startMark = INTERACTION_START_MARK;
+    }
+
+    Object.assign(this, { onMark, onMeasure, startMark });
   }
 
   /**
@@ -77,6 +86,11 @@ export default class UXCapture {
    *
    */
   startTransition() {
-
+    if (
+      typeof window.performance !== "undefined" &&
+      typeof window.performance.mark !== "undefined"
+    ) {
+      window.performance.mark(INTERACTION_START_MARK);
+    }
   }
 }

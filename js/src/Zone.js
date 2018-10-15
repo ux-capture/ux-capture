@@ -47,8 +47,8 @@ export default class Zone {
 
     // Mark used as starting point for subsequent UserTiming mesaures
     // For Page View (initial page loads), this will be "navigationStart"
-    // For Interactive Views, this is the mark passed in as config.startMark
-    this.startMark = config.startMark || "navigationStart";
+    // For Interactive Views, this will be "interactionStart"
+    this.startMark = config.startMark;
 
     // Create a new `ExpectedMark` for each mark
     // supplied in `config.marks`

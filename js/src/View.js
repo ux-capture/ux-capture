@@ -8,13 +8,14 @@ import Zone from "./Zone";
  * @see: https://github.com/meetup/ux-capture#glossary
  */
 export default class View {
-  constructor({ onMark, onMeasure, zoneConfigs }) {
+  constructor({ onMark, onMeasure, startMark, zoneConfigs }) {
     this.expectedZones = zoneConfigs.map(zoneConfig => {
       // Create a new zone only if configuration contains marks
       if (zoneConfig.marks && zoneConfig.marks.length > 0) {
         return new Zone({
           onMark,
           onMeasure,
+          startMark,
           ...zoneConfig
         });
       }
