@@ -41,7 +41,28 @@ export default class ExpectedMark {
     this.onMarkListeners.push(onMark);
   }
 
-  record() {
+  /**
+   * This method tries to approximate full rendering lifecycle in the browser
+   * rather than just measuring JS execution like render() method does.
+   *
+   * See Nolan Lawson's article describing the issue and proposing this method:
+   * https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/
+   */
+  waitForNextPaintAndRecord() {
+    // In development mode, include DEBUG timestamps to show when
+    // original calls were fired to see the impact
+    if (
+      process.env.NODE_ENV !== "production" &&
+      typeof window.console !== "undefined" &&
+      typeof window.console.timeStamp !== "undefined"
+    ) {
+      window.console.timeStamp("[DEBUG] original call for " + this.name);
+    }
+
+    window.requestAnimationFrame(() => setTimeout(this.record));
+  }
+
+  record = () => {
     if (
       typeof window.performance !== "undefined" &&
       typeof window.performance.measure !== "undefined"
@@ -71,5 +92,5 @@ export default class ExpectedMark {
     this.onMarkListeners.forEach(onCompleteListener =>
       onCompleteListener(this)
     );
-  }
+  };
 }

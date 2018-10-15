@@ -56,6 +56,11 @@ describe("UX.config()", () => {
   const mockOnMarkCallback = jest.fn();
   const mockOnMeasureCallback = jest.fn();
 
+  // this effectively removes asynchronicity from UX.mark() which
+  // uses rAF->setTimeout->mark.record() chain
+  jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => cb());
+  jest.spyOn(window, "setTimeout").mockImplementation(cb => cb());
+
   it("Should throw an error if non-object is passed", () => {
     expect(() => {
       UX.config();

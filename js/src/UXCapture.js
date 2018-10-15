@@ -33,11 +33,26 @@ export default class UXCapture {
     });
   }
 
-  mark(name) {
+  /**
+   * Creates marks on UserTiming timeline.
+   * It also creates UserTiming measures for each zone if mark is last one to be recorded in the zone.
+   *
+   * waitForNextPaint attribute can be set to false if your code is not expected to change any visual
+   * elements of UI and trigger repaints. A good example is attaching click event handlers to elements
+   * which is need for them to be interactive, but by itself doesn't affect element's appearance.
+   *
+   * @param {string} name
+   * @param {boolean} waitForNextPaint
+   */
+  mark(name, waitForNextPaint = true) {
     const mark = ExpectedMark.get(name);
 
     if (mark) {
-      mark.record();
+      if (waitForNextPaint) {
+        mark.waitForNextPaintAndRecord();
+      } else {
+        mark.record();
+      }
     }
   }
 
