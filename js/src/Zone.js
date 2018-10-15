@@ -2,57 +2,62 @@ import ExpectedMark from "./ExpectedMark";
 import UXCapture from "./UXCapture";
 
 /**
- * Zone represents collection of elements groupped together and corresponding phase of page load
+ * A `Zone` is a collection of elements on a page that corresponds
+ * to a given phase of page load. (i.e. all elements in `ux-destination-verfied`)
  *
- * Only one set of zones can be tracked for the same view at one point in time
+ * Example config object:
+ *
+ * {
+ *  name: "ux-destination-verified",
+ *  marks: ["ux-image-online-logo", "ux-image-inline-logo"]
+ *  selectors: ["img.logo"],      // TODO: not yet implemented
+ *  startMark: "navigationStart",
+ *  onMeasure: measureName => {}
+ *  onMark: markName => {}
+ * }
  */
 export default class Zone {
-  // constructs individual zone object
+  /**
+   * Creates a Zone.
+   * @param {object} config
+   */
   constructor(config) {
-    // {
-    //   name: "ux-destination-verified",
-    //   marks: ["ux-image-online-logo", "ux-image-inline-logo"]
-    //   selectors: ["img.logo"],
-    //   startMark: "navigationStart",
-    //   onMeasure: measureName => {}
-    //   onMark: markName => {}
-    // }
-
-    // name to be used for UserTiming measures
+    // Name used for UserTiming measures
     this.measureName = config.name;
 
-    // handling deprecated "label" keys in backwards-compatible way
+    // Handle deprecated "label" keys
     if (config.label) {
-      console.warn(
-        "[ux-capture] Deprecation Warning: `label` keys on configuration object were renamed to `name` as of verision v2.0.0",
-        "Will be removed in v3.0.0"
-      );
+      if (console) {
+        console.warn(
+          "[ux-capture] Deprecation Warning: `label` keys on configuration object were renamed to `name` as of verision v2.0.0",
+          "Will be removed in v3.0.0"
+        );
+      }
 
       if (!config.name) {
         this.measureName = config.label;
       }
     }
 
-    // callback to execute when Zone is complete
+    // Callback to execute when Zone is complete (all marks triggered)
     this.onMeasure = config.onMeasure;
 
-    // callback for marks to call when they are complete
+    // Callback for marks to call when they are complete
     this.onMark = config.onMark;
 
-    this.startMarkName = config.startMarkName || "navigationStart";
+    // Mark used as starting point for subsequent UserTiming mesaures
+    // For Page View (initial page loads), this will be "navigationStart"
+    // For Interactive Views, this is the mark passed in as config.startMark
+    this.startMark = config.startMark || "navigationStart";
 
-    // look up existing mark object or create a new one
-
-    // now just string names for UserTiming marks
-    // in the future, different types of events, e.g. ImageElement("logo"), PaintTimer("first-paint")
+    // Create a new `ExpectedMark` for each mark
+    // supplied in `config.marks`
     this.marks = config.marks.map(markName => {
       const mark = ExpectedMark.create(markName);
 
       mark.onComplete(mark => {
-        // if Zone's onMark callback is specified, call it with mark name
-        if (this.onMark) {
-          this.onMark(mark.name);
-        }
+        // Call Zone's `onMark` callback
+        this.onMark(mark.name);
 
         if (this.checkCompletion()) {
           this.complete(mark);
@@ -83,7 +88,7 @@ export default class Zone {
   }
 
   /**
-   * Records measure on Performance Timeline and calls onMeasure callback if specified
+   * Records measure on Performance Timeline and calls onMeasure callback
    *
    * @param {ExpectedMark} lastMark last mark that triggered completion
    */
@@ -99,9 +104,7 @@ export default class Zone {
       );
     }
 
-    // if callback is specified, call it with zone name
-    if (this.onMeasure) {
-      this.onMeasure(this.measureName);
-    }
+    // Call Zone's `onMeasure` callback
+    this.onMeasure(this.measureName);
   }
 }
