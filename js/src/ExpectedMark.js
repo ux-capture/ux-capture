@@ -8,6 +8,11 @@ const _expectedMarks = [];
  * These marks that have to be recorded before zone is considered complete
  */
 export default class ExpectedMark {
+
+  // list of zone callbacks to call on completion
+  onMarkListeners = [];
+  name = null;
+
   static get(name) {
     return _expectedMarks.find(mark => mark.name === name);
   }
@@ -31,9 +36,6 @@ export default class ExpectedMark {
 
   constructor(name) {
     this.name = name;
-
-    // list of zone callbacks to call on completion
-    this.onMarkListeners = [];
   }
 
   // registers zone callback

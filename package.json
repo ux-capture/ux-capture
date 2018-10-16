@@ -35,8 +35,8 @@
   "homepage": "https://github.com/meetup/ux-capture#readme",
   "devDependencies": {
     "@babel/core": "^7.0.1",
-    "@babel/preset-env": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.0",
     "babel-jest": "^23.6.0",
@@ -51,5 +51,8 @@
     "usertiming": "^0.1.8",
     "webpack": "^4.18.1",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "prettier": "^1.14.3"
   }
 }

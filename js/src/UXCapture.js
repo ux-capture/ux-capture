@@ -4,10 +4,10 @@ import View from "./View";
 const NOOP = () => {};
 
 export default class UXCapture {
-  constructor() {
-    this.onMark = NOOP;
-    this.onMeasure = NOOP;
+  onMark = NOOP;
+  onMeasure = NOOP;
 
+  constructor() {
     window.UX = this;
   }
 
