@@ -7,6 +7,12 @@ import UXCapture from "./UXCapture";
  * Only one set of zones can be tracked for the same view at one point in time
  */
 export default class Zone {
+  measureName = null;
+  onMeasure = null;
+  onMark = null;
+  startMarkName = "navigationStart";
+  marks = [];
+
   // constructs individual zone object
   constructor(config) {
     // {
@@ -39,7 +45,9 @@ export default class Zone {
     // callback for marks to call when they are complete
     this.onMark = config.onMark;
 
-    this.startMarkName = config.startMarkName || "navigationStart";
+    if (config.startMarkName) {
+      this.startMarkName = config.startMarkName;
+    }
 
     // look up existing mark object or create a new one
 
