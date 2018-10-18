@@ -48,9 +48,9 @@ export default class Zone extends UXBase {
 
 		mark.onComplete(completeMark => {
 			// pass the event upstream
-			this.onMark(completeMark.name);
+			this.onMark(markName);
 			if (this.marks.every(m => m.marked)) {
-				this.measure(completeMark);
+				this.measure(markName);
 			}
 		});
 
@@ -62,16 +62,12 @@ export default class Zone extends UXBase {
 	 *
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
-	measure(lastMark) {
+	measure(endMarkName) {
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
-			window.performance.measure(
-				this.measureName,
-				this.startMark,
-				lastMark.name
-			);
+			window.performance.measure(this.measureName, this.startMark, endMarkName);
 		}
 
 		this.onMeasure(this.measureName);

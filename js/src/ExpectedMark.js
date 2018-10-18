@@ -1,7 +1,7 @@
 import UXBase from './UXBase';
 
-// all marks expected so far
-const _expectedMarks = [];
+// private map of { name: mark } for all expected marks
+const _expectedMarks = {};
 
 /**
  * Class describes expected marks
@@ -10,11 +10,11 @@ const _expectedMarks = [];
 export default class ExpectedMark extends UXBase {
 	// list of zone callbacks to call on completion
 	onMarkListeners = [];
-	name = this.props.name;
+	// 'state' of the mark that indicates whether it has been recorded
 	marked = false;
 
 	static get(name) {
-		return _expectedMarks.find(mark => mark.name === name);
+		return _expectedMarks[name];
 	}
 
 	/**
@@ -24,14 +24,11 @@ export default class ExpectedMark extends UXBase {
 	 * @param {string} name
 	 */
 	static create(name) {
-		let mark = ExpectedMark.get(name);
-
-		if (!mark) {
-			mark = new ExpectedMark({ name });
-			_expectedMarks.push(mark);
+		// create new mark only if one does not exist
+		if (!_expectedMarks[name]) {
+			_expectedMarks[name] = new ExpectedMark({ name });
 		}
-
-		return mark;
+		return _expectedMarks[name];
 	}
 
 	// registers zone callback
@@ -54,7 +51,7 @@ export default class ExpectedMark extends UXBase {
 			typeof window.console !== 'undefined' &&
 			typeof window.console.timeStamp !== 'undefined'
 		) {
-			window.console.timeStamp('[DEBUG] original call for ' + this.name);
+			window.console.timeStamp(`[DEBUG] original call for ${this.props.name}`);
 		}
 
 		window.requestAnimationFrame(() => setTimeout(this.record));
@@ -66,7 +63,7 @@ export default class ExpectedMark extends UXBase {
 			typeof window.performance.mark !== 'undefined'
 		) {
 			// record the mark using W3C User Timing API
-			window.performance.mark(this.name);
+			window.performance.mark(this.props.name);
 		}
 
 		/**
@@ -83,11 +80,11 @@ export default class ExpectedMark extends UXBase {
 			typeof window.console !== 'undefined' &&
 			typeof window.console.timeStamp !== 'undefined'
 		) {
-			window.console.timeStamp(this.name);
+			window.console.timeStamp(this.props.name);
 		}
 		this.marked = true;
 
 		// call all registered zone callbacks
-		this.onMarkListeners.forEach(onMarkListener => onMarkListener(this));
+		this.onMarkListeners.forEach(listener => listener(this));
 	};
 }
