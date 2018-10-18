@@ -40,12 +40,11 @@ export default class Zone extends UXBase {
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
 
-		mark.onComplete(mark => {
-			// Call Zone's `onMark` callback
-			this.props.onMark(mark.name);
-
-			if (this.checkCompletion()) {
-				this.complete(mark);
+		mark.onComplete(completeMark => {
+			// pass the event upstream
+			this.props.onMark(markName);
+			if (this.marks.every(m => m.marked)) {
+				this.measure(markName);
 			}
 		});
 
