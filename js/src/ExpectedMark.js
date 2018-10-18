@@ -26,7 +26,7 @@ export default class ExpectedMark extends UXBase {
     let mark = ExpectedMark.get(name);
 
     if (!mark) {
-      mark = new ExpectedMark(name);
+      mark = new ExpectedMark({ name });
       _expectedMarks.push(mark);
     }
 

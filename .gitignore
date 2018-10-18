@@ -1,3 +1,6 @@
 node_modules
 js/ux-capture.min.js
 coverage
+
+# visual studio code settings
+.vscode
