@@ -2,8 +2,8 @@ import ExpectedMark from './ExpectedMark';
 import UXBase from './UXBase';
 
 /**
- * A `Zone` is a collection of elements on a page that corresponds
- * to a given phase of page load. (i.e. all elements in `ux-destination-verfied`)
+ * A `Zone` is a collection of DOM elements on a page that correspond
+ * to a given phase of page load. (e.g. all elements in `ux-destination-verfied`)
  *
  * Example props:
  *
@@ -42,9 +42,6 @@ export default class Zone extends UXBase {
 
 	startMark = 'navigationStart';
 
-	// track the most recently recorded mark
-	currentMark = null;
-
 	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
@@ -52,28 +49,20 @@ export default class Zone extends UXBase {
 		mark.onComplete(mark => {
 			// pass the event upstream
 			this.onMark(mark.name);
-			this.currentMark = mark;
-			this.checkCompletion();
+			if (this.marks.every(mark => mark.marked)) {
+				this.measure(mark);
+			}
 		});
 
 		return mark;
 	});
 
 	/**
-	 * Check if all marks for the zone have already been recorded
-	 */
-	checkCompletion() {
-		if (this.marks.every(mark => mark.marked)) {
-			this.complete();
-		}
-	}
-
-	/**
 	 * Records measure on Performance Timeline and calls onMeasure callback
 	 *
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
-	complete(lastMark) {
+	measure(lastMark) {
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
@@ -81,7 +70,7 @@ export default class Zone extends UXBase {
 			window.performance.measure(
 				this.measureName,
 				this.startMark,
-				this.currentMark.name
+				lastMark.name
 			);
 		}
 
