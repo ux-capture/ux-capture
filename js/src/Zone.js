@@ -34,23 +34,18 @@ export default class Zone extends UXBase {
 	// Name used for UserTiming measures
 	measureName = this.props.name || this.props.label;
 
-	// Callback to execute when Zone is complete (all marks recorded)
-	onMeasure = this.props.onMeasure;
-
-	// Callback for marks to call when they are complete (recorded)
-	onMark = this.props.onMark;
-
 	startMark = 'navigationStart';
 
 	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
 
-		mark.onComplete(completeMark => {
-			// pass the event upstream
-			this.onMark(markName);
-			if (this.marks.every(m => m.marked)) {
-				this.measure(markName);
+		mark.onComplete(mark => {
+			// Call Zone's `onMark` callback
+			this.props.onMark(mark.name);
+
+			if (this.checkCompletion()) {
+				this.complete(mark);
 			}
 		});
 
@@ -70,6 +65,6 @@ export default class Zone extends UXBase {
 			window.performance.measure(this.measureName, this.startMark, endMarkName);
 		}
 
-		this.onMeasure(this.measureName);
+		this.props.onMeasure(this.measureName);
 	}
 }
