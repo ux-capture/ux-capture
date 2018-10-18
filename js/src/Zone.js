@@ -1,5 +1,5 @@
-import ExpectedMark from "./ExpectedMark";
-import UXBase from "./UXBase";
+import ExpectedMark from './ExpectedMark';
+import UXBase from './UXBase';
 
 /**
  * A `Zone` is a collection of elements on a page that corresponds
@@ -15,84 +15,84 @@ import UXBase from "./UXBase";
  * }
  */
 export default class Zone extends UXBase {
-  /**
-   * Creates a Zone
-   * @param {object} props
-   */
-  constructor(props) {
-    super(props);
+	/**
+	 * Creates a Zone
+	 * @param {object} props
+	 */
+	constructor(props) {
+		super(props);
 
-    // Handle deprecated "label" keys
-    if (this.props.label) {
-      console.warn(
-        "[ux-capture] Deprecation Warning: `label` keys on configuration object were renamed to `name` as of verision v2.0.0",
-        "Will be removed in v3.0.0"
-      );
-    }
-  }
+		// Handle deprecated "label" keys
+		if (this.props.label) {
+			console.warn(
+				'[ux-capture] Deprecation Warning: `label` keys on configuration object were renamed to `name` as of verision v2.0.0',
+				'Will be removed in v3.0.0'
+			);
+		}
+	}
 
-  // Name used for UserTiming measures
-  measureName = this.props.name || this.props.label;
+	// Name used for UserTiming measures
+	measureName = this.props.name || this.props.label;
 
-  // Callback to execute when Zone is complete (all marks recorded)
-  onMeasure = this.props.onMeasure;
+	// Callback to execute when Zone is complete (all marks recorded)
+	onMeasure = this.props.onMeasure;
 
-  // Callback for marks to call when they are complete (recorded)
-  onMark = this.props.onMark;
+	// Callback for marks to call when they are complete (recorded)
+	onMark = this.props.onMark;
 
-  startMark = "navigationStart";
+	startMark = 'navigationStart';
 
-  // Create a new `ExpectedMark` for each mark
-  marks = this.props.marks.map(markName => {
-    const mark = ExpectedMark.create(markName);
+	// Create a new `ExpectedMark` for each mark
+	marks = this.props.marks.map(markName => {
+		const mark = ExpectedMark.create(markName);
 
-    mark.onComplete(mark => {
-      // Call Zone's `onMark` callback
-      this.onMark(mark.name);
+		mark.onComplete(mark => {
+			// Call Zone's `onMark` callback
+			this.onMark(mark.name);
 
-      if (this.checkCompletion()) {
-        this.complete(mark);
-      }
-    });
+			if (this.checkCompletion()) {
+				this.complete(mark);
+			}
+		});
 
-    return mark;
-  });
+		return mark;
+	});
 
-  /**
-   * Check if all marks for the zone have already been recorded
-   */
-  checkCompletion() {
-    if (
-      typeof window.performance === "undefined" ||
-      typeof window.performance.getEntriesByType === "undefined"
-    ) {
-      return false;
-    }
+	/**
+	 * Check if all marks for the zone have already been recorded
+	 */
+	checkCompletion() {
+		if (
+			typeof window.performance === 'undefined' ||
+			typeof window.performance.getEntriesByType === 'undefined'
+		) {
+			return false;
+		}
 
-    const recordedMarks = window.performance.getEntriesByType("mark");
+		const recordedMarks = window.performance.getEntriesByType('mark');
 
-    return this.marks.every(mark =>
-      recordedMarks.find(recordedMark => recordedMark.name === mark.name)
-    );
-  }
+		return this.marks.every(mark =>
+			recordedMarks.find(recordedMark => recordedMark.name === mark.name)
+		);
+	}
 
-  /**
-   * Records measure on Performance Timeline and calls onMeasure callback
-   *
-   * @param {ExpectedMark} lastMark last mark that triggered completion
-   */
-  complete(lastMark) {
-    if (
-      typeof window.performance !== "undefined" &&
-      typeof window.performance.measure !== "undefined"
-    ) {
-      window.performance.measure(
-        this.measureName,
-        this.startMark,
-        lastMark.name
-      );
-    }
+	/**
+	 * Records measure on Performance Timeline and calls onMeasure callback
+	 *
+	 * @param {ExpectedMark} lastMark last mark that triggered completion
+	 */
+	complete(lastMark) {
+		if (
+			typeof window.performance !== 'undefined' &&
+			typeof window.performance.measure !== 'undefined'
+		) {
+			window.performance.measure(
+				this.measureName,
+				this.startMark,
+				lastMark.name
+			);
+		}
 
-    this.onMeasure(this.measureName);
-  }
+		this.onMeasure(this.measureName);
+	}
 }

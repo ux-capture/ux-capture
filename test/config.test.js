@@ -1,134 +1,134 @@
 // UserTiming polyfill to override broken jsdom performance API
-window.performance = require("usertiming");
+window.performance = require('usertiming');
 
 // faking navigation timing API's navigationStart (not polyfilled by UserTiming polyfill)
 window.performance.timing = {
-  navigationStart: window.performance.now()
+	navigationStart: window.performance.now(),
 };
 
 // using console.timeStamp for testing only
 console.timeStamp = jest.fn();
 
 // set up global UX object
-const UXCapture = require("../js/src/ux-capture");
+const UXCapture = require('../js/src/ux-capture');
 const UX = new UXCapture();
 
-const MOCK_MEASURE_1 = "ux-mock-measure_1";
-const MOCK_MARK_1_1 = "ux-mock-mark_1_1";
-const MOCK_MARK_1_2 = "ux-mock-mark_1_2";
+const MOCK_MEASURE_1 = 'ux-mock-measure_1';
+const MOCK_MARK_1_1 = 'ux-mock-mark_1_1';
+const MOCK_MARK_1_2 = 'ux-mock-mark_1_2';
 
-const MOCK_MEASURE_2 = "ux-mock-measure_2";
-const MOCK_MARK_2_1 = "ux-mock-mark_2_1";
+const MOCK_MEASURE_2 = 'ux-mock-measure_2';
+const MOCK_MARK_2_1 = 'ux-mock-mark_2_1';
 
-const MOCK_MEASURE_3 = "ux-mock-measure_3";
-const MOCK_MARK_3_1 = "ux-mock-mark_3_1";
+const MOCK_MEASURE_3 = 'ux-mock-measure_3';
+const MOCK_MARK_3_1 = 'ux-mock-mark_3_1';
 
-const MOCK_MEASURE_4 = "ux-mock-measure_4";
-const MOCK_MARK_4_1 = "ux-mock-mark_4_1";
+const MOCK_MEASURE_4 = 'ux-mock-measure_4';
+const MOCK_MARK_4_1 = 'ux-mock-mark_4_1';
 
-const MOCK_MEASURE_5 = "ux-mock-measure_5";
-const MOCK_MARK_5_1 = "ux-mock-mark_5_1";
+const MOCK_MEASURE_5 = 'ux-mock-measure_5';
+const MOCK_MARK_5_1 = 'ux-mock-mark_5_1';
 
-describe("UX.config()", () => {
-  UX.expect([
-    {
-      name: MOCK_MEASURE_1,
-      marks: [MOCK_MARK_1_1, MOCK_MARK_1_2]
-    },
-    {
-      name: MOCK_MEASURE_2,
-      marks: [MOCK_MARK_2_1]
-    },
-    {
-      name: MOCK_MEASURE_3,
-      marks: [MOCK_MARK_3_1]
-    },
-    {
-      name: MOCK_MEASURE_4,
-      marks: [MOCK_MARK_4_1]
-    },
-    {
-      name: MOCK_MEASURE_5,
-      marks: [MOCK_MARK_5_1]
-    }
-  ]);
+describe('UX.config()', () => {
+	UX.expect([
+		{
+			name: MOCK_MEASURE_1,
+			marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+		},
+		{
+			name: MOCK_MEASURE_2,
+			marks: [MOCK_MARK_2_1],
+		},
+		{
+			name: MOCK_MEASURE_3,
+			marks: [MOCK_MARK_3_1],
+		},
+		{
+			name: MOCK_MEASURE_4,
+			marks: [MOCK_MARK_4_1],
+		},
+		{
+			name: MOCK_MEASURE_5,
+			marks: [MOCK_MARK_5_1],
+		},
+	]);
 
-  const mockOnMarkCallback = jest.fn();
-  const mockOnMeasureCallback = jest.fn();
+	const mockOnMarkCallback = jest.fn();
+	const mockOnMeasureCallback = jest.fn();
 
-  // this effectively removes asynchronicity from UX.mark() which
-  // uses rAF->setTimeout->mark.record() chain
-  jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => cb());
-  jest.spyOn(window, "setTimeout").mockImplementation(cb => cb());
+	// this effectively removes asynchronicity from UX.mark() which
+	// uses rAF->setTimeout->mark.record() chain
+	jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
+	jest.spyOn(window, 'setTimeout').mockImplementation(cb => cb());
 
-  it("Should throw an error if non-object is passed", () => {
-    expect(() => {
-      UX.config();
-    }).toThrow();
-  });
+	it('Should throw an error if non-object is passed', () => {
+		expect(() => {
+			UX.config();
+		}).toThrow();
+	});
 
-  it("Should throw an error if onMark callback is not a function", () => {
-    expect(() => {
-      UX.config({ onMark: "not a function" });
-      UX.mark(MOCK_MARK_1_1);
-    }).toThrow();
-  });
+	it('Should throw an error if onMark callback is not a function', () => {
+		expect(() => {
+			UX.config({ onMark: 'not a function' });
+			UX.mark(MOCK_MARK_1_1);
+		}).toThrow();
+	});
 
-  it("Should throw an error if onMeasure callback is not a function", () => {
-    expect(() => {
-      UX.config({ onMeasure: "not a function" });
-      UX.mark(MOCK_MARK_2_1);
-    }).toThrow();
-  });
+	it('Should throw an error if onMeasure callback is not a function', () => {
+		expect(() => {
+			UX.config({ onMeasure: 'not a function' });
+			UX.mark(MOCK_MARK_2_1);
+		}).toThrow();
+	});
 
-  it("Should be able to configure onMark handler", () => {
-    mockOnMarkCallback.mockClear();
+	it('Should be able to configure onMark handler', () => {
+		mockOnMarkCallback.mockClear();
 
-    UX.config({ onMark: mockOnMarkCallback });
+		UX.config({ onMark: mockOnMarkCallback });
 
-    UX.mark(MOCK_MARK_1_1);
+		UX.mark(MOCK_MARK_1_1);
 
-    expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_1_1);
-  });
+		expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_1_1);
+	});
 
-  it("Should be able to configure onMeasure handler", () => {
-    mockOnMeasureCallback.mockClear();
+	it('Should be able to configure onMeasure handler', () => {
+		mockOnMeasureCallback.mockClear();
 
-    UX.config({ onMeasure: mockOnMeasureCallback });
+		UX.config({ onMeasure: mockOnMeasureCallback });
 
-    UX.mark(MOCK_MARK_2_1);
+		UX.mark(MOCK_MARK_2_1);
 
-    expect(mockOnMeasureCallback).toHaveBeenCalledWith(MOCK_MEASURE_2);
-  });
+		expect(mockOnMeasureCallback).toHaveBeenCalledWith(MOCK_MEASURE_2);
+	});
 
-  it("Should remove custom onMark callback if it's not defined on configuration object", () => {
-    // configure onMark callback
-    UX.config({ onMark: mockOnMarkCallback });
+	it("Should remove custom onMark callback if it's not defined on configuration object", () => {
+		// configure onMark callback
+		UX.config({ onMark: mockOnMarkCallback });
 
-    // remove onMark callback
-    UX.config({});
+		// remove onMark callback
+		UX.config({});
 
-    mockOnMarkCallback.mockClear();
+		mockOnMarkCallback.mockClear();
 
-    UX.mark(MOCK_MARK_3_1);
+		UX.mark(MOCK_MARK_3_1);
 
-    expect(mockOnMarkCallback).not.toHaveBeenCalledWith(MOCK_MARK_3_1);
-  });
+		expect(mockOnMarkCallback).not.toHaveBeenCalledWith(MOCK_MARK_3_1);
+	});
 
-  it("Should remove custom onMeasure callback if it's not defined on configuration object", () => {
-    // configured onMeasure callback
-    UX.config({ onMeasure: mockOnMeasureCallback });
+	it("Should remove custom onMeasure callback if it's not defined on configuration object", () => {
+		// configured onMeasure callback
+		UX.config({ onMeasure: mockOnMeasureCallback });
 
-    // remove onMeasure callback
-    UX.config({ onMark: mockOnMarkCallback });
+		// remove onMeasure callback
+		UX.config({ onMark: mockOnMarkCallback });
 
-    mockOnMarkCallback.mockClear();
-    mockOnMeasureCallback.mockClear();
+		mockOnMarkCallback.mockClear();
+		mockOnMeasureCallback.mockClear();
 
-    UX.mark(MOCK_MARK_4_1);
+		UX.mark(MOCK_MARK_4_1);
 
-    expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_4_1);
+		expect(mockOnMarkCallback).toHaveBeenCalledWith(MOCK_MARK_4_1);
 
-    expect(mockOnMeasureCallback).not.toHaveBeenCalledWith(MOCK_MEASURE_4);
-  });
+		expect(mockOnMeasureCallback).not.toHaveBeenCalledWith(MOCK_MEASURE_4);
+	});
 });
