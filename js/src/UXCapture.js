@@ -7,20 +7,27 @@ export default class UXCapture {
   onMark = NOOP;
   onMeasure = NOOP;
 
+  /**
+   * Creates a UXCapture instance
+   * @constructor
+   */
   constructor() {
     window.UX = this;
   }
 
   /**
-   * Sets expected marks and corresponding zones for current view
+   * Creates a new View instance and supplies expected marks and
+   * corresponding zones to the View.
    *
-   * @TODO re-evaluate if we should allow multiple executions of this method
+   * TODO: re-evaluate if we should allow multiple executions of this method
+   *
+   * @param {object} zoneConfigs
    */
   expect(zoneConfigs) {
-    // create a view object for initial, server-side rendered page view
+    // View object for initial, server-side rendered page view
     const pageView = new View({
-      // calling currently configured onMark & onMeasure handlers inside View's callbacks
-      // allows making UX.config() call after UX.expect() call
+      // `onMark` and `onMeasure` call `this.onMark` and `this.onMeasure`
+      // to handle cases where `UX.config()` comes after `UX.expect()`
       onMark: mark => {
         // console.log(this.onMark);
         this.onMark(mark);
@@ -34,12 +41,14 @@ export default class UXCapture {
   }
 
   /**
-   * Creates marks on UserTiming timeline.
-   * It also creates UserTiming measures for each zone if mark is last one to be recorded in the zone.
+   * Creates marks on UserTiming timeline. Also creates UserTiming
+   * measures for each zone when last mark is recorded.
    *
-   * waitForNextPaint attribute can be set to false if your code is not expected to change any visual
-   * elements of UI and trigger repaints. A good example is attaching click event handlers to elements
-   * which is need for them to be interactive, but by itself doesn't affect element's appearance.
+   * `waitForNextPaint` should be set to false if your code is not
+   * expected to change any visual elements and trigger repaints.
+   *
+   * Example: click event handlers on elements are necessary
+   * for them to be interactive but don't affect the element's appearance.
    *
    * @param {string} name
    * @param {boolean} waitForNextPaint
@@ -56,6 +65,12 @@ export default class UXCapture {
     }
   }
 
+  /**
+   * Assigns user-specified `onMark` and `onMeasure` callbacks
+   * to UXCapture instance.
+   *
+   * @param {object} configuration
+   */
   config(configuration) {
     const { onMark = NOOP, onMeasure = NOOP } = configuration;
     Object.assign(this, { onMark, onMeasure });
