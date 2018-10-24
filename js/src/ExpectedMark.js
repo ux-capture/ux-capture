@@ -53,7 +53,7 @@ export default class ExpectedMark extends UXBase {
 			typeof window.console !== 'undefined' &&
 			typeof window.console.timeStamp !== 'undefined'
 		) {
-			window.console.timeStamp('[DEBUG] original call for ' + this.name);
+			window.console.timeStamp(`[DEBUG] original call for ${ this.name}`);
 		}
 
 		window.requestAnimationFrame(() => setTimeout(this.record));

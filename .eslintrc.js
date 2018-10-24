@@ -1,5 +1,5 @@
 const config = {
-	extends: ['eslint:recommended', 'plugin:flowtype/recommended', 'prettier'],
+	extends: ['eslint:recommended', 'prettier'],
 	parser: 'babel-eslint',
 	parserOptions: {
 		ecmaVersion: 6,
@@ -16,7 +16,7 @@ const config = {
 		jasmine: true,
 		es6: true,
 	},
-	plugins: ['flowtype', 'react'],
+	plugins: [],
 	rules: {
 		'array-callback-return': 2,
 		'comma-dangle': 0,
@@ -34,17 +34,6 @@ const config = {
 		'no-useless-escape': 2,
 		'no-whitespace-before-property': 2,
 		'prefer-template': 2,
-		'react/jsx-no-undef': 0,
-		'react/jsx-uses-react': 1,
-		'react/jsx-uses-vars': 1,
-		'react/no-deprecated': 2,
-		'react/no-string-refs': 1,
-		'react/react-in-jsx-scope': 2,
-		'react/jsx-boolean-value': 2,
-		'react/jsx-equals-spacing': [2, 'never'],
-		'react/jsx-no-duplicate-props': 2,
-		'react/jsx-pascal-case': 2,
-		'react/jsx-uses-react': 2,
 		semi: 2,
 		'space-in-parens': [2, 'never'],
 		'spaced-comment': [2, 'always'],
