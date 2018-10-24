@@ -1,14 +1,6 @@
 {
-	"trailingComma": "es5",
+	"printWidth": 86,
 	"singleQuote": true,
+	"trailingComma": "es5",
 	"useTabs": true,
-	"overrides": [
-		{
-			"files": "src/assets/scss/**/**/*.scss",
-			"options": {
-				"singleQuote": false,
-				"trailingComma": "none"
-			}
-		}
-	]
 }
