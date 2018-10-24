@@ -23,7 +23,6 @@
     "build": "webpack",
     "build:clean": "rm js/ux-capture.min.js",
     "lint": "eslint . --ext .js,.jsx --fix",
-    "precommit": "lint-staged",
     "test": "jest test/*.test.js",
     "test:watch": "jest test/*.test.js --watch --verbose --coverage",
     "test:coverage": "jest test/*.test.js --coverage",
@@ -57,8 +56,13 @@
     "webpack": "4.22.0",
     "webpack-cli": "3.1.2"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
-    "{test, js}/**/*.{js,jsx}": [
+    "{test, js}/**/*.js": [
       "prettier --write --single-quote --use-tabs --trailing-comma es5",
       "eslint",
       "git add"
