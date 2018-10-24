@@ -62,7 +62,7 @@
     }
   },
   "lint-staged": {
-    "{test, js}/**/*.js": [
+    "{test,js}/**/*.js": [
       "prettier --write --single-quote --use-tabs --trailing-comma es5",
       "eslint",
       "git add"
