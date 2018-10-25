@@ -2,8 +2,8 @@ import ExpectedMark from './ExpectedMark';
 import UXBase from './UXBase';
 
 /**
- * A `Zone` is a collection of elements on a page that corresponds
- * to a given phase of page load. (i.e. all elements in `ux-destination-verfied`)
+ * A `Zone` is a collection of DOM elements on a page that correspond
+ * to a given phase of page load. (e.g. all elements in `ux-destination-verfied`)
  *
  * Example props:
  *
@@ -40,12 +40,11 @@ export default class Zone extends UXBase {
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
 
-		mark.onComplete(mark => {
-			// Call Zone's `onMark` callback
-			this.props.onMark(mark.name);
-
-			if (this.checkCompletion()) {
-				this.complete(mark);
+		mark.onComplete(completeMark => {
+			// pass the event upstream
+			this.props.onMark(markName);
+			if (this.marks.every(m => m.marked)) {
+				this.measure(markName);
 			}
 		});
 
@@ -53,38 +52,16 @@ export default class Zone extends UXBase {
 	});
 
 	/**
-	 * Check if all marks for the zone have already been recorded
-	 */
-	checkCompletion() {
-		if (
-			typeof window.performance === 'undefined' ||
-			typeof window.performance.getEntriesByType === 'undefined'
-		) {
-			return false;
-		}
-
-		const recordedMarks = window.performance.getEntriesByType('mark');
-
-		return this.marks.every(mark =>
-			recordedMarks.find(recordedMark => recordedMark.name === mark.name)
-		);
-	}
-
-	/**
 	 * Records measure on Performance Timeline and calls onMeasure callback
 	 *
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
-	complete(lastMark) {
+	measure(endMarkName) {
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
-			window.performance.measure(
-				this.measureName,
-				this.startMark,
-				lastMark.name
-			);
+			window.performance.measure(this.measureName, this.startMark, endMarkName);
 		}
 
 		this.props.onMeasure(this.measureName);
