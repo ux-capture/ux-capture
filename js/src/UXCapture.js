@@ -25,7 +25,7 @@ export default class UXCapture {
 	 */
 	expect(zoneConfigs) {
 		// View object for initial page view
-		const pageView = new View({
+		new View({
 			// `onMark` and `onMeasure` call `this.onMark` and `this.onMeasure`
 			// to handle cases where `UX.config()` comes after `UX.expect()`
 			onMark: mark => {

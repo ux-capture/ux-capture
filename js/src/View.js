@@ -18,5 +18,7 @@ export default class View extends UXBase {
 				...zoneConfig,
 			});
 		}
+
+		return undefined;
 	});
 }

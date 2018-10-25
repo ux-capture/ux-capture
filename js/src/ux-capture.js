@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import UXCapture from './UXCapture';
 
 (function() {

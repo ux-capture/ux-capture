@@ -1,4 +1,4 @@
-const webpack = require("webpack"); //to access built-in plugins
+const webpack = require("webpack"); // to access built-in plugins
 const path = require("path");
 
 module.exports = {
