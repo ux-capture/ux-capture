@@ -3,46 +3,73 @@ import View from './View';
 
 const NOOP = () => {};
 
-export default class UXCapture {
-	onMark = NOOP;
-	onMeasure = NOOP;
-
+class UXCapture {
 	/**
 	 * Creates a UXCapture instance
+	 *
 	 * @constructor
 	 */
 	constructor() {
-		window.UX = this;
+		// TODO: Why do we have this? Can we remove?
+		// window.UX = this;
+
+		// Store reference to instance so that we never create more than one
+		if (!UXCapture._instance) {
+			UXCapture._onMark = NOOP;
+			UXCapture._onMeasure = NOOP;
+			UXCapture._view = null;
+			UXCapture._instance = this;
+		}
+
+		return UXCapture._instance;
 	}
 
 	/**
-	 * Creates a new View instance and supplies expected marks and
-	 * corresponding zones to the View.
+	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
 	 *
-	 * TODO: re-evaluate if we should allow multiple executions of this method
+	 * @param {object} config
+	 */
+	static create(config) {
+		const { onMark = NOOP, onMeasure = NOOP } = config;
+
+		UXCapture._onMark = onMark;
+		UXCapture._onMeasure = onMeasure;
+	}
+
+	/**
+	 * Creates a new View instance.
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	expect(zoneConfigs) {
-		// View object for initial page view
-		new View({
-			// `onMark` and `onMeasure` call `this.onMark` and `this.onMeasure`
-			// to handle cases where `UX.config()` comes after `UX.expect()`
-			onMark: mark => {
-				// console.log(this.onMark);
-				this.onMark(mark);
-			},
-			onMeasure: measure => {
-				// console.log(this.onMeasure);
-				this.onMeasure(measure);
-			},
+	static startView(zoneConfigs) {
+		UXCapture._view = new View({
+			onMark: this._onMark,
+			onMeasure: this._onMeasure,
 			zoneConfigs,
 		});
 	}
 
 	/**
-	 * Creates marks on UserTiming timeline. Also creates UserTiming
-	 * measures for each zone when last mark is recorded.
+	 * Updates current view instance with new zones & marks
+	 *
+	 * @param {object} zoneConfigs
+	 */
+	static updateView(zoneConfigs) {
+		if (!UXCapture._view) {
+			window.console.error(
+				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
+			);
+			return;
+		}
+
+		UXCapture._view.update(zoneConfigs);
+	}
+
+	// TODO: SPA support in subsequent ticket
+	static startTransition() {}
+
+	/**
+	 * Creates marks on UserTiming timeline.
 	 *
 	 * `waitForNextPaint` should be set to false if your code is not
 	 * expected to change any visual elements and trigger repaints.
@@ -53,7 +80,7 @@ export default class UXCapture {
 	 * @param {string} name
 	 * @param {boolean} waitForNextPaint
 	 */
-	mark(name, waitForNextPaint = true) {
+	static mark(name, waitForNextPaint = true) {
 		const mark = ExpectedMark.get(name);
 
 		if (mark) {
@@ -64,15 +91,11 @@ export default class UXCapture {
 			}
 		}
 	}
-
-	/**
-	 * Assigns user-specified `onMark` and `onMeasure` callbacks
-	 * to UXCapture instance.
-	 *
-	 * @param {object} configuration
-	 */
-	config(configuration) {
-		const { onMark = NOOP, onMeasure = NOOP } = configuration;
-		Object.assign(this, { onMark, onMeasure });
-	}
 }
+
+// UXCapture is a singleton
+// Freeze object so it's immutable
+const uxCaptureInstance = new UXCapture();
+Object.freeze(uxCaptureInstance);
+
+export default uxCaptureInstance;

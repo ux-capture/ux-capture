@@ -1,13 +1,16 @@
 // set up global UX object without a window
-const UXCapture = require('../js/src/ux-capture');
-const UX = new UXCapture();
+// const UXCapture = require('../js/src/ux-capture');
+import UXCapture from '../js/src/UXCapture';
+// const UXCapture = require('../js/src/UXCapture');
+
+console.log(UXCapture);
 
 const MOCK_MEASURE_1 = 'ux-mock-measure_1';
 const MOCK_MARK_1_1 = 'ux-mock-mark_1_1';
 const MOCK_MARK_1_2 = 'ux-mock-mark_1_2';
 
 describe('Compatibility', () => {
-	UX.expect([
+	UXCapture.create([
 		{
 			name: MOCK_MEASURE_1,
 			marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
@@ -19,9 +22,9 @@ describe('Compatibility', () => {
 	jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
 	jest.spyOn(window, 'setTimeout').mockImplementation(cb => cb());
 
-	it('UX.mark() must not throw an error if UserTiming API is not available', () => {
+	it('UXCapture.mark() must not throw an error if UserTiming API is not available', () => {
 		expect(() => {
-			UX.mark(MOCK_MARK_1_1);
+			UXCapture.mark(MOCK_MARK_1_1);
 		}).not.toThrow();
 	});
 

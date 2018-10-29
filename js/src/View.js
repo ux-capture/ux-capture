@@ -9,7 +9,18 @@ import UXBase from './UXBase';
  * @see: https://github.com/meetup/ux-capture#glossary
  */
 export default class View extends UXBase {
-	expectedZones = this.props.zoneConfigs.map(zoneConfig => {
+	expectedZones = this.setZones(this.props.zoneConfigs);
+
+	update(zoneConfigs) {
+		// Append new zones to existing config
+		this.expectedZones = [...this.expectedZones, ...this.setZones(zoneConfigs)];
+	}
+
+	setZones(zoneConfigs) {
+		return zoneConfigs.map(zoneConfig => this.createZone(zoneConfig));
+	}
+
+	createZone(zoneConfig) {
 		// Create a new zone only if configuration contains marks
 		if (zoneConfig.marks && zoneConfig.marks.length > 0) {
 			return new Zone({
@@ -20,5 +31,5 @@ export default class View extends UXBase {
 		}
 
 		return undefined;
-	});
+	}
 }

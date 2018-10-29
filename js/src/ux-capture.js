@@ -6,6 +6,6 @@ import UXCapture from './UXCapture';
 		module.exports = UXCapture;
 	} else {
 		// Browser
-		new UXCapture();
+		window.UXCapture = UXCapture;
 	}
 })();
