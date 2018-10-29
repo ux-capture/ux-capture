@@ -1,0 +1,13 @@
+{
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/{node_modules,coverage,docs}/**"
+    ],
+    "coverageDirectory": "<rootDir>/coverage",
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "testEnvironment": "jest-environment-jsdom-global",
+    "testRegex": "test\/.*\\.test\\.js"
+  }
