@@ -1,3 +1,5 @@
+import UXCapture from '../js/src/UXCapture';
+
 // UserTiming polyfill to override broken jsdom performance API
 window.performance = require('usertiming');
 
@@ -9,17 +11,23 @@ window.performance.timing = {
 // using console.timeStamp for testing only
 console.timeStamp = jest.fn();
 
-// set up global UX object
-const UXCapture = require('../js/src/ux-capture');
-const UX = new UXCapture();
-
 const MOCK_MEASURE_1 = 'ux-mock-measure_1';
 const MOCK_MARK_1_1 = 'ux-mock-mark_1_1';
 const MOCK_MARK_1_2 = 'ux-mock-mark_1_2';
 
-describe('UX.expect()', () => {
+const onMark = jest.fn();
+const onMeasure = jest.fn();
+
+describe('startView', () => {
+	beforeAll(() => {
+		UXCapture.create({
+			onMark,
+			onMeasure,
+		});
+	});
+
 	it('must create dependencies between marks and measures', () => {
-		UX.expect([
+		UXCapture.startView([
 			{
 				name: MOCK_MEASURE_1,
 				marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
@@ -31,7 +39,7 @@ describe('UX.expect()', () => {
 		jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
 		jest.spyOn(window, 'setTimeout').mockImplementation(cb => cb());
 
-		UX.mark(MOCK_MARK_1_1);
+		UXCapture.mark(MOCK_MARK_1_1);
 
 		expect(
 			window.performance
@@ -42,28 +50,24 @@ describe('UX.expect()', () => {
 
 	it('must throw am error if no zones passed in', () => {
 		expect(() => {
-			UX.expect();
+			UXCapture.startView();
 		}).toThrow();
 	});
 
 	it('must not throw errors if empty zones list is passed in', () => {
 		expect(() => {
-			UX.expect([]);
+			UXCapture.startView([]);
 		}).not.toThrow();
 	});
 
 	it('should not trigger a measure when empty marks array is passed', () => {
-		const mockOnMeasureCallback = jest.fn();
-
-		UX.config({ onMeasure: mockOnMeasureCallback });
-
-		UX.expect([
+		UXCapture.startView([
 			{
 				name: MOCK_MEASURE_1,
 				marks: [],
 			},
 		]);
 
-		expect(mockOnMeasureCallback).not.toHaveBeenCalled();
+		expect(onMeasure).not.toHaveBeenCalled();
 	});
 });

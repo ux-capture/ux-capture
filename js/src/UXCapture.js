@@ -29,7 +29,7 @@ class UXCapture {
 	 *
 	 * @param {object} config
 	 */
-	static create(config) {
+	create(config) {
 		const { onMark = NOOP, onMeasure = NOOP } = config;
 
 		UXCapture._onMark = onMark;
@@ -41,10 +41,10 @@ class UXCapture {
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	static startView(zoneConfigs) {
+	startView(zoneConfigs) {
 		UXCapture._view = new View({
-			onMark: this._onMark,
-			onMeasure: this._onMeasure,
+			onMark: UXCapture._onMark,
+			onMeasure: UXCapture._onMeasure,
 			zoneConfigs,
 		});
 	}
@@ -54,7 +54,7 @@ class UXCapture {
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	static updateView(zoneConfigs) {
+	updateView(zoneConfigs) {
 		if (!UXCapture._view) {
 			window.console.error(
 				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
@@ -66,7 +66,7 @@ class UXCapture {
 	}
 
 	// TODO: SPA support in subsequent ticket
-	static startTransition() {}
+	startTransition() {}
 
 	/**
 	 * Creates marks on UserTiming timeline.
@@ -80,7 +80,7 @@ class UXCapture {
 	 * @param {string} name
 	 * @param {boolean} waitForNextPaint
 	 */
-	static mark(name, waitForNextPaint = true) {
+	mark(name, waitForNextPaint = true) {
 		const mark = ExpectedMark.get(name);
 
 		if (mark) {
