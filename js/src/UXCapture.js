@@ -10,9 +10,6 @@ class UXCapture {
 	 * @constructor
 	 */
 	constructor() {
-		// TODO: Why do we have this? Can we remove?
-		// window.UX = this;
-
 		// Store reference to instance so that we never create more than one
 		if (!UXCapture._instance) {
 			UXCapture._onMark = NOOP;
@@ -34,6 +31,7 @@ class UXCapture {
 
 		UXCapture._onMark = onMark;
 		UXCapture._onMeasure = onMeasure;
+		UXCapture._view = null;
 	}
 
 	/**

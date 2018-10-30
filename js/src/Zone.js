@@ -15,22 +15,6 @@ import UXBase from './UXBase';
  * }
  */
 export default class Zone extends UXBase {
-	/**
-	 * Creates a Zone
-	 * @param {object} props
-	 */
-	constructor(props) {
-		super(props);
-
-		// Handle deprecated "label" keys
-		if (this.props.label) {
-			console.warn(
-				'[ux-capture] Deprecation Warning: `label` keys on configuration object were renamed to `name` as of verision v2.0.0',
-				'Will be removed in v3.0.0'
-			);
-		}
-	}
-
 	// Name used for UserTiming measures
 	measureName = this.props.name || this.props.label;
 
