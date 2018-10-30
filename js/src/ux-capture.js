@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-env browser, node, amd */
 
 import UXCapture from './UXCapture';
 
