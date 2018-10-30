@@ -13,9 +13,6 @@ window.performance.timing = {
 window.requestAnimationFrame = jest.fn(cb => cb());
 window.setTimeout = jest.fn(cb => cb());
 
-// using console.timeStamp for testing only
-console.timeStamp = jest.fn();
-
 const MOCK_MEASURE_1 = 'ux-mock-measure_1';
 const MOCK_MARK_1_1 = 'ux-mock-mark_1_1';
 const MOCK_MARK_1_2 = 'ux-mock-mark_1_2';
