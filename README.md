@@ -110,7 +110,7 @@ Each individual zone configuration object contains of zone's `name` that will be
 ### Sample page
 
 This repository contains a sample page that implements basic instrumentation for your reference:
-https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/js/index.html
+https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/examples/index.html
 
 ## Instrumentation
 
