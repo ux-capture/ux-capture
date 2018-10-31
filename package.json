@@ -2,7 +2,7 @@
   "name": "ux-capture",
   "version": "3.0.0",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
-  "main": "js/ux-capture.js",
+  "main": "src/ux-capture.js",
   "directories": {
     "doc": "docs"
   },

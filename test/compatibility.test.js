@@ -1,5 +1,5 @@
 // set up global UX object without a window
-import UXCapture from '../js/src/UXCapture';
+import UXCapture from '../src/UXCapture';
 
 // this effectively removes asynchronicity from UX.mark() which
 // uses rAF->setTimeout->mark.record() chain
@@ -28,8 +28,8 @@ describe('Compatibility', () => {
 
 	it('Should not throw an error when window.UX is already defined', () => {
 		expect(() => {
-			require('../js/src/ux-capture');
-			require('../js/src/ux-capture');
+			require('../src/ux-capture');
+			require('../src/ux-capture');
 		}).not.toThrow();
 	});
 });

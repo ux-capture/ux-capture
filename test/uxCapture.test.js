@@ -1,5 +1,5 @@
-import UXCapture from '../js/src/UXCapture';
-import ExpectedMark from '../js/src/ExpectedMark';
+import UXCapture from '../src/UXCapture';
+import ExpectedMark from '../src/ExpectedMark';
 
 // UserTiming polyfill to override broken jsdom performance API
 window.performance = require('usertiming');

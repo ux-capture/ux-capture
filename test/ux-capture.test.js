@@ -7,7 +7,7 @@ describe('ux-capture', () => {
 
 	describe('Node', () => {
 		it('should be available as a module export', () => {
-			const UXCapture = require('../js/src/ux-capture');
+			const UXCapture = require('../src/ux-capture');
 			expect(UXCapture).toBeDefined();
 			expect(UXCapture.create).toBeDefined();
 			expect(UXCapture.startView).toBeDefined();
