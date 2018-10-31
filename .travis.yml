@@ -20,6 +20,7 @@ before_script:
   - yarn check
 
 script:
+  - yarn flow
   - yarn test
   - npm run build
 
