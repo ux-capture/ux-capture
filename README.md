@@ -1,16 +1,13 @@
 # UX Capture
 
-Browser instrumentation helper that makes it easier to capture UX speed metrics.
+Browser instrumentation library that makes it easier to capture UX performance metrics.
 
 <!-- TOC depthFrom:2 depthTo:6 orderedList:false updateOnSave:true withLinks:true -->
 
 - [Project Goals](#project-goals)
 - [JS library](#js-library)
-  - [Features](#features)
-  - [Configuring UX capture library (first prototype)](#configuring-ux-capture-library-first-prototype)
-    - [Setting Custom Handlers](#setting-custom-handlers)
+  - [Usage](#usage)
   - [Sample page](#sample-page)
-  - [Release notes](#release-notes)
 - [Instrumentation](#instrumentation)
   - [Individual Element Instrumentation](#individual-element-instrumentation)
     - [Image elements](#image-elements)
@@ -25,11 +22,11 @@ Browser instrumentation helper that makes it easier to capture UX speed metrics.
 
 ## Project Goals
 
-There are multiple goals for this project, all dictated by lack of instrumentation inside human brains and lack of real rendering instrumentation of painting events in the browser (closes thing to human's eyes that we currently have).
+There are multiple goals for this project, many dictated by the lack of real rendering instrumentation of paint events in the browser. These include:
 
-- Capture display (e.g. paint) and interactivity (e.g. click handlers attached) events for various elements of web view (e.g. images, text, video, fonts, buttons, etc.)
-- Group together multiple display events for elements of web page that represent same design/product components
-- Group together multiple components to reflect various experience/perception phases that user goes through and we hope to achieve on the page
+- Capture display and interactivity events for various DOM elements (e.g. images, text, video, fonts, buttons, etc.)
+- Group together multiple display events for elements of a web page that represent the same design/product components.
+- Group together multiple components to reflect various phases of page load
 - Collect captured events and [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user") for all users using RUM (Real User Measurement) tools
 - Calibrate in-browser instrumentation by recording page load video using synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user")
 - Create uniform instrumentation for both [_page views_](#page_view "view resulting in full browser navigation and re-creation of browser DOM") and [_interactive views_](#interactive_view "view resulting in partial updates of browser DOM"), to be usable with any back-end and front-end framework
@@ -37,95 +34,83 @@ There are multiple goals for this project, all dictated by lack of instrumentati
 
 ## JS library
 
-The intent of this library is to help developers group several technical events that they would instrument their pages with into "zones" which, once presented to the user represent completion of "phases" of page load representing [distinct stages](#aggregating-experienceperception-phase-metrics) of user experience.
+The intent of this library is to help developers instrument technical events (marks) on their pages and group them into "zones" that represent "phases" of page load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics) of user experience.
 
-### Features
-
-- :ballot_box_with_check: Record individual events (marks) ([#3](https://github.com/sergeychernyshev/ux-capture/issues/3))
-- :ballot_box_with_check: Group marks into zones ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
-  - :ballot_box_with_check: Wait for all events and record a groups of events (measures) ([#1](https://github.com/sergeychernyshev/ux-capture/issues/1))
-- :ballot_box_with_check: Chrome timeline support ([#2](https://github.com/sergeychernyshev/ux-capture/issues/2))
-- :white_large_square:Support adding items to zone as page loads (e.g. after initial initialization lower on the page, e.g. when server-side framework requires more granular control, e.g. instrumentation is only know inside included file lower than the header. Must happen definitely before at least on of the marks in the same zone fire completing the zone.) ([#7](https://github.com/sergeychernyshev/ux-capture/issues/7))
-- :white_large_square:Allow replacing categories/placeholders with specific marks (e.g. when specific marks and their number is known only after an AJAX call or other time-consuming execution) ([#8](https://github.com/sergeychernyshev/ux-capture/issues/8))
-- :white_large_square:Fire an optional callback when all zones are complete (e.g. to report numbers before the automated beacon, which listens for other things fires) ([#10](https://github.com/sergeychernyshev/ux-capture/issues/10))
-- :white_large_square:Ensure there is no double-reporting between automated external beacon and completion callback beacon (e.g. define unique pageview ID)
-- :ballot_box_with_check:Fire an optional callback on each mark to allow for custom recording ([#11](https://github.com/sergeychernyshev/ux-capture/issues/11))
-- :ballot_box_with_check:Fire an optional callback on each measure to allow for custom recording ([#12](https://github.com/sergeychernyshev/ux-capture/issues/12))
-- :ballot_box_with_check:Use feature-detection for browser APIs (NavTiming, UserTiming and console.timeStamp) ([#9](https://github.com/sergeychernyshev/ux-capture/issues/9))
-- :white_large_square:Report when zones are not complete before beacon fires / navigation happens in interactive view
-- :white_large_square:Support customizing namespace for the API singleton, e.g. MYUX.mark() instead of UX.mark()
-- :white_large_square:Support SPA applications that navigate between views (and optionally use history API to update browser URLs without deconstructing the DOM)
-- :white_large_square:Framework bindings for easier integration
-  - :white_large_square:React
-- :white_large_square:Sample pages illustrating instrumentation
-  - :ballot_box_with_check:basic ([#5](https://github.com/sergeychernyshev/ux-capture/issues/5))
-  - :white_large_square:advanced
-
-### Configuring UX capture library (first prototype)
+### Usage
 
 WARNING: current version of the library is a first prototype that only works in modern browsers that support ES6 and all the necessary browser APIs, DO NOT USE IN PRODUCTION!
 
-Inline the library into HTML using server-side include technology appropriate for your platform:
+1. Load the library by inlining the contents of ux-capture.min.js in a <script> tag in the HTML document <head>
 
-```php
-<head>
-    <title>My Page</title>
+```js
+const uxCaptureFilename = require.resolve('ux-capture/js/ux-capture.min.js');
+const uxCaptureJS = fs.readFileSync(uxCaptureFilename, 'utf8');
 ...
+render() {
+    <head>
+        <title>My Page</title>
+        <script dangerouslySetInnerHTML={getInnerHTML(uxCaptureJS)} />
+        ...
+    </head>
+    ...
+}
 ```
 
-It is important to have this code available very early on the page as we need to instrument events that happen as early as HTML parsing and waiting for network might artificially skew events timings on the page and lead to race conditions. Future versions might remove this dependency by queueing up the calls.
+**NOTE**: The script must be inlined. Do use a script tag with a `src` attribute. Waiting for network requests might artifically skew event timings on the page and lead to race conditions.
 
-After library is included, call `expect()` method on global `UX` object passing an array of all (future versions will change that) the expected zone configurations like so:
+**NOTE**: It is important to have this code available very early on the page since we need to instrument events that happen as early as HTML parsing, so ideally in the <head>.
 
-```html
+2. Initialize UXCapture using `UXCapture.create()`, optionally with mark and measure event handlers, e.g.
+
+```js
     <script>
-        UX.expect([
+        window.UXCapture.create({
+            onMark: name => console.log(‘marked’, name),
+            onMeasure: name => console.log(‘measured, name),
+        });
+    </script>
+```
+
+Custom event handlers are useful in cases where the monitoring solution you use (e.g., NewRelic) does not support the W3C UserTiming API natively. You can then provide a custom method of recording the results.
+
+- `onMark` - provides a custom handler to be called every time a mark is recorded with the name of the mark as the only argument
+- `onMeasure` - provides a custom handler to be called every time a measure is recorded with the name of the measure as the only argument
+
+3. At the top of the view markup, define the expected zones and corresponding marks with `UXCapture.startView()`, e.g.
+
+```js
+    <script>
+        window.UXCapture.startView([
             {
-                name: "ux-verify-destination",
-                marks: ["ux-text-title"]
-            },
-            {
-                name: "ux-primary-content",
-                marks: ["ux-text-intro", "ux-text-story", "ux-image-onload-kitten", "ux-image-inline-kitten"]
-            },
-            {
-                name: "ux-primary-action",
-                marks: ["ux-text-story-details-link", "ux-handler-moreclickable"]
-            },
-            {
-                name: "ux-secondary-content",
-                marks: ["ux-text-page2"]
+                name: 'ux-destination-verified',
+                marks: ['ux-1', 'ux-2']
+            },{
+                name: 'ux-primary-content-available',
+                marks: ['ux-3', 'ux-4']
             }
+            ...
         ]);
     </script>
-</head>
 ```
+
+**NOTE**: `UXCapture.startView()` will always replace any previously-started view, so be careful to only call it once, before any of the marks are triggered within the view markup.
 
 Each individual zone configuration object contains of zone's `name` that will be used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event name strings that zone groups together, each individual name will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
 
-#### Setting Custom Handlers
+4. You can optionally update a view that has already been started and add more zones by calling `UXCapture.updateView()`.
 
-In cases when monitoring solution you use does not support W3C UserTiming API natively, you might want to provide a custom method of recording the results.
+5. Call UXCapture.mark in the HTML markup for each ‘mark’ name passed into UXCapture.startView/updateView.
 
-You can do that by specifying custom handlers for `mark` and `measure` events which will read data from UserTiming API, format the results accordingly and pass them to your service.
-
-To accomplish that, you can call `UX.config()` method and pass it a configuration object. Following keys are currently supported:
-
-- `onMark` - provides a custom handler to be called every time a mark is recorded with the name of the mark as only argument
-- `onMeasure` - provides a custom handler to be called every time a measure is recorded with the name of the measure as only argument
+``html
+    <script>window.UXCapture.mark(‘ux-1’)</script>
+    <img onload=”window.UXCapture.mark(‘ux-2’) … />
+    ...
+```
 
 ### Sample page
 
 This repository contains a sample page that implements basic instrumentation for your reference:
 https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/js/index.html
-
-### Release notes
-
-- v2.0.0 (October 9, 2018)
-  - BREAKING CHANGE: updated expected zone configuration to use `name` instead of `label` as key to align with timing API conventions. Update your expect calls.
-  - Now using webpack for bundling. No more source file to use, make sure to inline `js/ux-capture.min.js` file in your HTML.
-  - Fixed a bug with hanging measures if mark is used in multiple places.
-  - Replaced Promises with callbacks internally to simplify testing and allow for more complex logic in the future.
 
 ## Instrumentation
 
