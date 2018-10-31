@@ -1,5 +1,5 @@
 node_modules
-js/ux-capture.min.js
+lib/
 coverage
 
 # visual studio code settings

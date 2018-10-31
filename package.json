@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "build": "webpack",
-    "build:clean": "rm js/ux-capture.min.js",
+    "build:clean": "rm -rf lib/",
     "lint": "eslint . --ext .js,.jsx --fix",
     "test": "yarn test:unit",
     "test:coverage": "yarn test:unit --coverage",

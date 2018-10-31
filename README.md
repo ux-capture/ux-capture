@@ -43,7 +43,7 @@ WARNING: current version of the library is a first prototype that only works in 
 1. Load the library by inlining the contents of ux-capture.min.js in a <script> tag in the HTML document <head>
 
 ```js
-const uxCaptureFilename = require.resolve('ux-capture/js/ux-capture.min.js');
+const uxCaptureFilename = require.resolve('ux-capture/lib/ux-capture.min.js');
 const uxCaptureJS = fs.readFileSync(uxCaptureFilename, 'utf8');
 ...
 render() {

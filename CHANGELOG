@@ -6,6 +6,8 @@
     - Added support for `UXCapture.updateView()`
     - Added support for `ExpectedMark.clearExpectedMarks`
     - Update unit tests.
+    - Move sample code to root /examples directory.
+    - Move generated library JS to root /lib directory.
 
 ## [2.0.0] (October 9, 2018)
   - BREAKING CHANGE: updated expected zone configuration to use `name` instead of `label` as key to align with timing API conventions. Update your expect calls.

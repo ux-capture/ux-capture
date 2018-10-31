@@ -6,7 +6,7 @@ module.exports = {
   mode: "production",
   output: {
     filename: "ux-capture.min.js",
-    path: path.resolve(__dirname, "js")
+    path: path.resolve(__dirname, "lib")
   },
   module: {
     rules: [
