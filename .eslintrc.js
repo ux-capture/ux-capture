@@ -1,5 +1,5 @@
 const config = {
-	extends: ['eslint:recommended', 'prettier'],
+	extends: ['eslint:recommended', 'plugin:flowtype/recommended', 'prettier'],
 	parser: 'babel-eslint',
 	parserOptions: {
 		ecmaVersion: 6,
@@ -16,7 +16,7 @@ const config = {
 		jasmine: true,
 		es6: true,
 	},
-	plugins: [],
+	plugins: ['flowtype'],
 	rules: {
 		'array-callback-return': 2,
 		'comma-dangle': 0,
