@@ -1,0 +1,9 @@
+[ignore]
+.*/coverage/*
+
+[include]
+
+[libs]
+
+[options]
+
