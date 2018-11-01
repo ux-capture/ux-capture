@@ -82,8 +82,8 @@ measure event handlers, e.g.
 ```js
     <script>
         window.UXCapture.create({
-            onMark: name => console.log(‘marked’, name),
-            onMeasure: name => console.log(‘measured, name),
+            onMark: name => console.log('marked', name),
+            onMeasure: name => console.log('measured', name),
         });
     </script>
 ```

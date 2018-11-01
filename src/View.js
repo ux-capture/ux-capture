@@ -21,15 +21,10 @@ export default class View extends UXBase {
 	}
 
 	createZone(zoneConfig) {
-		// Create a new zone only if configuration contains marks
-		if (zoneConfig.marks && zoneConfig.marks.length > 0) {
-			return new Zone({
-				onMark: this.props.onMark,
-				onMeasure: this.props.onMeasure,
-				...zoneConfig,
-			});
-		}
-
-		return undefined;
+		return new Zone({
+			onMark: this.props.onMark,
+			onMeasure: this.props.onMeasure,
+			...zoneConfig,
+		});
 	}
 }
