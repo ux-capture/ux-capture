@@ -11,6 +11,8 @@ import UXBase from './UXBase';
 export default class View extends UXBase {
 	expectedZones = this.setZones(this.props.zoneConfigs);
 
+	// TODO: determine if we need to support appending new marks
+	// to exisiting zones or new zones or both
 	update(zoneConfigs) {
 		// Append new zones to existing config
 		this.expectedZones = [...this.expectedZones, ...this.setZones(zoneConfigs)];
