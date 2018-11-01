@@ -24,7 +24,7 @@ Browser instrumentation library that makes it easier to capture UX performance m
 
 There are multiple goals for this project, many dictated by the lack of real rendering instrumentation of paint events in the browser. These include:
 
-- Capture display and interactivity events for various DOM elements (e.g. images, text, video, fonts, buttons, etc.)
+- Capture display and interactivity events for various UI elements (e.g. images, text, video, fonts, buttons, etc.)
 - Group together multiple display events for elements of a web page that represent the same design/product components.
 - Group together multiple components to reflect various phases of page load
 - Collect captured events and [_UX speed metrics_](#UX_speed_metrics "metrics representing speed of the human-computer interface as it is perceived by the user") for all users using RUM (Real User Measurement) tools
