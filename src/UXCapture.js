@@ -4,22 +4,9 @@ import View from './View';
 const NOOP = () => {};
 
 class UXCapture {
-	/**
-	 * Creates a UXCapture instance
-	 *
-	 * @constructor
-	 */
-	constructor() {
-		// Store reference to instance so that we never create more than one
-		if (!UXCapture._instance) {
-			UXCapture._onMark = NOOP;
-			UXCapture._onMeasure = NOOP;
-			UXCapture._view = null;
-			UXCapture._instance = this;
-		}
-
-		return UXCapture._instance;
-	}
+	_onMark = NOOP;
+	_onMeasure = NOOP;
+	_view = null;
 
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
@@ -29,9 +16,8 @@ class UXCapture {
 	create(config) {
 		const { onMark = NOOP, onMeasure = NOOP } = config;
 
-		UXCapture._onMark = onMark;
-		UXCapture._onMeasure = onMeasure;
-		UXCapture._view = null;
+		this._onMark = onMark;
+		this._onMeasure = onMeasure;
 	}
 
 	/**
@@ -40,9 +26,9 @@ class UXCapture {
 	 * @param {object} zoneConfigs
 	 */
 	startView(zoneConfigs) {
-		UXCapture._view = new View({
-			onMark: UXCapture._onMark,
-			onMeasure: UXCapture._onMeasure,
+		this._view = new View({
+			onMark: this._onMark,
+			onMeasure: this._onMeasure,
 			zoneConfigs,
 		});
 	}
@@ -53,14 +39,14 @@ class UXCapture {
 	 * @param {object} zoneConfigs
 	 */
 	updateView(zoneConfigs) {
-		if (!UXCapture._view) {
+		if (!this._view) {
 			window.console.error(
 				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
 			);
 			return;
 		}
 
-		UXCapture._view.update(zoneConfigs);
+		this._view.update(zoneConfigs);
 	}
 
 	// TODO: SPA support in subsequent ticket
@@ -91,9 +77,4 @@ class UXCapture {
 	}
 }
 
-// UXCapture is a singleton
-// Freeze object so it's immutable
-const uxCaptureInstance = new UXCapture();
-Object.freeze(uxCaptureInstance);
-
-export default uxCaptureInstance;
+export default new UXCapture();
