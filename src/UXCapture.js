@@ -4,10 +4,6 @@ import View from './View';
 const NOOP = () => {};
 
 class UXCapture {
-	_onMark = NOOP;
-	_onMeasure = NOOP;
-	_view = null;
-
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
 	 *
