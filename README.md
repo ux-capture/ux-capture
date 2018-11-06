@@ -79,7 +79,7 @@ the `<head>`.
 2. Initialize UXCapture using `UXCapture.create()`, optionally with mark and
 measure event handlers, e.g.
 
-```js
+```jsx
     <script>
         window.UXCapture.create({
             onMark: name => console.log('marked', name),
