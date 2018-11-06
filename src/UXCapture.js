@@ -73,4 +73,8 @@ class UXCapture {
 	}
 }
 
-export default new UXCapture();
+const UXCaptureInstance = new UXCapture();
+
+// Exporting instance of UXCapture.
+// UXCapture is a singleton. There should only ever be a single instance
+export default UXCaptureInstance;
