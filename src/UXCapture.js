@@ -3,6 +3,10 @@ import View from './View';
 
 const NOOP = () => {};
 
+let _onMark;
+let _onMeasure;
+let _view;
+
 const UXCapture = {
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
@@ -10,10 +14,8 @@ const UXCapture = {
 	 * @param {object} config
 	 */
 	create: (config) => {
-		const { onMark = NOOP, onMeasure = NOOP } = config;
-
-		UXCapture._onMark = onMark;
-		UXCapture._onMeasure = onMeasure;
+		_onMark = config.onMark || NOOP;
+		_onMeasure = config.onMeasure || NOOP;
 	},
 
 	/**
@@ -22,9 +24,9 @@ const UXCapture = {
 	 * @param {object} zoneConfigs
 	 */
 	startView: (zoneConfigs) => {
-		UXCapture._view = new View({
-			onMark: UXCapture._onMark,
-			onMeasure: UXCapture._onMeasure,
+		_view = new View({
+			onMark: _onMark,
+			onMeasure: _onMeasure,
 			zoneConfigs,
 		});
 	},
@@ -35,14 +37,14 @@ const UXCapture = {
 	 * @param {object} zoneConfigs
 	 */
 	updateView: (zoneConfigs) => {
-		if (!UXCapture._view) {
+		if (!_view) {
 			window.console.error(
 				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
 			);
 			return;
 		}
 
-		UXCapture._view.update(zoneConfigs);
+		_view.update(zoneConfigs);
 	},
 
 	// TODO: SPA support in subsequent ticket
