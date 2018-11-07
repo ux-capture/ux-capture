@@ -16,7 +16,7 @@ import UXBase from './UXBase';
  */
 export default class Zone extends UXBase {
 	// Name used for UserTiming measures
-	measureName = this.props.name || this.props.label;
+	measureName = this.props.name;
 
 	startMark = 'navigationStart';
 
