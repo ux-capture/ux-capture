@@ -1,5 +1,6 @@
 [ignore]
 .*/coverage/*
+.*/examples/*
 
 [include]
 

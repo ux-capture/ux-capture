@@ -1,7 +1,7 @@
 import UXBase from './UXBase';
 
 // private map of { name: mark } for all expected marks
-const _expectedMarks = {};
+let _expectedMarks = {};
 
 /**
  * Class describes expected marks
@@ -29,6 +29,10 @@ export default class ExpectedMark extends UXBase {
 			_expectedMarks[name] = new ExpectedMark({ name });
 		}
 		return _expectedMarks[name];
+	}
+
+	static clearExpectedMarks() {
+		_expectedMarks = {};
 	}
 
 	// registers zone callback

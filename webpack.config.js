@@ -2,11 +2,11 @@ const webpack = require("webpack"); // to access built-in plugins
 const path = require("path");
 
 module.exports = {
-  entry: "./js/src/ux-capture.js",
+  entry: "./src/ux-capture.js",
   mode: "production",
   output: {
     filename: "ux-capture.min.js",
-    path: path.resolve(__dirname, "js")
+    path: path.resolve(__dirname, "lib")
   },
   module: {
     rules: [

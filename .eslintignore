@@ -1,4 +1,5 @@
 node_modules/
-js/ux-capture.min.js
+lib/
+examples/
 coverage/
 flow-typed/

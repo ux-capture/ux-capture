@@ -4,7 +4,7 @@
     <title>Sample Page | UX capture</title>
 
     <!-- don't do this in production, but inline it instead -->
-    <script src="ux-capture.min.js"></script>
+    <script src="../lib/ux-capture.min.js"></script>
 
     <script>
         // sample custom reporter function for collected measures
@@ -21,25 +21,25 @@
             }
         };
 
-        UX.config({
+        window.UXCapture.create({
             onMeasure: customMeasureRecordingFunction
         });
 
-        UX.expect([
+        window.UXCapture.startView([
             {
-                name: "ux-verify-destination",
+                name: "ux-destination-verified",
                 marks: ["ux-text-title"]
             },
             {
-                name: "ux-primary-content",
+                name: "ux-primary-content-displayed",
                 marks: ["ux-text-intro", "ux-text-story", "ux-image-onload-kitten", "ux-image-inline-kitten"]
             },
             {
-                name: "ux-primary-action",
+                name: "ux-primary-action-available",
                 marks: ["ux-text-story-details-link", "ux-handler-moreclickable"]
             },
             {
-                name: "ux-secondary-content",
+                name: "ux-secondary-content-displayed",
                 marks: ["ux-text-page2"]
             }
         ]);
@@ -48,17 +48,17 @@
 
 <body>
     <h1>UX Capture library sample page</h1>
-    <script>UX.mark("ux-text-title")</script>
+    <script>window.UXCapture.mark("ux-text-title")</script>
 
     <p id="intro">
-        <img src="kitten.jpg" style="float: left; margin: 0 1em 1em 0" width="30%" onload="UX.mark('ux-image-onload-kitten')" />
-        <script>UX.mark("ux-image-inline-kitten")</script> Decide to want nothing to do with my owner today. When in
+        <img src="kitten.jpg" style="float: left; margin: 0 1em 1em 0" width="30%" onload="window.UXCapture.mark('ux-image-onload-kitten')" />
+        <script>window.UXCapture.mark("ux-image-inline-kitten")</script> Decide to want nothing to do with my owner today. When in
         doubt, wash being gorgeous with belly side up sweet beast, but poop in the plant pot but munch on tasty moths.
         Brown cats with pink ears. Caticus cuteicus when in doubt, wash stare at ceiling, and scream at teh bath, lies
         down but cough hairball on conveniently placed pants claw your carpet in places everyone can see - why hide my
         amazing artistic clawing skills?. Meow in empty rooms.
     </p>
-    <script>UX.mark("ux-text-intro")</script>
+    <script>window.UXCapture.mark("ux-text-intro")</script>
 
     <script>
         // delaying this loop a tiny bit to show the difference
@@ -75,9 +75,9 @@
         pork belly beef ribs chicken meatloaf jowl strip steak t-bone. Pork chop turducken drumstick kevin leberkas
         jowl chicken prosciutto salami meatloaf, tri-tip doner boudin ground round
         <a href="story-details.html" id="morelink">read more...</a>
-        <script>UX.mark("ux-text-story-details-link")</script>
+        <script>window.UXCapture.mark("ux-text-story-details-link")</script>
     </p>
-    <script>UX.mark("ux-text-story")</script>
+    <script>window.UXCapture.mark("ux-text-story")</script>
 
     <p>
         Suscipit anim. Fugit quaerat. Incididunt nesciunt. Cupidatat cillum sed. Laborum totam and dolores sit. Commodi
@@ -105,7 +105,7 @@
     </p>
 
     <a href="page2.html">Page 2 &gt; &gt;</a>
-    <script>UX.mark("ux-text-page2")</script>
+    <script>window.UXCapture.mark("ux-text-page2")</script>
 
     <script>
         // emulating a long-running JS event attachment, e.g. React re-hydration
@@ -117,7 +117,7 @@
                     alert('More kittens there');
                 })
 
-            UX.mark("ux-handler-moreclickable");
+            window.UXCapture.mark("ux-handler-moreclickable");
         }, 300);
     </script>
 </body>
