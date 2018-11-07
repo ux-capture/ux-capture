@@ -3,50 +3,50 @@ import View from './View';
 
 const NOOP = () => {};
 
-class UXCapture {
+const UXCapture = {
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
 	 *
 	 * @param {object} config
 	 */
-	create(config) {
+	create: (config) => {
 		const { onMark = NOOP, onMeasure = NOOP } = config;
 
-		this._onMark = onMark;
-		this._onMeasure = onMeasure;
-	}
+		UXCapture._onMark = onMark;
+		UXCapture._onMeasure = onMeasure;
+	},
 
 	/**
 	 * Creates a new View instance.
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	startView(zoneConfigs) {
-		this._view = new View({
-			onMark: this._onMark,
-			onMeasure: this._onMeasure,
+	startView: (zoneConfigs) => {
+		UXCapture._view = new View({
+			onMark: UXCapture._onMark,
+			onMeasure: UXCapture._onMeasure,
 			zoneConfigs,
 		});
-	}
+	},
 
 	/**
 	 * Updates current view instance with new zones & marks
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	updateView(zoneConfigs) {
-		if (!this._view) {
+	updateView: (zoneConfigs) => {
+		if (!UXCapture._view) {
 			window.console.error(
 				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
 			);
 			return;
 		}
 
-		this._view.update(zoneConfigs);
-	}
+		UXCapture._view.update(zoneConfigs);
+	},
 
 	// TODO: SPA support in subsequent ticket
-	startTransition() {}
+	startTransition: () => {},
 
 	/**
 	 * Creates marks on UserTiming timeline.
@@ -60,7 +60,7 @@ class UXCapture {
 	 * @param {string} name
 	 * @param {boolean} waitForNextPaint
 	 */
-	mark(name, waitForNextPaint = true) {
+	mark: (name, waitForNextPaint = true) => {
 		const mark = ExpectedMark.get(name);
 
 		if (mark) {
@@ -71,10 +71,6 @@ class UXCapture {
 			}
 		}
 	}
-}
+};
 
-const UXCaptureInstance = new UXCapture();
-
-// Exporting instance of UXCapture.
-// UXCapture is a singleton. There should only ever be a single instance
-export default UXCaptureInstance;
+export default UXCapture;
