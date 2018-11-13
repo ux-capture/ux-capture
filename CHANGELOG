@@ -1,5 +1,5 @@
 ## [3.0.0]
-    -  **BREAKING CHANGE** Upgrade to new UXCapture api spec.
+    - **BREAKING CHANGE** Upgrade to new UXCapture api spec.
     - Module renamed from `UX` to `UXCapture`.
     - `UX.config()` renamed to `UXCapture.create()`
     - `UX.expect()` renamed to `UXCapture.startView()`
@@ -10,7 +10,7 @@
     - Move generated library JS to root /lib directory.
 
 ## [2.0.0] (October 9, 2018)
-  - BREAKING CHANGE: updated expected zone configuration to use `name` instead of `label` as key to align with timing API conventions. Update your expect calls.
+  - **BREAKING CHANGE**: updated expected zone configuration to use `name` instead of `label` as key to align with timing API conventions. Update your expect calls.
   - Now using webpack for bundling. No more source file to use, make sure to inline `js/ux-capture.min.js` file in your HTML.
   - Fixed a bug with hanging measures if mark is used in multiple places.
   - Replaced Promises with callbacks internally to simplify testing and allow for more complex logic in the future.
