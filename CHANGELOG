@@ -1,4 +1,4 @@
-## [3.0.0]
+## [3.0.0] (November 7, 2018)
     - **BREAKING CHANGE** Upgrade to new UXCapture api spec.
     - Module renamed from `UX` to `UXCapture`.
     - `UX.config()` renamed to `UXCapture.create()`
