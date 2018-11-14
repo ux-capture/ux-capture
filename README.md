@@ -38,15 +38,11 @@ rendering instrumentation of paint events in the browser. These include:
 - Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30) that aims
   at adding instrumentation directly into browser
 
-<a id="markdown-js-library" name="js-library"></a>
-
 ## JS library
 
 The intent of this library is to help developers instrument technical events
 (marks) on their pages and group them into "zones" that represent "phases" of page
 load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics) of user experience.
-
-<a id="markdown-usage" name="usage"></a>
 
 ### Usage
 
@@ -136,19 +132,13 @@ each individual name will be used when recording corresponding events as [W3C Us
     ...
 ```
 
-<a id="markdown-sample-page" name="sample-page"></a>
-
 ### Sample page
 
 This repository contains a sample page that implements basic instrumentation
 for your reference:
 https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/examples/index.html
 
-<a id="markdown-instrumentation" name="instrumentation"></a>
-
 ## Instrumentation
-
-<a id="markdown-individual-element-instrumentation" name="individual-element-instrumentation"></a>
 
 ### Individual Element Instrumentation
 
@@ -164,8 +154,6 @@ in industry white papers or blogs as there is currently no direct method of
 instrumenting the display timings in modern browsers.
 
 Below is the list of instrumentation methods with examples:
-
-<a id="markdown-image-elements" name="image-elements"></a>
 
 #### Image elements
 
@@ -185,15 +173,12 @@ References:
 
 - Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/), published on May 12, 2015
 
-<a id="markdown-text-without-custom-font" name="text-without-custom-font"></a>
-
 #### Text without custom font
 
 Text that does not use a custom font can be instrumented by supplying one inline
 `<script>` tag directly after the text:
 
 ```jsx
-
 <script>UX.mark("ux-text-headline");</script>
 ```
 
@@ -202,8 +187,6 @@ Element aggregation algorythm: no aggregation, just one event.
 References:
 
 - Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
-
-<a id="markdown-event-handler-attachment" name="event-handler-attachment"></a>
 
 #### Event handler attachment
 
@@ -219,8 +202,6 @@ UX.mark('ux-handler-myaction');
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
-
-<a id="markdown-aggregating-component-metrics" name="aggregating-component-metrics"></a>
 
 ### Aggregating component metrics
 
@@ -240,8 +221,6 @@ although these are less common and can create more variability in measurement.
 Component-level aggregation might be an advanced detail and can be skipped early
 on with element timings aggregated directly into experience/perception phases,
 but can be useful for modularity and more detailed analysis across the system.
-
-<a id="markdown-aggregating-experienceperception-phase-metrics" name="aggregating-experienceperception-phase-metrics"></a>
 
 ### Aggregating experience/perception phase metrics
 
@@ -278,8 +257,6 @@ WebPageTest or [Chrome Developer Tools' Timeline tab](https://twitter.com/igrigo
 This is done automatically by the library and no additional instrumentation is
 necessary.
 
-<a id="markdown-testing-results" name="testing-results"></a>
-
 ## Testing results
 
 To confirm that your instrumentation was successful, open your page in Chrome
@@ -300,8 +277,6 @@ You can also run W3C Performance Timeline API [`performance.getEntriesByType()`]
 method with `"mark"` and `"measure"` parameters to retrieve marks and measures respectively.
 
 ![Chrome DevTools console showing captured performance marks and measures](docs/basic-results-sample-chromedevtools-console.png)
-
-<a id="markdown-glossary" name="glossary"></a>
 
 ## Glossary
 
