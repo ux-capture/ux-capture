@@ -193,7 +193,7 @@ event on the page, e.g. `click` of the button (e.g. it's only "available" when
 visible AND clickable). Instrumenting handler attachment is straightforward, just
 include the call right after handler attachment in JavaScript code.
 
-```javascript
+```jsx
 var button_element = document.getElementById('mybutton');
 button_element.addEventListener('click', myActionHandler);
 UX.mark('ux-handler-myaction');
@@ -244,7 +244,7 @@ different perspectives:
 
 Each phase's component or element metrics (marks) can be combined and reported as measures:
 
-```javascript
+```jsx
 // assuming logo's onload event was last to fire among all element timers for this phase
 performance.measure('ux-destination-verified', 0, 'ux-image-onload-logo');
 ```
