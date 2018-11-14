@@ -3,8 +3,6 @@
 Browser instrumentation library that makes it easier to capture UX performance
 metrics.
 
-<!-- TOC depthFrom:2 depthTo:6 orderedList:false updateOnSave:true withLinks:true -->
-
 - [Project Goals](#project-goals)
 - [JS library](#js-library)
   - [Usage](#usage)
