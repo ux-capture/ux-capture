@@ -80,7 +80,7 @@ the `<head>`.
 2. Initialize UXCapture using `UXCapture.create()`, optionally with mark and
    measure event handlers, e.g.
 
-```html
+```jsx
     <script>
         window.UXCapture.create({
             onMark: name => console.log('marked', name),
@@ -101,7 +101,7 @@ provide a custom method of recording the results.
 3. At the top of the view markup, define the expected zones and corresponding
    marks with `UXCapture.startView()`, e.g.
 
-```html
+```jsx
     <script>
         window.UXCapture.startView([
             {
@@ -130,9 +130,9 @@ each individual name will be used when recording corresponding events as [W3C Us
 5. Call UXCapture.mark in the HTML markup for each ‘mark’ name passed into
    UXCapture.startView/updateView.
 
-```html
+```jsx
     <script>window.UXCapture.mark('ux-1')</script>
-    <img onload=”window.UXCapture.mark('ux-2')" … />
+    <img onload="window.UXCapture.mark('ux-2')" … />
     ...
 ```
 
@@ -173,7 +173,7 @@ Image tracking requires two measurements, one within the `onload` callback of
 the image itself and another within inline `<script>` tag directly after the
 image.
 
-```html
+```jsx
 <img src="hero.jpg" onload="UX.mark('ux-image-onload-logo')">
 <script>UX.mark('ux-image-inline-logo')</script>
 ```
@@ -192,7 +192,8 @@ References:
 Text that does not use a custom font can be instrumented by supplying one inline
 `<script>` tag directly after the text:
 
-```html
+```jsx
+
 <script>UX.mark("ux-text-headline");</script>
 ```
 
