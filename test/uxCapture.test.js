@@ -32,17 +32,15 @@ const onMeasure = jest.fn();
 
 describe('UXCapture', () => {
 	describe('startView', () => {
-		beforeAll(() => {
-			UXCapture.create({
-				onMark,
-				onMeasure,
-			});
-		});
-
 		beforeEach(() => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
+
+			UXCapture.create({
+				onMark,
+				onMeasure,
+			});
 		});
 
 		it('must create dependencies between marks and measures', () => {
@@ -91,6 +89,11 @@ describe('UXCapture', () => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
+
+			UXCapture.create({
+				onMark,
+				onMeasure,
+			});
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -161,6 +164,11 @@ describe('UXCapture', () => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
+
+			UXCapture.create({
+				onMark,
+				onMeasure,
+			});
 
 			UXCapture.startView([
 				{

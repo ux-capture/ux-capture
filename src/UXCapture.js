@@ -1,5 +1,6 @@
 import ExpectedMark from './ExpectedMark';
-import View from './View';
+import PageView from './PageView';
+import InteractiveView from './InteractiveView';
 
 const NOOP = () => {};
 
@@ -10,12 +11,14 @@ let _view;
 const UXCapture = {
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
+	 * Also resets the view (supposed to be called once per page anyway)
 	 *
 	 * @param {object} config
 	 */
-	create: (config) => {
+	create: config => {
 		_onMark = config.onMark || NOOP;
 		_onMeasure = config.onMeasure || NOOP;
+		_view = null;
 	},
 
 	/**
@@ -23,12 +26,19 @@ const UXCapture = {
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	startView: (zoneConfigs) => {
-		_view = new View({
+	startView: zoneConfigs => {
+		const viewProps = {
 			onMark: _onMark,
 			onMeasure: _onMeasure,
 			zoneConfigs,
-		});
+		};
+
+		// if we never had views before, it means we are in page view mode
+		if (_view) {
+			_view = new InteractiveView(viewProps);
+		} else {
+			_view = new PageView(viewProps);
+		}
 	},
 
 	/**
@@ -36,7 +46,7 @@ const UXCapture = {
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	updateView: (zoneConfigs) => {
+	updateView: zoneConfigs => {
 		if (!_view) {
 			window.console.error(
 				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
@@ -47,8 +57,9 @@ const UXCapture = {
 		_view.update(zoneConfigs);
 	},
 
-	// TODO: SPA support in subsequent ticket
-	startTransition: () => {},
+	startTransition: () => {
+		_view.startTransition();
+	},
 
 	/**
 	 * Creates marks on UserTiming timeline.
@@ -72,7 +83,7 @@ const UXCapture = {
 				mark.record();
 			}
 		}
-	}
+	},
 };
 
 export default UXCapture;

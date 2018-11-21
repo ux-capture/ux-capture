@@ -10,15 +10,14 @@ import UXBase from './UXBase';
  * {
  *  name: "ux-destination-verified",
  *  marks: ["ux-image-online-logo", "ux-image-inline-logo"]
- *  onMeasure: measureName => {}
- *  onMark: markName => {}
+ *  onMeasure: measureName => {},
+ *  onMark: markName => {},
+ *  view: View()
  * }
  */
 export default class Zone extends UXBase {
 	// Name used for UserTiming measures
 	measureName = this.props.name;
-
-	startMark = 'navigationStart';
 
 	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
@@ -35,17 +34,27 @@ export default class Zone extends UXBase {
 		return mark;
 	});
 
+	// Parent View object this zone belongs to
+	view = this.props.view;
+
 	/**
 	 * Records measure on Performance Timeline and calls onMeasure callback
 	 *
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
 	measure(endMarkName) {
+		if (!this.view.startMark) {
+			throw new Error(
+				`[UX Capture] Call to measure a zone in the view before view was started using startTransition() method.
+				Measure: ${this.measureName} Mark: ${endMarkName}`
+			);
+		}
+
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
-			window.performance.measure(this.measureName, this.startMark, endMarkName);
+			window.performance.measure(this.measureName, this.view.startMark, endMarkName);
 		}
 
 		this.props.onMeasure(this.measureName);
