@@ -9,6 +9,11 @@ let _onMeasure;
 let _view;
 
 const UXCapture = {
+	_clearMarksAndMeasures: () => {
+		window.performance.clearMarks();
+		window.performance.clearMeasures();
+	},
+
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
 	 * Also resets the view (supposed to be called once per page anyway)
@@ -58,8 +63,7 @@ const UXCapture = {
 	},
 
 	startTransition: () => {
-		window.performance.clearMarks();
-		window.performance.clearMeasures();
+		UXCapture._clearMarksAndMeasures();
 
 		_view.startTransition();
 	},

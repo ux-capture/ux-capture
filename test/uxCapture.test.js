@@ -38,6 +38,8 @@ describe('UXCapture', () => {
 			onMeasure.mockClear();
 
 			UXCapture.create({ onMark, onMeasure });
+
+			UXCapture._clearMarksAndMeasures();
 		});
 
 		it('must create dependencies between marks and measures', () => {
@@ -88,6 +90,8 @@ describe('UXCapture', () => {
 			onMeasure.mockClear();
 
 			UXCapture.create({ onMark, onMeasure });
+
+			UXCapture._clearMarksAndMeasures();
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -170,6 +174,8 @@ describe('UXCapture', () => {
 					marks: [MOCK_MARK_MULTIPLE],
 				},
 			]);
+
+			UXCapture._clearMarksAndMeasures();
 		});
 
 		it('must mark user timing api timeline', () => {
@@ -241,6 +247,8 @@ describe('UXCapture', () => {
 					.find(mark => mark.name === MOCK_MARK_1_1)
 			).toBeTruthy();
 
+			UXCapture.mark(MOCK_MARK_1_2, false);
+
 			expect(
 				window.performance
 					.getEntriesByType('measure')
@@ -256,6 +264,8 @@ describe('UXCapture', () => {
 			onMeasure.mockClear();
 
 			UXCapture.create({ onMark, onMeasure });
+
+			UXCapture._clearMarksAndMeasures();
 		});
 
 		it('shoulw work only on interactive views', () => {
