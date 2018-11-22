@@ -7,5 +7,5 @@ export default class PageView extends View {
 	 *
 	 * See: https://github.com/w3c/user-timing/issues/22
 	 */
-	startMark = 'navigationStart';
+	startMarkName = 'navigationStart';
 }

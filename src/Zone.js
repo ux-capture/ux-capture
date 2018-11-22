@@ -43,7 +43,7 @@ export default class Zone extends UXBase {
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
 	measure(endMarkName) {
-		if (!this.view.startMark) {
+		if (!this.view.startMarkName) {
 			throw new Error(
 				`[UX Capture] Call to measure a zone in the view before view was started using startTransition() method.
 				Measure: ${this.measureName} Mark: ${endMarkName}`
@@ -54,7 +54,11 @@ export default class Zone extends UXBase {
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
-			window.performance.measure(this.measureName, this.view.startMark, endMarkName);
+			window.performance.measure(
+				this.measureName,
+				this.view.startMarkName,
+				endMarkName
+			);
 		}
 
 		this.props.onMeasure(this.measureName);

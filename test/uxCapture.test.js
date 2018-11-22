@@ -293,5 +293,74 @@ describe('UXCapture', () => {
 				UXCapture.startTransition();
 			}).not.toThrow();
 		});
+
+		it('should throw an error if measure is to be recorded before view has started', () => {
+			// page view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			// interactive view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			expect(() => {
+				// mark 1 in page view
+				UXCapture.mark(MOCK_MARK_1_1);
+				UXCapture.mark(MOCK_MARK_1_2);
+			}).toThrow();
+		});
+
+		it('must keep only one mark after interactive view started transition', () => {
+			// page view 1
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+				{
+					name: MOCK_MEASURE_2,
+					marks: [MOCK_MARK_MULTIPLE],
+				},
+				{
+					name: MOCK_MEASURE_3,
+					marks: [MOCK_MARK_MULTIPLE],
+				},
+			]);
+
+			// mark 1 in page view
+			UXCapture.mark(MOCK_MARK_1_1);
+			UXCapture.mark(MOCK_MARK_1_2);
+
+			expect(window.performance.getEntriesByType('mark').length).toBe(2);
+			expect(window.performance.getEntriesByType('measure').length).toBe(1);
+
+			// interactive view 1
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			// starting transition in interactive view 1
+			UXCapture.startTransition();
+
+			// mark 1 in interactive view
+			UXCapture.mark(MOCK_MARK_1_1);
+
+			expect(
+				window.performance
+					.getEntriesByType('mark')
+					.filter(mark => mark.name === MOCK_MARK_1_1).length
+			).toBe(1);
+		});
 	});
 });
