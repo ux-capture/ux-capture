@@ -30,16 +30,4 @@ export default class View extends UXBase {
 			...zoneConfig,
 		});
 	}
-
-	startTransition() {
-		window.performance
-			.getEntriesByType('mark')
-			.filter(mark => mark.name.startsWith('ux-'))
-			.forEach(mark => window.performance.clearMarks(mark));
-
-		window.performance
-			.getEntriesByType('measure')
-			.filter(measure => measure.name.startsWith('ux-'))
-			.forEach(measure => window.performance.clearMeasures(measure));
-	}
 }

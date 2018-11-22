@@ -37,10 +37,7 @@ describe('UXCapture', () => {
 			onMark.mockClear();
 			onMeasure.mockClear();
 
-			UXCapture.create({
-				onMark,
-				onMeasure,
-			});
+			UXCapture.create({ onMark, onMeasure });
 		});
 
 		it('must create dependencies between marks and measures', () => {
@@ -90,10 +87,7 @@ describe('UXCapture', () => {
 			onMark.mockClear();
 			onMeasure.mockClear();
 
-			UXCapture.create({
-				onMark,
-				onMeasure,
-			});
+			UXCapture.create({ onMark, onMeasure });
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -156,20 +150,12 @@ describe('UXCapture', () => {
 	});
 
 	describe('mark', () => {
-		beforeAll(() => {
-			UXCapture.create({ onMark, onMeasure });
-		});
-
 		beforeEach(() => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
-			UXCapture.create({
-				onMark,
-				onMeasure,
-			});
-
+			UXCapture.create({ onMark, onMeasure });
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
@@ -260,6 +246,42 @@ describe('UXCapture', () => {
 					.getEntriesByType('measure')
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
+		});
+	});
+
+	describe('startTransition', () => {
+		beforeEach(() => {
+			ExpectedMark.clearExpectedMarks();
+			onMark.mockClear();
+			onMeasure.mockClear();
+
+			UXCapture.create({ onMark, onMeasure });
+		});
+
+		it('shoulw work only on interactive views', () => {
+			// page view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			expect(() => {
+				UXCapture.startTransition();
+			}).toThrow();
+
+			// interactive view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			expect(() => {
+				UXCapture.startTransition();
+			}).not.toThrow();
 		});
 	});
 });

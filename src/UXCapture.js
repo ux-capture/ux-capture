@@ -58,6 +58,9 @@ const UXCapture = {
 	},
 
 	startTransition: () => {
+		window.performance.clearMarks();
+		window.performance.clearMeasures();
+
 		_view.startTransition();
 	},
 

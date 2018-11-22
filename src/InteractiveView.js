@@ -14,7 +14,5 @@ export default class InteractiveView extends View {
 
 		// last one is the one we just created above, keep it
 		this.startMark = allStartMarks[allStartMarks.length - 1];
-
-		super.startTransition();
 	}
 }
