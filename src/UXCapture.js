@@ -1,17 +1,34 @@
 import ExpectedMark from './ExpectedMark';
-import PageView from './PageView';
-import InteractiveView from './InteractiveView';
+import View from './View';
 
 const NOOP = () => {};
+/**
+ * In page view mode, use special type of mark that is going to be looked up in
+ * performance.navigation.timing.navigationStart instead of PerformanceTimeline
+ *
+ * See: https://github.com/w3c/user-timing/issues/22
+ */
+const NAVIGATION_START_MARK_NAME = 'navigationStart';
+/**
+ * Used to mark start of interactive view
+ */
+const INTERACTIVE_TRANSITION_START_MARK_NAME = 'transitionStart';
 
 let _onMark;
 let _onMeasure;
 let _view;
+let _startMarkName = NAVIGATION_START_MARK_NAME;
 
 const UXCapture = {
 	_clearMarksAndMeasures: () => {
-		window.performance.clearMarks();
-		window.performance.clearMeasures();
+		if (
+			typeof window.performance !== 'undefined' &&
+			typeof window.performance.clearMarks !== 'undefined' &&
+			typeof window.performance.clearMeasures !== 'undefined'
+		) {
+			window.performance.clearMarks();
+			window.performance.clearMeasures();
+		}
 	},
 
 	/**
@@ -23,7 +40,8 @@ const UXCapture = {
 	create: config => {
 		_onMark = config.onMark || NOOP;
 		_onMeasure = config.onMeasure || NOOP;
-		_view = null;
+		_view = undefined;
+		_startMarkName = NAVIGATION_START_MARK_NAME;
 	},
 
 	/**
@@ -32,18 +50,18 @@ const UXCapture = {
 	 * @param {object} zoneConfigs
 	 */
 	startView: zoneConfigs => {
-		const viewProps = {
+		if (_view) {
+			throw new Error(
+				'[UX Capture] Application should call UXCapture.startTransition() before starting new view'
+			);
+		}
+
+		_view = new View({
 			onMark: _onMark,
 			onMeasure: _onMeasure,
+			startMarkName: _startMarkName,
 			zoneConfigs,
-		};
-
-		// if we never had views before, it means we are in page view mode
-		if (_view) {
-			_view = new InteractiveView(viewProps);
-		} else {
-			_view = new PageView(viewProps);
-		}
+		});
 	},
 
 	/**
@@ -65,7 +83,18 @@ const UXCapture = {
 	startTransition: () => {
 		UXCapture._clearMarksAndMeasures();
 
-		_view.startTransition();
+		if (
+			typeof window.performance !== 'undefined' &&
+			typeof window.performance.mark !== 'undefined'
+		) {
+			window.performance.mark(INTERACTIVE_TRANSITION_START_MARK_NAME);
+		}
+		_startMarkName = INTERACTIVE_TRANSITION_START_MARK_NAME;
+
+		// reset the view until it's defined again using startView();
+		_view = undefined;
+
+		ExpectedMark.clearExpectedMarks();
 	},
 
 	/**

@@ -78,6 +78,16 @@ describe('UXCapture', () => {
 
 			expect(onMeasure).not.toHaveBeenCalled();
 		});
+
+		it('should throw an error if called more than once, but without startTransition', () => {
+			UXCapture.startView([]);
+
+			expect(() => {
+				UXCapture.startView([]);
+			}).toThrowError(
+				'[UX Capture] Application should call UXCapture.startTransition() before starting new view'
+			);
+		});
 	});
 
 	describe('create', () => {
@@ -85,10 +95,6 @@ describe('UXCapture', () => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
-
-			UXCapture.create({ onMark, onMeasure });
-
-			UXCapture._clearMarksAndMeasures();
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -274,7 +280,7 @@ describe('UXCapture', () => {
 			UXCapture._clearMarksAndMeasures();
 		});
 
-		it('shoulw work only on interactive views', () => {
+		it('should not record marks if it is to be recorded after transition started but view has not', () => {
 			// page view
 			UXCapture.startView([
 				{
@@ -283,49 +289,23 @@ describe('UXCapture', () => {
 				},
 			]);
 
-			expect(() => {
-				UXCapture.startTransition();
-			}).toThrow();
+			// start transition to interactive view
+			UXCapture.startTransition();
 
-			// interactive view
-			UXCapture.startView([
-				{
-					name: MOCK_MEASURE_1,
-					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
-				},
-			]);
+			/**
+			 * deliberatly not calling startView() again
+			 */
 
-			expect(() => {
-				UXCapture.startTransition();
-			}).not.toThrow();
-		});
-
-		it('should throw an error if measure is to be recorded before view has started', () => {
-			// page view
-			UXCapture.startView([
-				{
-					name: MOCK_MEASURE_1,
-					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
-				},
-			]);
-
-			// interactive view
-			UXCapture.startView([
-				{
-					name: MOCK_MEASURE_1,
-					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
-				},
-			]);
-
-			expect(() => {
-				// mark 1 in page view
-				UXCapture.mark(MOCK_MARK_1_1);
-				UXCapture.mark(MOCK_MARK_1_2);
-			}).toThrow();
+			UXCapture.mark(MOCK_MARK_1_1);
+			expect(
+				window.performance
+					.getEntriesByType('mark')
+					.filter(mark => mark.name === MOCK_MARK_1_1).length
+			).toBe(0);
 		});
 
 		it('must keep only one mark after interactive view started transition', () => {
-			// page view 1
+			// page view
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
@@ -348,16 +328,18 @@ describe('UXCapture', () => {
 			expect(window.performance.getEntriesByType('mark').length).toBe(2);
 			expect(window.performance.getEntriesByType('measure').length).toBe(1);
 
-			// interactive view 1
+			// starting transition in interactive view
+			UXCapture.startTransition();
+
+			expect(window.performance.getEntriesByType('mark').length).toBe(1);
+
+			// interactive view
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
 					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
 				},
 			]);
-
-			// starting transition in interactive view 1
-			UXCapture.startTransition();
 
 			// mark 1 in interactive view
 			UXCapture.mark(MOCK_MARK_1_1);
