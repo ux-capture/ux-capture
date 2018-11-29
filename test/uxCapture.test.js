@@ -1,5 +1,4 @@
 import UXCapture, { VIEW_OVERRIDE_ERROR_MESSAGE } from '../src/UXCapture';
-import ExpectedMark from '../src/ExpectedMark';
 
 // UserTiming polyfill to override broken jsdom performance API
 window.performance = require('usertiming');
@@ -34,7 +33,6 @@ describe('UXCapture', () => {
 		});
 
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
@@ -92,9 +90,10 @@ describe('UXCapture', () => {
 
 	describe('create', () => {
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
+
+			UXCapture.startTransition();
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -162,7 +161,6 @@ describe('UXCapture', () => {
 		});
 
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
@@ -269,7 +267,6 @@ describe('UXCapture', () => {
 		});
 
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 

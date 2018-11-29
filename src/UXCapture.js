@@ -32,6 +32,8 @@ const UXCapture = {
 			window.performance.clearMarks();
 			window.performance.clearMeasures();
 		}
+
+		ExpectedMark.clearExpectedMarksMap();
 	},
 
 	/**
@@ -93,8 +95,6 @@ const UXCapture = {
 
 		// reset the view until it's defined again using startView();
 		_view = undefined;
-
-		ExpectedMark.clearExpectedMarks();
 	},
 
 	/**

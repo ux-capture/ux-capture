@@ -31,7 +31,7 @@ export default class ExpectedMark extends UXBase {
 		return _expectedMarks[name];
 	}
 
-	static clearExpectedMarks() {
+	static clearExpectedMarksMap() {
 		_expectedMarks = {};
 	}
 
