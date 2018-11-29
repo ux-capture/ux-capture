@@ -36,14 +36,13 @@ const UXCapture = {
 
 	/**
 	 * Sets `onMark` and `onMeasure` callbacks on UXCapture singleton
-	 * Also resets the view (supposed to be called once per page anyway)
+	 * and sets start mark name for page view mode
 	 *
 	 * @param {object} config
 	 */
 	create: config => {
 		_onMark = config.onMark || NOOP;
 		_onMeasure = config.onMeasure || NOOP;
-		_view = undefined;
 		_startMarkName = NAVIGATION_START_MARK_NAME;
 	},
 
