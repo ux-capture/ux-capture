@@ -18,9 +18,6 @@ export default class Zone extends UXBase {
 	// Name used for UserTiming measures
 	measureName = this.props.name;
 
-	// Name of the mark used a starting point of the measure
-	startMarkName = this.props.startMarkName;
-
 	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
@@ -46,7 +43,11 @@ export default class Zone extends UXBase {
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
-			window.performance.measure(this.measureName, this.startMarkName, endMarkName);
+			window.performance.measure(
+				this.measureName,
+				this.props.startMarkName,
+				endMarkName
+			);
 		}
 
 		this.props.onMeasure(this.measureName);

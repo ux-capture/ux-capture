@@ -1,4 +1,4 @@
-import UXCapture from '../src/UXCapture';
+import UXCapture, { VIEW_OVERRIDE_ERROR_MESSAGE } from '../src/UXCapture';
 import ExpectedMark from '../src/ExpectedMark';
 
 // UserTiming polyfill to override broken jsdom performance API
@@ -29,14 +29,16 @@ const onMeasure = jest.fn();
 
 describe('UXCapture', () => {
 	describe('startView', () => {
+		beforeAll(() => {
+			UXCapture.create({ onMark, onMeasure });
+		});
+
 		beforeEach(() => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
-			UXCapture.create({ onMark, onMeasure });
-
-			UXCapture._clearMarksAndMeasures();
+			UXCapture.startTransition();
 		});
 
 		it('must create dependencies between marks and measures', () => {
@@ -84,9 +86,7 @@ describe('UXCapture', () => {
 
 			expect(() => {
 				UXCapture.startView([]);
-			}).toThrowError(
-				'[UX Capture] Application should call UXCapture.startTransition() before starting new view'
-			);
+			}).toThrowError(VIEW_OVERRIDE_ERROR_MESSAGE);
 		});
 	});
 
@@ -157,12 +157,16 @@ describe('UXCapture', () => {
 	});
 
 	describe('mark', () => {
+		beforeAll(() => {
+			UXCapture.create({ onMark, onMeasure });
+		});
+
 		beforeEach(() => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
-			UXCapture.create({ onMark, onMeasure });
+			UXCapture.startTransition();
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
@@ -177,8 +181,6 @@ describe('UXCapture', () => {
 					marks: [MOCK_MARK_MULTIPLE],
 				},
 			]);
-
-			UXCapture._clearMarksAndMeasures();
 		});
 
 		it('must mark user timing api timeline', () => {
@@ -200,14 +202,6 @@ describe('UXCapture', () => {
 					.getEntriesByType('measure')
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
-		});
-
-		it('should not thrown an exception if console.timeStamp is not available', () => {
-			// console.timeStamp is not available in jsdom which Jest uses for testing
-			expect(() => {
-				// mark 1 in page view
-				UXCapture.mark(MOCK_MARK_1_1);
-			}).not.toThrow();
 		});
 
 		it("should fire a console.timeStamp if it's available", () => {
@@ -270,14 +264,16 @@ describe('UXCapture', () => {
 	});
 
 	describe('startTransition', () => {
+		beforeAll(() => {
+			UXCapture.create({ onMark, onMeasure });
+		});
+
 		beforeEach(() => {
 			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
-			UXCapture.create({ onMark, onMeasure });
-
-			UXCapture._clearMarksAndMeasures();
+			UXCapture.startTransition();
 		});
 
 		it('should not record marks if it is to be recorded after transition started but view has not', () => {
@@ -324,9 +320,6 @@ describe('UXCapture', () => {
 			// mark 1 in page view
 			UXCapture.mark(MOCK_MARK_1_1);
 			UXCapture.mark(MOCK_MARK_1_2);
-
-			expect(window.performance.getEntriesByType('mark').length).toBe(2);
-			expect(window.performance.getEntriesByType('measure').length).toBe(1);
 
 			// starting transition in interactive view
 			UXCapture.startTransition();
