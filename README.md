@@ -76,7 +76,7 @@ the `<head>`.
 
 ```jsx
     <script>
-        window.UXCapture.create({
+        UXCapture.create({
             onMark: name => console.log('marked', name),
             onMeasure: name => console.log('measured', name),
         });
@@ -97,7 +97,7 @@ provide a custom method of recording the results.
 
 ```jsx
     <script>
-        window.UXCapture.startView([
+        UXCapture.startView([
             {
                 name: 'ux-destination-verified',
                 marks: ['ux-1', 'ux-2']
@@ -110,9 +110,7 @@ provide a custom method of recording the results.
     </script>
 ```
 
-**NOTE**: `UXCapture.startView()` will always replace any previously-started
-view, so be careful to only call it once, before any of the marks are triggered
-within the view markup.
+**NOTE**: `UXCapture.startView()` will throw an error if called while previous view is active, so be careful to only call it once, before any of the marks are triggered within the view markup.
 
 Each individual zone configuration object contains of zone's `name` that will be
 used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event name strings that zone groups together,
@@ -125,10 +123,26 @@ each individual name will be used when recording corresponding events as [W3C Us
    UXCapture.startView/updateView.
 
 ```jsx
-    <script>window.UXCapture.mark('ux-1')</script>
-    <img onload="window.UXCapture.mark('ux-2')" … />
+    <script>UXCapture.mark('ux-1')</script>
+    <img onload="UXCapture.mark('ux-2')" … />
     ...
 ```
+
+6. In the client app code that is called for interactive/soft/dynamic navigation, call `UXCapture.startTransition()` immediately when user triggers transition to indicate the start of the view.
+
+This call does not need to be in the markup (and generally shouldn’t be).
+
+```jsx
+    history.push(‘/foo’)
+    window.UXCapture.startTransition();
+
+    // or, a little less controlled:
+    window.onpopstate = window.UXCapture.startTransition
+```
+
+**NOTE**: For interactive views, all `UXCapture.startView()` calls must be preceded by a `UXCapture.startTransition()` call which deactivates previous view.
+
+7. Repeat from step 3.
 
 ### Sample page
 
