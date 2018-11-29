@@ -26,6 +26,7 @@ export default class View extends UXBase {
 		return new Zone({
 			onMark: this.props.onMark,
 			onMeasure: this.props.onMeasure,
+			startMarkName: this.props.startMarkName,
 			...zoneConfig,
 		});
 	}

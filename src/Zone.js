@@ -10,15 +10,13 @@ import UXBase from './UXBase';
  * {
  *  name: "ux-destination-verified",
  *  marks: ["ux-image-online-logo", "ux-image-inline-logo"]
- *  onMeasure: measureName => {}
+ *  onMeasure: measureName => {},
  *  onMark: markName => {}
  * }
  */
 export default class Zone extends UXBase {
 	// Name used for UserTiming measures
 	measureName = this.props.name;
-
-	startMark = 'navigationStart';
 
 	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
@@ -45,7 +43,11 @@ export default class Zone extends UXBase {
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
-			window.performance.measure(this.measureName, this.startMark, endMarkName);
+			window.performance.measure(
+				this.measureName,
+				this.props.startMarkName,
+				endMarkName
+			);
 		}
 
 		this.props.onMeasure(this.measureName);

@@ -1,5 +1,4 @@
-import UXCapture from '../src/UXCapture';
-import ExpectedMark from '../src/ExpectedMark';
+import UXCapture, { VIEW_OVERRIDE_ERROR_MESSAGE } from '../src/UXCapture';
 
 // UserTiming polyfill to override broken jsdom performance API
 window.performance = require('usertiming');
@@ -13,9 +12,6 @@ window.performance.timing = {
 // uses rAF->setTimeout->mark.record() chain
 window.requestAnimationFrame = jest.fn(cb => cb());
 window.setTimeout = jest.fn(cb => cb());
-
-// using console.timeStamp for testing only
-console.timeStamp = jest.fn();
 
 const MOCK_MEASURE_1 = 'ux-mock-measure_1';
 const MOCK_MARK_1_1 = 'ux-mock-mark_1_1';
@@ -33,16 +29,14 @@ const onMeasure = jest.fn();
 describe('UXCapture', () => {
 	describe('startView', () => {
 		beforeAll(() => {
-			UXCapture.create({
-				onMark,
-				onMeasure,
-			});
+			UXCapture.create({ onMark, onMeasure });
 		});
 
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
+
+			UXCapture.startTransition();
 		});
 
 		it('must create dependencies between marks and measures', () => {
@@ -84,13 +78,22 @@ describe('UXCapture', () => {
 
 			expect(onMeasure).not.toHaveBeenCalled();
 		});
+
+		it('should throw an error if called more than once, but without startTransition', () => {
+			UXCapture.startView([]);
+
+			expect(() => {
+				UXCapture.startView([]);
+			}).toThrowError(VIEW_OVERRIDE_ERROR_MESSAGE);
+		});
 	});
 
 	describe('create', () => {
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
+
+			UXCapture.startTransition();
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -158,10 +161,10 @@ describe('UXCapture', () => {
 		});
 
 		beforeEach(() => {
-			ExpectedMark.clearExpectedMarks();
 			onMark.mockClear();
 			onMeasure.mockClear();
 
+			UXCapture.startTransition();
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
@@ -200,7 +203,8 @@ describe('UXCapture', () => {
 		});
 
 		it("should fire a console.timeStamp if it's available", () => {
-			console.timeStamp.mockClear();
+			// define console.timeStamp for testing only
+			console.timeStamp = jest.fn();
 
 			UXCapture.mark(MOCK_MARK_1_1);
 
@@ -247,11 +251,94 @@ describe('UXCapture', () => {
 					.find(mark => mark.name === MOCK_MARK_1_1)
 			).toBeTruthy();
 
+			UXCapture.mark(MOCK_MARK_1_2, false);
+
 			expect(
 				window.performance
 					.getEntriesByType('measure')
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
+		});
+	});
+
+	describe('startTransition', () => {
+		beforeAll(() => {
+			UXCapture.create({ onMark, onMeasure });
+		});
+
+		beforeEach(() => {
+			onMark.mockClear();
+			onMeasure.mockClear();
+
+			UXCapture.startTransition();
+		});
+
+		it('should not record marks if it is to be recorded after transition started but view has not', () => {
+			// page view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			// start transition to interactive view
+			UXCapture.startTransition();
+
+			/**
+			 * deliberatly not calling startView() again
+			 */
+
+			UXCapture.mark(MOCK_MARK_1_1);
+			expect(
+				window.performance
+					.getEntriesByType('mark')
+					.filter(mark => mark.name === MOCK_MARK_1_1).length
+			).toBe(0);
+		});
+
+		it('must keep only one mark after interactive view started transition', () => {
+			// page view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+				{
+					name: MOCK_MEASURE_2,
+					marks: [MOCK_MARK_MULTIPLE],
+				},
+				{
+					name: MOCK_MEASURE_3,
+					marks: [MOCK_MARK_MULTIPLE],
+				},
+			]);
+
+			// mark 1 in page view
+			UXCapture.mark(MOCK_MARK_1_1);
+			UXCapture.mark(MOCK_MARK_1_2);
+
+			// starting transition in interactive view
+			UXCapture.startTransition();
+
+			expect(window.performance.getEntriesByType('mark').length).toBe(1);
+
+			// interactive view
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			// mark 1 in interactive view
+			UXCapture.mark(MOCK_MARK_1_1);
+
+			expect(
+				window.performance
+					.getEntriesByType('mark')
+					.filter(mark => mark.name === MOCK_MARK_1_1).length
+			).toBe(1);
 		});
 	});
 });
