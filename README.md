@@ -11,6 +11,7 @@ metrics.
   - [Individual Element Instrumentation](#individual-element-instrumentation)
     - [Image elements](#image-elements)
     - [Text without custom font](#text-without-custom-font)
+    - [Text with custom font](#text-with-custom-font)
     - [Event handler attachment](#event-handler-attachment)
   - [Aggregating component metrics](#aggregating-component-metrics)
   - [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
@@ -174,8 +175,8 @@ the image itself and another within inline `<script>` tag directly after the
 image.
 
 ```jsx
-<img src="hero.jpg" onload="UX.mark('ux-image-onload-logo')">
-<script>UX.mark('ux-image-inline-logo')</script>
+<img src="hero.jpg" onload="UXCapture.mark('ux-image-onload-logo')">
+<script>UXCapture.mark('ux-image-inline-logo')</script>
 ```
 
 Element aggregation algorythm: latest of the two (`inline` and `onload`)
@@ -191,7 +192,8 @@ Text that does not use a custom font can be instrumented by supplying one inline
 `<script>` tag directly after the text:
 
 ```jsx
-<script>UX.mark("ux-text-headline");</script>
+<h1>Headline</h1>
+<script>UXCapture.mark("ux-text-headline");</script>
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
@@ -199,6 +201,36 @@ Element aggregation algorythm: no aggregation, just one event.
 References:
 
 - Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
+
+#### Text with custom font
+
+Many pages use custom fonts to display text and often experience Flash of Invisible Text or [FOIT](https://www.zachleat.com/web/fout-vs-foit/). It is important to take into account time to load custom fonts. You can do it using font loaders provided by [using event tracking in Web Font Loader](https://github.com/typekit/webfontloader#events) used by Typekit and Google.
+
+You can inline the library in HTML and then use the following code to fire a mark when font loaded.
+
+```jsx
+<script>
+WebFont.load({
+    custom: {
+        families: ["Montserrat:n4"]
+    },
+    active: function() {
+        UXCapture.mark("ux-font-montserrat-normal");
+    }
+});
+</script>
+```
+
+**NOTE:** See [Font Variation Description](https://github.com/typekit/fvd) format used by Web Font Loader for specifying particular font variation to track.
+
+Similarly to tracking text without custom font, inject a mark inline after text that uses custom font in question.
+
+```jsx
+<h2>Title with font</h2>
+<script>UXCapture.mark("ux-text-title-using-montserrat-normal");</script>
+```
+
+Element aggregation algorythm: latest of the two (`font` and `text`) measurements.
 
 #### Event handler attachment
 
@@ -210,7 +242,7 @@ include the call right after handler attachment in JavaScript code.
 ```jsx
 var button_element = document.getElementById('mybutton');
 button_element.addEventListener('click', myActionHandler);
-UX.mark('ux-handler-myaction');
+UXCapture.mark('ux-handler-myaction');
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
