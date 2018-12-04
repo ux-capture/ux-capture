@@ -19,19 +19,39 @@ export default class Zone extends UXBase {
 	measureName = this.props.name;
 
 	// Create a new `ExpectedMark` for each mark
-	marks = this.props.marks.map(markName => {
-		const mark = ExpectedMark.create(markName);
+	marks = this.props.elements
+		? // new elements array on zone object
+		  this.props.elements
+				.map(element =>
+					element.marks.map(markName => {
+						const mark = ExpectedMark.create(markName);
 
-		mark.onComplete(completeMark => {
-			// pass the event upstream
-			this.props.onMark(markName);
-			if (this.marks.every(m => m.marked)) {
-				this.measure(markName);
-			}
-		});
+						mark.onComplete(completeMark => {
+							// pass the event upstream
+							this.props.onMark(markName);
+							if (this.marks.every(m => m.marked)) {
+								this.measure(markName);
+							}
+						});
 
-		return mark;
-	});
+						return mark;
+					})
+				)
+				.flat()
+		: // legacy with direct marks array on zone object
+		  this.props.marks.map(markName => {
+				const mark = ExpectedMark.create(markName);
+
+				mark.onComplete(completeMark => {
+					// pass the event upstream
+					this.props.onMark(markName);
+					if (this.marks.every(m => m.marked)) {
+						this.measure(markName);
+					}
+				});
+
+				return mark;
+		  });
 
 	/**
 	 * Records measure on Performance Timeline and calls onMeasure callback
