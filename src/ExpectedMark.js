@@ -31,8 +31,11 @@ export default class ExpectedMark extends UXBase {
 		return _expectedMarks[name];
 	}
 
-	static clearExpectedMarksMap() {
-		_expectedMarks = {};
+	static destroy(name) {
+		if (typeof window.performance !== 'undefined') {	
+			window.performance.clearMarks(name);
+		}
+		delete _expectedMarks[name];
 	}
 
 	// registers zone callback

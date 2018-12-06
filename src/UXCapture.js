@@ -23,17 +23,8 @@ let _view;
 let _startMarkName = NAVIGATION_START_MARK_NAME;
 
 const UXCapture = {
-	_clearMarksAndMeasures: () => {
-		if (
-			typeof window.performance !== 'undefined' &&
-			typeof window.performance.clearMarks !== 'undefined' &&
-			typeof window.performance.clearMeasures !== 'undefined'
-		) {
-			window.performance.clearMarks();
-			window.performance.clearMeasures();
-		}
-
-		ExpectedMark.clearExpectedMarksMap();
+	clearMark: (name) => {
+		ExpectedMark.destroy(name)
 	},
 
 	/**
@@ -82,8 +73,16 @@ const UXCapture = {
 		_view.update(zoneConfigs);
 	},
 
+	/*
+	 * Start view transition will end/destroy current view and set a new 'start mark'
+	 * Existing marks are _not_ removed automatically (they may outlive the view).
+	 * If required by the client, existing marks must be removed declaratively with
+	 * `UXCapture.clearMark(name)`
+	 */
 	startTransition: () => {
-		UXCapture._clearMarksAndMeasures();
+		// reset the view until it's defined again using startView();
+		this.view.destroy();
+		_view = undefined;
 
 		if (
 			typeof window.performance !== 'undefined' &&
@@ -93,8 +92,6 @@ const UXCapture = {
 		}
 		_startMarkName = INTERACTIVE_TRANSITION_START_MARK_NAME;
 
-		// reset the view until it's defined again using startView();
-		_view = undefined;
 	},
 
 	/**

@@ -15,9 +15,6 @@ import UXBase from './UXBase';
  * }
  */
 export default class Zone extends UXBase {
-	// Name used for UserTiming measures
-	measureName = this.props.name;
-
 	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
@@ -39,17 +36,35 @@ export default class Zone extends UXBase {
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
 	measure(endMarkName) {
+		const { name, startMarkName, onMeasure } = this.props;
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.measure !== 'undefined'
 		) {
+			// check if 'end mark' was recorded before start mark - if so, end should
+			// be same as start (measured time is 0)
+			const endMark = window.performance.getEntriesByName(endMarkName, 'mark');
+			const startMark = window.performance.getEntriesByName(startMarkName, 'mark');
+			if (endMark.startTime < startMark.startTime) {
+				endMarkName = startMarkName;
+			}
 			window.performance.measure(
-				this.measureName,
-				this.props.startMarkName,
+				name,
+				startMarkName,
 				endMarkName
 			);
 		}
 
-		this.props.onMeasure(this.measureName);
+		onMeasure(name);
+	}
+	destroy() {
+		if (
+			typeof window.performance !== 'undefined' &&
+			typeof window.performance.measure !== 'undefined'
+		) {
+			window.performance.clearMeasures(this.props.name);
+		}
+		// don't destroy the ExpectedMarks, because they may outlive a View/Zone, just remove reference
+		this.marks = null; 
 	}
 }
