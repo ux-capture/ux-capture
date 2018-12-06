@@ -65,31 +65,33 @@ export default class ExpectedMark extends UXBase {
 	}
 
 	record = () => {
-		if (
-			typeof window.performance !== 'undefined' &&
-			typeof window.performance.mark !== 'undefined'
-		) {
-			// record the mark using W3C User Timing API
-			window.performance.mark(this.props.name);
-		}
+		if (!this.marked) {
+			if (
+				typeof window.performance !== 'undefined' &&
+				typeof window.performance.mark !== 'undefined'
+			) {
+				// record the mark using W3C User Timing API
+				window.performance.mark(this.props.name);
+			}
 
-		/**
-		 * Report same mark on Chrome/Firefox timeline
-		 *
-		 * keep in mind, these timestamps are counted from timeline recording start
-		 * while UserTiming marks are counted from navigationStart event
-		 * however visually, they all will be offset by the same amount of time and align vertically on the charts
-		 *
-		 * (we'd provide a helper to highlight discrepancy, but unfortunately,
-		 * there is no way to know when in timeline did navigationStart event occured)
-		 */
-		if (
-			typeof window.console !== 'undefined' &&
-			typeof window.console.timeStamp !== 'undefined'
-		) {
-			window.console.timeStamp(this.props.name);
+			/**
+			 * Report same mark on Chrome/Firefox timeline
+			 *
+			 * keep in mind, these timestamps are counted from timeline recording start
+			 * while UserTiming marks are counted from navigationStart event
+			 * however visually, they all will be offset by the same amount of time and align vertically on the charts
+			 *
+			 * (we'd provide a helper to highlight discrepancy, but unfortunately,
+			 * there is no way to know when in timeline did navigationStart event occured)
+			 */
+			if (
+				typeof window.console !== 'undefined' &&
+				typeof window.console.timeStamp !== 'undefined'
+			) {
+				window.console.timeStamp(this.props.name);
+			}
+			this.marked = true;
 		}
-		this.marked = true;
 
 		// call all registered zone callbacks
 		this.onMarkListeners.forEach(listener => listener(this));
