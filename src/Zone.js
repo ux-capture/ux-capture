@@ -30,12 +30,20 @@ export default class Zone extends UXBase {
 		return mark;
 	});
 
+	// 'state' of the measure that indicates whether it has been recorded
+	measured = false;
+
 	/**
 	 * Records measure on Performance Timeline and calls onMeasure callback
 	 *
 	 * @param {ExpectedMark} lastMark last mark that triggered completion
 	 */
 	measure(endMarkName) {
+		if (this.measured) {
+			// `measure` only allowed to be called once per zone instance
+			return;
+		}
+
 		const { name, startMarkName, onMeasure } = this.props;
 		if (
 			typeof window.performance !== 'undefined' &&
@@ -55,6 +63,7 @@ export default class Zone extends UXBase {
 			);
 		}
 
+		this.measured = true;
 		onMeasure(name);
 	}
 	destroy() {
