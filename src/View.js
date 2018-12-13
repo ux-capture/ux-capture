@@ -22,7 +22,7 @@ export default class View extends UXBase {
 		return zoneConfigs.map(zoneConfig => this.createZone(zoneConfig));
 	}
 	destroy() {
-		this.expectedZones.forEach(z => z.destroy())
+		this.expectedZones.forEach(z => z.destroy());
 		this.expectedZones = null;
 	}
 

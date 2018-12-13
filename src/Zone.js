@@ -40,7 +40,7 @@ export default class Zone extends UXBase {
 	 */
 	measure(endMarkName) {
 		if (this.measured) {
-			// `measure` only allowed to be called once per zone instance
+			// only need to respond to first call of zone.measure - subsequent calls allowed but ignored
 			return;
 		}
 
