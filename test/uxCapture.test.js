@@ -1,5 +1,6 @@
 import UXCapture, { VIEW_OVERRIDE_ERROR_MESSAGE } from '../src/UXCapture';
 import View from '../src/View';
+import ExpectedMark from '../src/ExpectedMark';
 
 // UserTiming polyfill to override broken jsdom performance API
 window.performance = require('usertiming');
@@ -153,6 +154,15 @@ describe('UXCapture', () => {
 			UXCapture.mark(MOCK_MARK_1_1);
 
 			expect(onMeasure).toHaveBeenCalledWith(MOCK_MEASURE_1);
+		});
+	});
+
+	describe('clearMarks', () => {
+		it('calls ExpectedMark.destroy', () => {
+			spyOn(ExpectedMark, 'destroy');
+			const arg = 'foo';
+			UXCapture.clearMarks(arg);
+			expect(ExpectedMark.destroy).toHaveBeenCalledWith(arg);
 		});
 	});
 
