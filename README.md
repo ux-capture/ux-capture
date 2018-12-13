@@ -28,24 +28,31 @@ rendering instrumentation of paint events in the browser. These include:
 - Group together multiple display events for elements of a web page that
   represent the same design/product components.
 - Group together multiple components to reflect various phases of page load
-- Collect captured events and [_UX speed metrics_](#UX_speed_metrics 'metrics representing speed of the human-computer interface as it is perceived by the user') for all users using
-  RUM (Real User Measurement) tools.
+- Collect captured events and [_UX speed metrics_](#UX_speed_metrics 'metrics
+representing speed of the human-computer interface as it is perceived by the
+user') for all users using RUM (Real User Measurement) tools.
 - Calibrate in-browser instrumentation by recording page load video using
-  synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics 'metrics representing speed of the human-computer interface as it is perceived by the user')
-- Create uniform instrumentation for both [_page views_](#page_view 'view resulting in full browser navigation and re-creation of browser DOM') and [_interactive views_](#interactive_view 'view resulting in partial updates of browser DOM'),
-  to be usable with any back-end and front-end framework
-- Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30) that aims
-  at adding instrumentation directly into browser
+  synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics 'metrics representing speed of the human-computer interface as it is perceived
+by the user')
+- Create uniform instrumentation for both [_page views_](#page_view 'view
+resulting in full browser navigation and re-creation of browser DOM') and
+  [_interactive views_](#interactive_view 'view resulting in partial updates of
+browser DOM'), to be usable with any back-end and front-end framework
+- Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30)
+  that aims at adding instrumentation directly into browser
 
 ## JS library
 
 The intent of this library is to help developers instrument technical events
 (marks) on their pages and group them into "zones" that represent "phases" of page
-load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics) of user experience.
+load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics)
+of user experience.
 
 ### Usage
 
-**NOTE:** this version of the library relies on `UserTiming API` to be available in the browser, but should not break if it doesn't. You can [use a polyfill](https://www.npmjs.com/package/usertiming) if you want to support older browsers.
+**NOTE:** this version of the library relies on `UserTiming API` to be available
+in the browser, but should not break if it doesn't. You can
+[use a polyfill](https://www.npmjs.com/package/usertiming) if you want to support older browsers.
 
 1. Load the library by inlining the contents of ux-capture.min.js in a `<script>`
    tag in the HTML document `<head>`. Here's an example using server-side React:
@@ -111,11 +118,15 @@ load, with each phase representing [distinct stages](#aggregating-experienceperc
        </script>
    ```
 
-   **NOTE**: `UXCapture.startView()` will throw an error if called while previous view is active, so be careful to only call it once, before any of the marks are triggered within the view markup.
+   **NOTE**: `UXCapture.startView()` will throw an error if called while previous
+   view is active, so be careful to only call it once.
 
    Each individual zone configuration object contains of zone's `name` that will be
-   used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event name strings that zone groups together,
-   each individual name will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
+   used as a name of corresponding
+   [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure)
+   and `marks` array of individual event name strings that zone groups together,
+   each individual name will be used when recording corresponding events as
+   [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
 
 4. You can optionally update a view that has already been started and add more
    zones by calling `UXCapture.updateView()`.
@@ -129,19 +140,26 @@ load, with each phase representing [distinct stages](#aggregating-experienceperc
        ...
    ```
 
-6. In the client app code that is called for interactive/soft/dynamic navigation, call `UXCapture.startTransition()` immediately when user triggers transition to indicate the start of the view.
+6. (SPA support) For 'interactive' view changes (usually associated with a route
+   change), the client app must imperatively indicate when the current view is
+   no longer valid using `UXCapture.startTransition`, and clear any marks that
+   should not be considered valid for the subsequent view using
+   `UXCapture.clearMarks(name)`. To clear all marks, omit the name argument. For
+   marks that are associated with elements that do not change between views,
+   there is no need to clear the mark.
 
-   This call does not need to be in the markup (and generally shouldn’t be).
+   The call to UXCapture.startTransition does not need to be in the markup (and generally shouldn’t be).
 
    ```jsx
        history.push(‘/foo’)
        window.UXCapture.startTransition();
-
-       // or, a little less controlled:
-       window.onpopstate = window.UXCapture.startTransition
    ```
 
-   **NOTE**: For interactive views, all `UXCapture.startView()` calls must be preceded by a `UXCapture.startTransition()` call which deactivates previous view.
+   Summary: A SPA view transition is comprised of the following calls:
+
+   1. UXCapture.startTransition() – required
+   2. UXCapture.clearMarks(name) – optional, but should be called for each
+      existing mark that is no longer valid
 
 7. Repeat from step 3.
 
@@ -184,7 +202,8 @@ measurements.
 
 References:
 
-- Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/), published on May 12, 2015
+- Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/),
+  published on May 12, 2015
 
 #### Text without custom font
 
@@ -200,13 +219,19 @@ Element aggregation algorythm: no aggregation, just one event.
 
 References:
 
-- Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
+- Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/)
+  (example 5), published on November 12, 2015
 
 #### Text with custom font
 
-Many pages use custom fonts to display text and often experience Flash of Invisible Text or [FOIT](https://www.zachleat.com/web/fout-vs-foit/). It is important to take into account time to load custom fonts. You can do it using font loaders provided by [using event tracking in Web Font Loader](https://github.com/typekit/webfontloader#events) used by Typekit and Google.
+Many pages use custom fonts to display text and often experience Flash of
+Invisible Text or [FOIT](https://www.zachleat.com/web/fout-vs-foit/). It is
+important to take into account time to load custom fonts. You can do it using
+font loaders provided by [using event tracking in Web Font Loader](https://github.com/typekit/webfontloader#events)
+used by Typekit and Google.
 
-You can inline the library in HTML and then use the following code to fire a mark when font loaded.
+You can inline the library in HTML and then use the following code to fire a mark
+when font loaded.
 
 ```jsx
 <script>
@@ -221,9 +246,11 @@ WebFont.load({
 </script>
 ```
 
-**NOTE:** See [Font Variation Description](https://github.com/typekit/fvd) format used by Web Font Loader for specifying particular font variation to track.
+**NOTE:** See [Font Variation Description](https://github.com/typekit/fvd) format
+used by Web Font Loader for specifying particular font variation to track.
 
-Similarly to tracking text without custom font, inject a mark inline after text that uses custom font in question.
+Similarly to tracking text without custom font, inject a mark inline after text
+that uses custom font in question.
 
 ```jsx
 <h2>Title with font</h2>
@@ -274,7 +301,10 @@ different components / elements on each page.
 
 Well known example of such "category" is **_first meaningful paint_** which has
 different meaning on differeng parts of user experience, but represents a universal
-improvement over "first paint" [_technical metric_](#technical_performance_metrics 'performance metrics that represent time spent executing various technical components of the application as opposed to metrics representing speed of the human-computer interface as it is perceived by the user').
+improvement over "first paint" [_technical metric_](#technical_performance_metrics)
+— performance metrics that represent time spent executing various technical components
+of the application as opposed to metrics representing speed of the human-computer
+interface as it is perceived by the user'.
 
 This can be taken further to represent user's intent in more detail. Each view
 can be broken down into several phases which all contribute to keeping user on
