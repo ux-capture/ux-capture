@@ -23,8 +23,17 @@ let _view;
 let _startMarkName = NAVIGATION_START_MARK_NAME;
 
 const UXCapture = {
-	clearMark: (name) => {
-		ExpectedMark.destroy(name)
+	/**
+	 * Client interface to imperatively clear marks that have been previously
+	 * created. This should be used when the client determines that a mark is
+	 * no longer needed. For marks associated with DOM elements, this should be called
+	 * when the element is removed from the DOM or otherwise invalidated.
+	 *
+	 * @param {String} optional name for individual mark to clear
+	 *                 (follows window.performance.clearMarks interface)
+	 */
+	clearMarks: name => {
+		ExpectedMark.destroy(name);
 	},
 
 	/**
@@ -37,6 +46,21 @@ const UXCapture = {
 		_onMark = config.onMark || NOOP;
 		_onMeasure = config.onMeasure || NOOP;
 		_startMarkName = NAVIGATION_START_MARK_NAME;
+	},
+
+	/**
+	 * General cleanup function - generally won't be needed, but useful for managing
+	 * memory
+	 */
+	destroy: () => {
+		_onMark = undefined;
+		_onMeasure = undefined;
+		_startMarkName = undefined;
+		UXCapture.clearMarks();
+		if (_view) {
+			_view.destroy;
+		}
+		_view = undefined;
 	},
 
 	/**
@@ -74,14 +98,14 @@ const UXCapture = {
 	},
 
 	/*
-	 * Start view transition will end/destroy current view and set a new 'start mark'
+	 * Start view transition will end/destroy current View and set a new 'start mark'
 	 * Existing marks are _not_ removed automatically (they may outlive the view).
 	 * If required by the client, existing marks must be removed declaratively with
-	 * `UXCapture.clearMark(name)`
+	 * `UXCapture.clearMarks(name)`
 	 */
 	startTransition: () => {
 		// reset the view until it's defined again using startView();
-		this.view.destroy();
+		_view.destroy();
 		_view = undefined;
 
 		if (
@@ -91,7 +115,6 @@ const UXCapture = {
 			window.performance.mark(INTERACTIVE_TRANSITION_START_MARK_NAME);
 		}
 		_startMarkName = INTERACTIVE_TRANSITION_START_MARK_NAME;
-
 	},
 
 	/**

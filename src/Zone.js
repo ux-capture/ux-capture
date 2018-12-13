@@ -15,19 +15,19 @@ import UXBase from './UXBase';
  * }
  */
 export default class Zone extends UXBase {
-	// Create a new `ExpectedMark` for each mark
 	marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
 
-		mark.onComplete(completeMark => {
+		const listener = completeMark => {
 			// pass the event upstream
 			this.props.onMark(markName);
-			if (this.marks.every(m => m.marked)) {
+			if (this.marks.every(({ marked }) => mark.marked)) {
 				this.measure(markName);
 			}
-		});
+		};
+		mark.addOnMarkListener(listener);
 
-		return mark;
+		return { mark, listener };
 	});
 
 	// 'state' of the measure that indicates whether it has been recorded
@@ -56,11 +56,7 @@ export default class Zone extends UXBase {
 			if (endMark.startTime < startMark.startTime) {
 				endMarkName = startMarkName;
 			}
-			window.performance.measure(
-				name,
-				startMarkName,
-				endMarkName
-			);
+			window.performance.measure(name, startMarkName, endMarkName);
 		}
 
 		this.measured = true;
@@ -74,6 +70,7 @@ export default class Zone extends UXBase {
 			window.performance.clearMeasures(this.props.name);
 		}
 		// don't destroy the ExpectedMarks, because they may outlive a View/Zone, just remove reference
-		this.marks = null; 
+		this.marks.forEach(({ mark, listener }) => mark.removeOnMarkListener(listener));
+		this.marks = null;
 	}
 }

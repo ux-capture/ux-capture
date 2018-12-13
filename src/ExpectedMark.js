@@ -32,15 +32,24 @@ export default class ExpectedMark extends UXBase {
 	}
 
 	static destroy(name) {
-		if (typeof window.performance !== 'undefined') {	
+		if (typeof window.performance !== 'undefined') {
 			window.performance.clearMarks(name);
 		}
-		delete _expectedMarks[name];
+		if (name) {
+			delete _expectedMarks[name];
+			return;
+		}
+		_expectedMarks = {};
 	}
 
 	// registers zone callback
-	onComplete(onMark) {
+	addOnMarkListener(onMark) {
 		this.onMarkListeners.push(onMark);
+	}
+	removeOnMarkListener(listenerToRemove) {
+		this.onMarkListeners = this.onMarkListeners.filter(
+			listener => listener !== listenerToRemove
+		);
 	}
 
 	/**
