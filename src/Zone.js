@@ -1,5 +1,4 @@
 import ExpectedMark from './ExpectedMark';
-import UXBase from './UXBase';
 
 /**
  * A `Zone` is a collection of DOM elements on a page that correspond
@@ -14,7 +13,7 @@ import UXBase from './UXBase';
  *  onMark: markName => {}
  * }
  */
-export default class Zone extends UXBase {
+export default class Zone {
 	// Name used for UserTiming measures
 	measureName = this.props.name;
 
@@ -32,6 +31,10 @@ export default class Zone extends UXBase {
 
 		return mark;
 	});
+
+	constructor(props) {
+		this.props = props;
+	}
 
 	/**
 	 * Records measure on Performance Timeline and calls onMeasure callback

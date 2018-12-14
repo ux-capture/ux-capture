@@ -1,5 +1,3 @@
-import UXBase from './UXBase';
-
 // private map of { name: mark } for all expected marks
 let _expectedMarks = {};
 
@@ -7,7 +5,7 @@ let _expectedMarks = {};
  * Class describes expected marks
  * These marks that have to be recorded before zone is considered complete
  */
-export default class ExpectedMark extends UXBase {
+export default class ExpectedMark {
 	// list of zone callbacks to call on completion
 	onMarkListeners = [];
 	// 'state' of the mark that indicates whether it has been recorded
@@ -33,6 +31,10 @@ export default class ExpectedMark extends UXBase {
 
 	static clearExpectedMarksMap() {
 		_expectedMarks = {};
+	}
+
+	constructor(props) {
+		this.props = props;
 	}
 
 	// registers zone callback
