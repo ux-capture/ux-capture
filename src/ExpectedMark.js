@@ -42,6 +42,16 @@ ExpectedMark.record = function(name, waitForNextPaint = true) {
 	}
 	mark._mark();
 };
+ExpectedMark.destroy = function(name) {
+	if (typeof window.performance !== 'undefined') {
+		window.performance.clearMarks(name);
+	}
+	if (name) {
+		delete _expectedMarks[name];
+		return;
+	}
+	_expectedMarks = {};
+};
 
 // registers zone callback
 ExpectedMark.prototype.onComplete = function(onMark) {
@@ -84,6 +94,17 @@ ExpectedMark.prototype._mark = function() {
 
 	// call all registered zone callbacks
 	this.onMarkListeners.forEach(listener => listener(this));
+};
+
+// registers zone callback
+ExpectedMark.prototype.addOnMarkListener = function(onMark) {
+	this.onMarkListeners.push(onMark);
+};
+
+ExpectedMark.prototype.removeOnMarkListener = function(listenerToRemove) {
+	this.onMarkListeners = this.onMarkListeners.filter(
+		listener => listener !== listenerToRemove
+	);
 };
 
 export default ExpectedMark;

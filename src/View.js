@@ -23,6 +23,11 @@ View.prototype.setZones = function(zoneConfigs) {
 	return zoneConfigs.map(zoneConfig => this.createZone(zoneConfig));
 };
 
+View.prototype.destroy = function() {
+	this.expectedZones.forEach(z => z.destroy());
+	this.expectedZones = null;
+};
+
 View.prototype.createZone = function(zoneConfig) {
 	return new Zone(
 		Object.assign(

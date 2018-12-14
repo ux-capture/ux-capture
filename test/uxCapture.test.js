@@ -1,4 +1,6 @@
 import UXCapture, { VIEW_OVERRIDE_ERROR_MESSAGE } from '../src/UXCapture';
+import View from '../src/View';
+import ExpectedMark from '../src/ExpectedMark';
 
 // UserTiming polyfill to override broken jsdom performance API
 window.performance = require('usertiming');
@@ -27,17 +29,16 @@ const onMeasure = jest.fn();
 
 describe('UXCapture', () => {
 	describe('startView', () => {
-		beforeAll(() => {
-			UXCapture.create({ onMark, onMeasure });
-		});
-
 		beforeEach(() => {
 			onMark.mockClear();
 			onMeasure.mockClear();
-
-			UXCapture.startTransition();
+			UXCapture.create({ onMark, onMeasure });
+		});
+		afterEach(() => {
+			UXCapture.destroy();
 		});
 
+		// not needed after WP-945
 		it('must create dependencies between marks and measures', () => {
 			UXCapture.startView([
 				{
@@ -91,8 +92,9 @@ describe('UXCapture', () => {
 		beforeEach(() => {
 			onMark.mockClear();
 			onMeasure.mockClear();
-
-			UXCapture.startTransition();
+		});
+		afterEach(() => {
+			UXCapture.destroy();
 		});
 
 		it('Should throw an error if non-object is passed', () => {
@@ -154,16 +156,21 @@ describe('UXCapture', () => {
 		});
 	});
 
-	describe('mark', () => {
-		beforeAll(() => {
-			UXCapture.create({ onMark, onMeasure });
+	describe('clearMarks', () => {
+		it('calls ExpectedMark.destroy', () => {
+			spyOn(ExpectedMark, 'destroy');
+			const arg = 'foo';
+			UXCapture.clearMarks(arg);
+			expect(ExpectedMark.destroy).toHaveBeenCalledWith(arg);
 		});
+	});
 
+	describe('mark', () => {
 		beforeEach(() => {
 			onMark.mockClear();
 			onMeasure.mockClear();
+			UXCapture.create({ onMark, onMeasure });
 
-			UXCapture.startTransition();
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
@@ -178,6 +185,10 @@ describe('UXCapture', () => {
 					marks: [MOCK_MARK_MULTIPLE],
 				},
 			]);
+		});
+
+		afterEach(() => {
+			UXCapture.destroy();
 		});
 
 		it('must mark user timing api timeline', () => {
@@ -252,59 +263,32 @@ describe('UXCapture', () => {
 	});
 
 	describe('startTransition', () => {
-		beforeAll(() => {
-			UXCapture.create({ onMark, onMeasure });
-		});
-
 		beforeEach(() => {
 			onMark.mockClear();
 			onMeasure.mockClear();
-
-			UXCapture.startTransition();
+			UXCapture.create({ onMark, onMeasure });
+		});
+		afterEach(() => {
+			UXCapture.destroy();
 		});
 
-		it('must keep only one mark after interactive view started transition', () => {
+		it('destroys current view', () => {
 			// page view
+			spyOn(View.prototype, 'destroy');
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
 					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
 				},
-				{
-					name: MOCK_MEASURE_2,
-					marks: [MOCK_MARK_MULTIPLE],
-				},
-				{
-					name: MOCK_MEASURE_3,
-					marks: [MOCK_MARK_MULTIPLE],
-				},
 			]);
 
-			// mark 1 in page view
-			UXCapture.mark(MOCK_MARK_1_1);
-			UXCapture.mark(MOCK_MARK_1_2);
-
-			// starting transition in interactive view
 			UXCapture.startTransition();
 
-			expect(window.performance.getEntriesByType('mark').length).toBe(1);
-
-			// interactive view
-			UXCapture.startView([
-				{
-					name: MOCK_MEASURE_1,
-					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
-				},
-			]);
-
-			// mark 1 in interactive view
-			UXCapture.mark(MOCK_MARK_1_1);
-
-			expect(
-				window.performance
-					.getEntriesByType('mark')
-					.filter(mark => mark.name === MOCK_MARK_1_1).length
-			).toBe(1);
+			expect(View.prototype.destroy).toHaveBeenCalled();
 		});
+
+		// intentionally-internal behavior (not exposed to tests)
+		// it('sets startMarkName to INTERACTIVE_TRANSITION_START_MARK_NAME')
+		// it('sets window.performance.mark INTERACTIVE_TRANSITION_START_MARK_NAME')
 	});
 });
