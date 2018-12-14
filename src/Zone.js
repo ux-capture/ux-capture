@@ -13,45 +13,45 @@ import ExpectedMark from './ExpectedMark';
  *  onMark: markName => {}
  * }
  */
-export default class Zone {
-	constructor(props) {
-		this.props = props;
-		// Name used for UserTiming measures
-		this.measureName = this.props.name;
+function Zone(props) {
+	this.props = props;
+	// Name used for UserTiming measures
+	this.measureName = this.props.name;
 
-		// Create a new `ExpectedMark` for each mark
-		this.marks = this.props.marks.map(markName => {
-			const mark = ExpectedMark.create(markName);
+	// Create a new `ExpectedMark` for each mark
+	this.marks = this.props.marks.map(markName => {
+		const mark = ExpectedMark.create(markName);
 
-			mark.onComplete(completeMark => {
-				// pass the event upstream
-				this.props.onMark(markName);
-				if (this.marks.every(m => m.marked)) {
-					this.measure(markName);
-				}
-			});
-
-			return mark;
+		mark.onComplete(completeMark => {
+			// pass the event upstream
+			this.props.onMark(markName);
+			if (this.marks.every(m => m.marked)) {
+				this.measure(markName);
+			}
 		});
-	}
 
-	/**
-	 * Records measure on Performance Timeline and calls onMeasure callback
-	 *
-	 * @param {ExpectedMark} lastMark last mark that triggered completion
-	 */
-	measure(endMarkName) {
-		if (
-			typeof window.performance !== 'undefined' &&
-			typeof window.performance.measure !== 'undefined'
-		) {
-			window.performance.measure(
-				this.measureName,
-				this.props.startMarkName,
-				endMarkName
-			);
-		}
-
-		this.props.onMeasure(this.measureName);
-	}
+		return mark;
+	});
 }
+
+/**
+ * Records measure on Performance Timeline and calls onMeasure callback
+ *
+ * @param {ExpectedMark} lastMark last mark that triggered completion
+ */
+Zone.prototype.measure = function(endMarkName) {
+	if (
+		typeof window.performance !== 'undefined' &&
+		typeof window.performance.measure !== 'undefined'
+	) {
+		window.performance.measure(
+			this.measureName,
+			this.props.startMarkName,
+			endMarkName
+		);
+	}
+
+	this.props.onMeasure(this.measureName);
+};
+
+export default Zone;
