@@ -47,7 +47,6 @@ ExpectedMark.prototype.onComplete = function(onMark) {
  * See Nolan Lawson's article describing the issue and proposing this method:
  * https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/
  */
-ExpectedMark.prototype.waitForNextPaintAndRecord = function() {};
 ExpectedMark.prototype._mark = function() {
 	if (
 		typeof window.performance !== 'undefined' &&
