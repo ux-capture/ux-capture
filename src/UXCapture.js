@@ -109,9 +109,7 @@ const UXCapture = {
 	 * @param {string} name
 	 * @param {boolean} waitForNextPaint
 	 */
-	mark: (name, waitForNextPaint = true) => {
-		ExpectedMark.record(name, waitForNextPaint);
-	},
+	mark: ExpectedMark.record,
 };
 
 export default UXCapture;

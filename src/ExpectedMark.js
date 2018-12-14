@@ -32,7 +32,7 @@ ExpectedMark.clearExpectedMarksMap = function() {
 	_expectedMarks = {};
 };
 
-ExpectedMark.record = function(name, waitForNextPaint) {
+ExpectedMark.record = function(name, waitForNextPaint = true) {
 	const mark = ExpectedMark.create(name);
 	if (waitForNextPaint) {
 		// in many cases, we intend to record a mark when an element paints, not
