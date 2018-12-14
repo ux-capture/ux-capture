@@ -135,10 +135,23 @@ load, with each phase representing [distinct stages](#aggregating-experienceperc
 
    ```jsx
        history.push(‘/foo’)
-       window.UXCapture.startTransition();
+       UXCapture.startTransition();
+   ```
+   or, a little less controlled, using History API:
+   ```jsx
+       window.onpopstate = UXCapture.startTransition;
 
-       // or, a little less controlled:
-       window.onpopstate = window.UXCapture.startTransition
+       const pushState = window.history.pushState;
+       window.history.pushState = (...args) => {
+           UXCapture.startTransition();
+           return pushState.apply(window.history, args);
+       };
+
+       const replaceState = window.history.replaceState;
+       window.history.replaceState = (...args) => {
+           UXCapture.startTransition();
+           return replaceState.apply(window.history, args);
+       };
    ```
 
    **NOTE**: For interactive views, all `UXCapture.startView()` calls must be preceded by a `UXCapture.startTransition()` call which deactivates previous view.
