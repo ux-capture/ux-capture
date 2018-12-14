@@ -118,89 +118,67 @@
 			window.UXCapture.mark('ux-text-title');
 		</script>
 
-		<p class="ux-capture-intro">
-			<img
-				class="kitten"
-				src="kitten.jpg"
-				style="float: left; margin: 0 1em 1em 0"
-				width="30%"
-				onload="window.UXCapture.mark('ux-image-onload-kitten')"
-			/>
+		<div id="content">
+			<p class="ux-capture-intro">
+				<img
+					class="kitten"
+					src="kitten.jpg"
+					style="float: left; margin: 0 1em 1em 0"
+					width="30%"
+					onload="window.UXCapture.mark('ux-image-onload-kitten')"
+				/>
+				<script>
+					window.UXCapture.mark('ux-image-inline-kitten');
+				</script>
+				Decide to want nothing to do with my owner today. When in doubt, wash being
+				gorgeous with belly side up sweet beast, but poop in the plant pot but munch
+				on tasty moths. Brown cats with pink ears. Caticus cuteicus when in doubt,
+				wash stare at ceiling, and scream at teh bath, lies down but cough hairball on
+				conveniently placed pants claw your carpet in places everyone can see - why
+				hide my amazing artistic clawing skills?. Meow in empty rooms.
+			</p>
 			<script>
-				window.UXCapture.mark('ux-image-inline-kitten');
+				window.UXCapture.mark('ux-text-intro');
 			</script>
-			Decide to want nothing to do with my owner today. When in doubt, wash being
-			gorgeous with belly side up sweet beast, but poop in the plant pot but munch on
-			tasty moths. Brown cats with pink ears. Caticus cuteicus when in doubt, wash
-			stare at ceiling, and scream at teh bath, lies down but cough hairball on
-			conveniently placed pants claw your carpet in places everyone can see - why hide
-			my amazing artistic clawing skills?. Meow in empty rooms.
-		</p>
-		<script>
-			window.UXCapture.mark('ux-text-intro');
-		</script>
 
-		<script>
-			// delaying this loop a tiny bit to show the difference
-			var y = 0;
-
-			for (var i = 0; i < 100000; i++) {
-				y += i;
-			}
-		</script>
-
-		<p class="ux-capture-story">
-			Bacon ipsum dolor amet jowl swine brisket, drumstick pig chicken meatball ham
-			hock ham salami andouille hamburger. Ribeye alcatra porchetta flank. Venison
-			chicken meatloaf landjaeger. Porchetta burgdoggen ham hock, pork belly beef ribs
-			chicken meatloaf jowl strip steak t-bone. Pork chop turducken drumstick kevin
-			leberkas jowl chicken prosciutto salami meatloaf, tri-tip doner boudin ground
-			round <a href="story-details.html" class="ux-capture-details">read more...</a>
 			<script>
-				window.UXCapture.mark('ux-text-story-details-link');
+				// delaying this loop a tiny bit to show the difference
+				var y = 0;
+
+				for (var i = 0; i < 100000; i++) {
+					y += i;
+				}
 			</script>
-		</p>
-		<script>
-			window.UXCapture.mark('ux-text-story');
-		</script>
 
-		<p>
-			Suscipit anim. Fugit quaerat. Incididunt nesciunt. Cupidatat cillum sed. Laborum
-			totam and dolores sit. Commodi eos yet laboris. Dolorem cillum, excepteur yet
-			incididunt velit numquam. Ipsam error. Ratione consequuntur for magni ratione
-			and incididunt sit. Esse inventore yet nostrud so nesciunt, eius. Ratione
-			molestiae, autem, and dicta. Nostrud laboris labore, so nulla illum. Dolor totam
-			inventore iure yet omnis ipsam incidunt. Eiusmod beatae or ipsam, dolore.
-			Doloremque exercitationem. Error. Error modi. Ipsam ipsum or labore or ab
-			aspernatur. Aliquip. Laudantium voluptas eaque for eius, yet laboris sed so
-			dicta. Suscipit natus for eum veniam totam, for anim so fugiat. Suscipit
-			explicabo and cillum or rem explicabo. Sint vel eiusmod labore, or dolor so
-			nostrud for quae.
-		</p>
-		<p>
-			Aliquid velit but odit error. Aute cupidatat or beatae. Voluptas in
-			consequuntur. Incidunt vel, and consectetur. Numquam ipsa and est or dolorem so
-			amet. Aliqua ea molestiae labore for eiusmod eu commodo. Est nequeporro so
-			fugiat laborum laboriosam and nequeporro. Eu id yet irure so numquam yet
-			exercitation. Fugit fugiat dicta for aliquip, and iure. Vel consequatur modi. Ut
-			adipisicing yet nisi suscipit aute. Consequat esse laudantium. Amet cillum nisi
-			so ipsam ad minima but dolore. Aperiam adipisci eum quo do. Sed ex and nisi quo
-			quae quo for explicabo. Proident nesciunt for aliquid ratione. Occaecat
-			consequat for enim quia eos quis, tempor. Lorem perspiciatis. Dolore eius
-			consequatur error but minim. Pariatur cillum, ipsum explicabo but nemo. Aliquid
-			molestiae so aliqua. Omnis commodo. Voluptas. Error proident, but lorem aperiam.
-			Magnam quia laborum.
-		</p>
-		<p>
-			Lorem non. Aperiam exercitationem omnis. Consequatur rem labore architecto. Ad
-			molestiae explicabo but nemo for doloremque. Aliquip dolor, yet velitesse so
-			omnis vitae aspernatur. Modi. Aliqua.
-		</p>
+			<p class="ux-capture-story">
+				Bacon ipsum dolor amet jowl swine brisket, drumstick pig chicken meatball ham
+				hock ham salami andouille hamburger. Ribeye alcatra porchetta flank. Venison
+				chicken meatloaf landjaeger. Porchetta burgdoggen ham hock, pork belly beef
+				ribs chicken meatloaf jowl strip steak t-bone. Pork chop turducken drumstick
+				kevin leberkas jowl chicken prosciutto salami meatloaf, tri-tip doner boudin
+				ground round
+				<a href="story-details.html" id="morelink" class="ux-capture-details"
+					>read more...</a
+				>
+				<script>
+					window.UXCapture.mark('ux-text-story-details-link');
+				</script>
+			</p>
+			<script>
+				window.UXCapture.mark('ux-text-story');
+			</script>
 
-		<a href="page2.html" class="ux-capture-page2-link">Page 2 &gt; &gt;</a>
-		<script>
-			window.UXCapture.mark('ux-text-page2');
-		</script>
+			<p>
+				Lorem non. Aperiam exercitationem omnis. Consequatur rem labore architecto. Ad
+				molestiae explicabo but nemo for doloremque. Aliquip dolor, yet velitesse so
+				omnis vitae aspernatur. Modi. Aliqua.
+			</p>
+
+			<a href="page2.html" class="ux-capture-page2-link">Page 2 &gt; &gt;</a>
+			<script>
+				window.UXCapture.mark('ux-text-page2');
+			</script>
+		</div>
 
 		<script>
 			// emulating a long-running JS event attachment, e.g. React re-hydration
@@ -213,6 +191,49 @@
 
 				window.UXCapture.mark('ux-handler-moreclickable');
 			}, 300);
+
+			// mini-SPA
+			document.querySelector('a[href="page2.html"]').addEventListener('click', e => {
+				e.preventDefault();
+
+				// triggers initial mark
+				UXCapture.startTransition();
+
+				document.getElementById('content').innerHTML =
+					'<i>... loading page 2 ...</i>';
+
+				setTimeout(() => {
+					// sets new view expectations
+					UXCapture.startView([
+						{
+							name: 'ux-destination-verified',
+							elements: [
+								{
+									marks: ['ux-text-title'],
+									// CSS selector, same as () => document.querySelectorAll('h1')
+									elementSelector: 'h1',
+								},
+							],
+						},
+						{
+							name: 'ux-primary-content-displayed',
+							elements: [
+								{
+									marks: ['ux-text-page2-content'],
+									elementSelector: '#page2content',
+								},
+							],
+						},
+					]);
+
+					setTimeout(() => {
+						document.getElementById('content').innerHTML =
+							'<p id="page2content">SPA transition to page 2 successful</p>';
+
+						UXCapture.mark('ux-text-page2-content');
+					}, 900); // 1s delay between startTransition() and Primary Content Available
+				}, 100); // 100ms delay between startTransition() and startView();
+			});
 		</script>
 	</body>
 </html>
