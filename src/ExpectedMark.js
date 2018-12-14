@@ -11,7 +11,7 @@ function ExpectedMark(props) {
 	this.onMarkListeners = [];
 	// 'state' of the mark that indicates whether it has been recorded
 	this.marked = false;
-	this.record = this.record.bind(this);
+	this._mark = this._mark.bind(this);
 }
 
 ExpectedMark.get = function(name) {
@@ -47,21 +47,8 @@ ExpectedMark.prototype.onComplete = function(onMark) {
  * See Nolan Lawson's article describing the issue and proposing this method:
  * https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/
  */
-ExpectedMark.prototype.waitForNextPaintAndRecord = function() {
-	// In development mode, include DEBUG timestamps to show when
-	// original calls were fired to see the impact
-	if (
-		process.env.NODE_ENV !== 'production' &&
-		typeof window.console !== 'undefined' &&
-		typeof window.console.timeStamp !== 'undefined'
-	) {
-		window.console.timeStamp(`[DEBUG] original call for ${this.props.name}`);
-	}
-
-	window.requestAnimationFrame(() => setTimeout(this.record));
-};
-
-ExpectedMark.prototype.record = function() {
+ExpectedMark.prototype.waitForNextPaintAndRecord = function() {};
+ExpectedMark.prototype._mark = function() {
 	if (
 		typeof window.performance !== 'undefined' &&
 		typeof window.performance.mark !== 'undefined'
@@ -90,6 +77,16 @@ ExpectedMark.prototype.record = function() {
 
 	// call all registered zone callbacks
 	this.onMarkListeners.forEach(listener => listener(this));
+};
+
+ExpectedMark.prototype.record = function(waitForNextPaint) {
+	if (waitForNextPaint) {
+		// in many cases, we intend to record a mark when an element paints, not
+		// at the moment the mark.record() call is made in in JS
+		window.requestAnimationFrame(() => setTimeout(this._mark));
+		return;
+	}
+	this._mark();
 };
 
 export default ExpectedMark;

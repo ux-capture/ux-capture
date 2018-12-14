@@ -110,15 +110,8 @@ const UXCapture = {
 	 * @param {boolean} waitForNextPaint
 	 */
 	mark: (name, waitForNextPaint = true) => {
-		const mark = ExpectedMark.get(name);
-
-		if (mark) {
-			if (waitForNextPaint) {
-				mark.waitForNextPaintAndRecord();
-			} else {
-				mark.record();
-			}
-		}
+		const mark = ExpectedMark.create(name);
+		mark.record(waitForNextPaint);
 	},
 };
 
