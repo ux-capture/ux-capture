@@ -14,9 +14,6 @@ function ExpectedMark(props) {
 	this._mark = this._mark.bind(this);
 }
 
-ExpectedMark.get = function(name) {
-	return _expectedMarks[name];
-};
 /**
  * Checks if mark already exists in the list of expected marks
  * Otherwise, creates a new one and adds it to the list
