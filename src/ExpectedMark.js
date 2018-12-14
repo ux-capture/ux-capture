@@ -32,6 +32,17 @@ ExpectedMark.clearExpectedMarksMap = function() {
 	_expectedMarks = {};
 };
 
+ExpectedMark.record = function(name, waitForNextPaint) {
+	const mark = ExpectedMark.create(name);
+	if (waitForNextPaint) {
+		// in many cases, we intend to record a mark when an element paints, not
+		// at the moment the mark.record() call is made in in JS
+		window.requestAnimationFrame(() => setTimeout(mark._mark));
+		return;
+	}
+	mark._mark();
+};
+
 // registers zone callback
 ExpectedMark.prototype.onComplete = function(onMark) {
 	this.onMarkListeners.push(onMark);
@@ -73,16 +84,6 @@ ExpectedMark.prototype._mark = function() {
 
 	// call all registered zone callbacks
 	this.onMarkListeners.forEach(listener => listener(this));
-};
-
-ExpectedMark.prototype.record = function(waitForNextPaint) {
-	if (waitForNextPaint) {
-		// in many cases, we intend to record a mark when an element paints, not
-		// at the moment the mark.record() call is made in in JS
-		window.requestAnimationFrame(() => setTimeout(this._mark));
-		return;
-	}
-	this._mark();
 };
 
 export default ExpectedMark;
