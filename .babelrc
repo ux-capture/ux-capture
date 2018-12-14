@@ -1,9 +1,6 @@
 {
-  "plugins": [
-    "@babel/plugin-proposal-class-properties"
-  ],
-  "presets": [
-    "@babel/preset-flow",
-    ["@babel/preset-env", { "targets": { "browsers": ["last 2 versions"] } }]
-  ]
+	"presets": [
+		"@babel/preset-flow",
+		["@babel/preset-env", { "targets": { "browsers": ["last 2 versions"] } }]
+	]
 }

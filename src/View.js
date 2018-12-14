@@ -8,10 +8,9 @@ import Zone from './Zone';
  * @see: https://github.com/meetup/ux-capture#glossary
  */
 export default class View {
-	expectedZones = this.setZones(this.props.zoneConfigs);
-
 	constructor(props) {
 		this.props = props;
+		this.expectedZones = this.setZones(this.props.zoneConfigs);
 	}
 
 	// TODO: determine if we need to support appending new marks
@@ -27,7 +26,7 @@ export default class View {
 
 	createZone(zoneConfig) {
 		return new Zone(
-			Object.extend(
+			Object.assign(
 				{
 					onMark: this.props.onMark,
 					onMeasure: this.props.onMeasure,

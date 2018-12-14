@@ -6,11 +6,6 @@ let _expectedMarks = {};
  * These marks that have to be recorded before zone is considered complete
  */
 export default class ExpectedMark {
-	// list of zone callbacks to call on completion
-	onMarkListeners = [];
-	// 'state' of the mark that indicates whether it has been recorded
-	marked = false;
-
 	static get(name) {
 		return _expectedMarks[name];
 	}
@@ -35,6 +30,11 @@ export default class ExpectedMark {
 
 	constructor(props) {
 		this.props = props;
+		// list of zone callbacks to call on completion
+		this.onMarkListeners = [];
+		// 'state' of the mark that indicates whether it has been recorded
+		this.marked = false;
+		this.record = this.record.bind(this);
 	}
 
 	// registers zone callback
@@ -63,7 +63,7 @@ export default class ExpectedMark {
 		window.requestAnimationFrame(() => setTimeout(this.record));
 	}
 
-	record = () => {
+	record() {
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.mark !== 'undefined'
@@ -92,5 +92,5 @@ export default class ExpectedMark {
 
 		// call all registered zone callbacks
 		this.onMarkListeners.forEach(listener => listener(this));
-	};
+	}
 }

@@ -14,26 +14,25 @@ import ExpectedMark from './ExpectedMark';
  * }
  */
 export default class Zone {
-	// Name used for UserTiming measures
-	measureName = this.props.name;
-
-	// Create a new `ExpectedMark` for each mark
-	marks = this.props.marks.map(markName => {
-		const mark = ExpectedMark.create(markName);
-
-		mark.onComplete(completeMark => {
-			// pass the event upstream
-			this.props.onMark(markName);
-			if (this.marks.every(m => m.marked)) {
-				this.measure(markName);
-			}
-		});
-
-		return mark;
-	});
-
 	constructor(props) {
 		this.props = props;
+		// Name used for UserTiming measures
+		this.measureName = this.props.name;
+
+		// Create a new `ExpectedMark` for each mark
+		this.marks = this.props.marks.map(markName => {
+			const mark = ExpectedMark.create(markName);
+
+			mark.onComplete(completeMark => {
+				// pass the event upstream
+				this.props.onMark(markName);
+				if (this.marks.every(m => m.marked)) {
+					this.measure(markName);
+				}
+			});
+
+			return mark;
+		});
 	}
 
 	/**
