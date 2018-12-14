@@ -46,6 +46,9 @@ ExpectedMark.record = function(name, waitForNextPaint = true) {
 // registers zone callback
 ExpectedMark.prototype.onComplete = function(onMark) {
 	this.onMarkListeners.push(onMark);
+	if (this.marked) {
+		onMark(this);
+	}
 };
 
 /**
