@@ -42,7 +42,7 @@ function Zone(props) {
  *
  * @param {ExpectedMark} lastMark last mark that triggered completion
  */
-Zone.prototype.measure = function(endMarkName) {
+Zone.prototype.measure = function(triggerName) {
 	if (this.measured) {
 		// only need to respond to first call of zone.measure - subsequent calls allowed but ignored
 		return;
@@ -55,11 +55,10 @@ Zone.prototype.measure = function(endMarkName) {
 	) {
 		// check if 'end mark' was recorded before start mark - if so, end should
 		// be same as start (measured time is 0)
-		const endMark = window.performance.getEntriesByName(endMarkName, 'mark');
+		const triggerMark = window.performance.getEntriesByName(triggerName, 'mark');
 		const startMark = window.performance.getEntriesByName(startMarkName, 'mark');
-		if (endMark.startTime < startMark.startTime) {
-			endMarkName = startMarkName;
-		}
+		const endMarkName =
+			triggerMark.startTime < startMark.startTime ? startMark : triggerName;
 		window.performance.measure(name, startMarkName, endMarkName);
 	}
 
