@@ -27,7 +27,7 @@ function Zone(props) {
 		const listener = completeMark => {
 			// pass the event upstream
 			this.props.onMark(markName);
-			if (this.marks.every(({ marked }) => mark.marked)) {
+			if (this.marks.every(({ mark }) => mark.marked)) {
 				this.measure(markName);
 			}
 		};
