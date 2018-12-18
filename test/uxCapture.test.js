@@ -20,7 +20,6 @@ const MOCK_MARK_1_2 = 'ux-mock-mark_1_2';
 const MOCK_MEASURE_2 = 'ux-mock-measure_2';
 const MOCK_MEASURE_3 = 'ux-mock-measure_3';
 
-const MOCK_UNEXPECTED_MARK = 'ux-unexpected-mark';
 const MOCK_MARK_MULTIPLE = 'ux-mock-mark_multiple';
 
 const onMark = jest.fn();
@@ -217,15 +216,6 @@ describe('UXCapture', () => {
 			expect(onMark).toHaveBeenCalledWith(MOCK_MARK_1_1);
 		});
 
-		it('should not record a mark that is not expected', () => {
-			UXCapture.mark(MOCK_UNEXPECTED_MARK);
-			expect(
-				window.performance
-					.getEntriesByType('mark')
-					.find(mark => mark.name === MOCK_UNEXPECTED_MARK)
-			).not.toBeTruthy();
-		});
-
 		it('should contribute to multiple measures if same mark is defined for multiple zones', () => {
 			UXCapture.mark(MOCK_MARK_MULTIPLE);
 
@@ -271,30 +261,6 @@ describe('UXCapture', () => {
 			onMeasure.mockClear();
 
 			UXCapture.startTransition();
-		});
-
-		it('should not record marks if it is to be recorded after transition started but view has not', () => {
-			// page view
-			UXCapture.startView([
-				{
-					name: MOCK_MEASURE_1,
-					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
-				},
-			]);
-
-			// start transition to interactive view
-			UXCapture.startTransition();
-
-			/**
-			 * deliberatly not calling startView() again
-			 */
-
-			UXCapture.mark(MOCK_MARK_1_1);
-			expect(
-				window.performance
-					.getEntriesByType('mark')
-					.filter(mark => mark.name === MOCK_MARK_1_1).length
-			).toBe(0);
 		});
 
 		it('must keep only one mark after interactive view started transition', () => {
