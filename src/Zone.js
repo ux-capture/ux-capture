@@ -1,5 +1,4 @@
 import ExpectedMark from './ExpectedMark';
-import UXBase from './UXBase';
 
 /**
  * A `Zone` is a collection of DOM elements on a page that correspond
@@ -14,12 +13,13 @@ import UXBase from './UXBase';
  *  onMark: markName => {}
  * }
  */
-export default class Zone extends UXBase {
+function Zone(props) {
+	this.props = props;
 	// Name used for UserTiming measures
-	measureName = this.props.name;
+	this.measureName = this.props.name;
 
 	// Create a new `ExpectedMark` for each mark
-	marks = this.props.marks.map(markName => {
+	this.marks = this.props.marks.map(markName => {
 		const mark = ExpectedMark.create(markName);
 
 		mark.onComplete(completeMark => {
@@ -32,24 +32,26 @@ export default class Zone extends UXBase {
 
 		return mark;
 	});
-
-	/**
-	 * Records measure on Performance Timeline and calls onMeasure callback
-	 *
-	 * @param {ExpectedMark} lastMark last mark that triggered completion
-	 */
-	measure(endMarkName) {
-		if (
-			typeof window.performance !== 'undefined' &&
-			typeof window.performance.measure !== 'undefined'
-		) {
-			window.performance.measure(
-				this.measureName,
-				this.props.startMarkName,
-				endMarkName
-			);
-		}
-
-		this.props.onMeasure(this.measureName);
-	}
 }
+
+/**
+ * Records measure on Performance Timeline and calls onMeasure callback
+ *
+ * @param {ExpectedMark} lastMark last mark that triggered completion
+ */
+Zone.prototype.measure = function(endMarkName) {
+	if (
+		typeof window.performance !== 'undefined' &&
+		typeof window.performance.measure !== 'undefined'
+	) {
+		window.performance.measure(
+			this.measureName,
+			this.props.startMarkName,
+			endMarkName
+		);
+	}
+
+	this.props.onMeasure(this.measureName);
+};
+
+export default Zone;
