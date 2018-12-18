@@ -4,6 +4,7 @@
     `UXCapture.clearMarks()`
 -   **New feature** `UXCapture.clearMarks()` to imperatively clear all marks, or
     an individual mark that has already been recorded
+-   **New feature** `UXCapture.destroy()` to clean up existing UXCapture data
 -   Implementation update: mostly ES5 implementation to minimize overhead in
     transpiled bundle size
 
