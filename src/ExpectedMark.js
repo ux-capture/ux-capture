@@ -56,6 +56,9 @@ ExpectedMark.destroy = function(name) {
 // registers zone callback
 ExpectedMark.prototype.onComplete = function(onMark) {
 	this.onMarkListeners.push(onMark);
+	if (this.marked) {
+		onMark(this);
+	}
 };
 
 /**
