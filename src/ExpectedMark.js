@@ -28,20 +28,18 @@ ExpectedMark.create = function(name) {
 	return _expectedMarks[name];
 };
 
-ExpectedMark.clearExpectedMarksMap = function() {
-	_expectedMarks = {};
-};
-
 ExpectedMark.record = function(name, waitForNextPaint = true) {
 	const mark = ExpectedMark.create(name);
 	if (waitForNextPaint) {
 		// in many cases, we intend to record a mark when an element paints, not
 		// at the moment the mark.record() call is made in in JS
+		// see https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/
 		window.requestAnimationFrame(() => setTimeout(mark._mark));
 		return;
 	}
 	mark._mark();
 };
+
 ExpectedMark.destroy = function(name) {
 	if (typeof window.performance !== 'undefined') {
 		window.performance.clearMarks(name);
@@ -53,21 +51,6 @@ ExpectedMark.destroy = function(name) {
 	_expectedMarks = {};
 };
 
-// registers zone callback
-ExpectedMark.prototype.onComplete = function(onMark) {
-	this.onMarkListeners.push(onMark);
-	if (this.marked) {
-		onMark(this);
-	}
-};
-
-/**
- * This method tries to approximate full rendering lifecycle in the browser
- * rather than just measuring JS execution like render() method does.
- *
- * See Nolan Lawson's article describing the issue and proposing this method:
- * https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/
- */
 ExpectedMark.prototype._mark = function() {
 	if (
 		typeof window.performance !== 'undefined' &&
@@ -80,12 +63,9 @@ ExpectedMark.prototype._mark = function() {
 	/**
 	 * Report same mark on Chrome/Firefox timeline
 	 *
-	 * keep in mind, these timestamps are counted from timeline recording start
-	 * while UserTiming marks are counted from navigationStart event
-	 * however visually, they all will be offset by the same amount of time and align vertically on the charts
-	 *
-	 * (we'd provide a helper to highlight discrepancy, but unfortunately,
-	 * there is no way to know when in timeline did navigationStart event occured)
+	 * These timestamps are counted from timeline recording start
+	 * while UserTiming marks are counted from navigationStart event.
+	 * In perf visualizations, they all will be offset by the same amount of time
 	 */
 	if (
 		typeof window.console !== 'undefined' &&
@@ -99,11 +79,12 @@ ExpectedMark.prototype._mark = function() {
 	this.onMarkListeners.forEach(listener => listener(this));
 };
 
-// registers zone callback
+// registers mark callback
 ExpectedMark.prototype.addOnMarkListener = function(onMark) {
 	this.onMarkListeners.push(onMark);
 };
 
+// unregisters mark callback
 ExpectedMark.prototype.removeOnMarkListener = function(listenerToRemove) {
 	this.onMarkListeners = this.onMarkListeners.filter(
 		listener => listener !== listenerToRemove
