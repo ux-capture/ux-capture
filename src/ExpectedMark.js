@@ -80,8 +80,13 @@ ExpectedMark.prototype._mark = function() {
 };
 
 // registers mark callback
-ExpectedMark.prototype.addOnMarkListener = function(onMark) {
-	this.onMarkListeners.push(onMark);
+ExpectedMark.prototype.addOnMarkListener = function(listener) {
+	if (this.marked) {
+		// call immediately if already marked - still need to keep track in `onMarkListeners`
+		// for correct cleanup in `removeOnMarkListener`
+		listener(this);
+	}
+	this.onMarkListeners.push(listener);
 };
 
 // unregisters mark callback
