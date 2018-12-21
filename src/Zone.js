@@ -20,17 +20,22 @@ function Zone(props) {
 
 	// Create a new `ExpectedMark` for each mark
 	this.marks = this.props.marks.map(markName => {
+		// 'state' of the measure that indicates whether it has been recorded
+		this.measured = false;
 		const mark = ExpectedMark.create(markName);
 
-		mark.onComplete(completeMark => {
+		const listener = completeMark => {
 			// pass the event upstream
 			this.props.onMark(markName);
-			if (this.marks.every(m => m.marked)) {
+			if (this.marks.every(({ mark }) => mark.marked)) {
 				this.measure(markName);
 			}
-		});
+		};
 
-		return mark;
+		return { mark, listener };
+	});
+	this.marks.forEach(({ mark, listener }) => {
+		mark.addOnMarkListener(listener);
 	});
 }
 
@@ -39,19 +44,40 @@ function Zone(props) {
  *
  * @param {ExpectedMark} lastMark last mark that triggered completion
  */
-Zone.prototype.measure = function(endMarkName) {
+Zone.prototype.measure = function(triggerName) {
+	if (this.measured) {
+		// only need to respond to first call of zone.measure - subsequent calls allowed but ignored
+		return;
+	}
+
+	const { name, startMarkName, onMeasure } = this.props;
 	if (
 		typeof window.performance !== 'undefined' &&
 		typeof window.performance.measure !== 'undefined'
 	) {
-		window.performance.measure(
-			this.measureName,
-			this.props.startMarkName,
-			endMarkName
-		);
+		// check if 'end mark' was recorded before start mark - if so, end should
+		// be same as start (measured time is 0)
+		const triggerMark = window.performance.getEntriesByName(triggerName, 'mark');
+		const startMark = window.performance.getEntriesByName(startMarkName, 'mark');
+		const endMarkName =
+			triggerMark.startTime < startMark.startTime ? startMark : triggerName;
+		window.performance.measure(name, startMarkName, endMarkName);
 	}
 
-	this.props.onMeasure(this.measureName);
+	this.measured = true;
+	onMeasure(name);
+};
+
+Zone.prototype.destroy = function() {
+	if (
+		typeof window.performance !== 'undefined' &&
+		typeof window.performance.measure !== 'undefined'
+	) {
+		window.performance.clearMeasures(this.props.name);
+	}
+	// don't destroy the ExpectedMarks, because they may outlive a View/Zone, just remove reference
+	this.marks.forEach(({ mark, listener }) => mark.removeOnMarkListener(listener));
+	this.marks = null;
 };
 
 export default Zone;

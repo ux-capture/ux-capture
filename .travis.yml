@@ -22,7 +22,7 @@ before_script:
 script:
   - yarn flow
   - yarn test
-  - npm run build
+  - yarn build
 
 before_deploy:
   - rm .gitignore
