@@ -31,9 +31,11 @@ function Zone(props) {
 				this.measure(markName);
 			}
 		};
-		mark.addOnMarkListener(listener);
 
 		return { mark, listener };
+	});
+	this.marks.forEach(({ mark, listener }) => {
+		mark.addOnMarkListener(listener);
 	});
 }
 

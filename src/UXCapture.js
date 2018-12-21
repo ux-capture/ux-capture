@@ -105,9 +105,10 @@ const UXCapture = {
 	 */
 	startTransition: () => {
 		// reset the view until it's defined again using startView();
-		_view.destroy();
-		_view = undefined;
-
+		if (_view) {
+			_view.destroy();
+			_view = undefined;
+		}
 		if (
 			typeof window.performance !== 'undefined' &&
 			typeof window.performance.mark !== 'undefined'
