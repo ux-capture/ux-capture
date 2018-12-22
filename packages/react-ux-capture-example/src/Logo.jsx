@@ -1,5 +1,5 @@
 import React from 'react';
-import UXCaptureImageLoad from 'mwp-app-render/lib/components/uxcapture/UXCaptureImageLoad';
+import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
 
 import logo from './logo.svg';
 

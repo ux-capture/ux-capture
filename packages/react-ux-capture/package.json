@@ -6,6 +6,9 @@
   "repository": "git@github.com:meetup/ux-capture.git",
   "author": "Meetup",
   "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir lib --ignore test.js,test.jsx --source-maps"
+  },
   "peerDependencies": {
     "react": "^16.0.0"
   },

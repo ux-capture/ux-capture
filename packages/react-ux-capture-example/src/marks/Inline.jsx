@@ -1,5 +1,5 @@
 import React from 'react';
-import UXCaptureInlineMark from 'mwp-app-render/lib/components/uxcapture/UXCaptureInlineMark';
+import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 import PerfContext from './PerfContext';
 import MarkInfo from './MarkInfo';
 

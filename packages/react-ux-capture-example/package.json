@@ -1,14 +1,13 @@
 {
-  "name": "my-app",
+  "name": "@meetup/react-ux-capture-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "mwp-app-render": "^18.0.2805",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "@meetup/react-ux-capture": "^0.0.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1",
-    "ux-capture": "^3.1.0"
+    "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,5 +23,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "babel-eslint": "9.0.0",
+    "eslint": "5.6.0"
+  }
 }
