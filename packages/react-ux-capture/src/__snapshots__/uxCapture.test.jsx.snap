@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UXCapture renders correct markup when all props are defined 1`] = `
+<Fragment>
+  <Component
+    onMark={[Function]}
+    onMeasure={[Function]}
+  />
+  <Component
+    primaryActionAvailable={
+      Array [
+        "ux-primary-action-available",
+      ]
+    }
+    primaryContentDisplayed={
+      Array [
+        "ux-primary-content-1",
+        "ux-primary-content-2",
+      ]
+    }
+    secondaryContentDisplayed={
+      Array [
+        "ux-secondary-content-1",
+        "ux-secondary-content-2",
+        "ux-secondary-content-3",
+      ]
+    }
+  />
+</Fragment>
+`;

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="theme-color" content="#000000" />
+		<!--
+			manifest.json provides metadata used when your web app is added to the
+			homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
+		-->
+		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+		<!--
+			Notice the use of %PUBLIC_URL% in the tags above.
+			It will be replaced with the URL of the `public` folder during the build.
+			Only files inside the `public` folder can be referenced from the HTML.
+
+			Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+			work correctly both with client-side routing and a non-root public URL.
+			Learn how to configure a non-root public URL by running `npm run build`.
+		-->
+		<title>React App</title>
+		<script>
+			!(function(e) {
+				var r = {};
+				function t(n) {
+					if (r[n]) return r[n].exports;
+					var o = (r[n] = { i: n, l: !1, exports: {} });
+					return e[n].call(o.exports, o, o.exports, t), (o.l = !0), o.exports;
+				}
+				(t.m = e),
+					(t.c = r),
+					(t.d = function(e, r, n) {
+						t.o(e, r) ||
+							Object.defineProperty(e, r, { enumerable: !0, get: n });
+					}),
+					(t.r = function(e) {
+						'undefined' != typeof Symbol &&
+							Symbol.toStringTag &&
+							Object.defineProperty(e, Symbol.toStringTag, { value: 'Module' }),
+							Object.defineProperty(e, '__esModule', { value: !0 });
+					}),
+					(t.t = function(e, r) {
+						if ((1 & r && (e = t(e)), 8 & r)) return e;
+						if (4 & r && 'object' == typeof e && e && e.__esModule) return e;
+						var n = Object.create(null);
+						if (
+							(t.r(n),
+							Object.defineProperty(n, 'default', { enumerable: !0, value: e }),
+							2 & r && 'string' != typeof e)
+						)
+							for (var o in e)
+								t.d(
+									n,
+									o,
+									function(r) {
+										return e[r];
+									}.bind(null, o)
+								);
+						return n;
+					}),
+					(t.n = function(e) {
+						var r =
+							e && e.__esModule
+								? function() {
+										return e.default;
+								  }
+								: function() {
+										return e;
+								  };
+						return t.d(r, 'a', r), r;
+					}),
+					(t.o = function(e, r) {
+						return Object.prototype.hasOwnProperty.call(e, r);
+					}),
+					(t.p = ''),
+					t((t.s = 1));
+			})([
+				function(e, r, t) {
+					'use strict';
+					var n = {};
+					function o(e) {
+						(this.props = e),
+							(this.onMarkListeners = []),
+							(this.marked = !1),
+							(this._mark = this._mark.bind(this));
+					}
+					(o.create = function(e) {
+						return n[e] || (n[e] = new o({ name: e })), n[e];
+					}),
+						(o.record = function(e) {
+							var r =
+									!(arguments.length > 1 && void 0 !== arguments[1]) ||
+									arguments[1],
+								t = o.create(e);
+							r
+								? window.requestAnimationFrame(function() {
+										return setTimeout(t._mark);
+								  })
+								: t._mark();
+						}),
+						(o.destroy = function(e) {
+							void 0 !== window.performance && window.performance.clearMarks(e),
+								e ? delete n[e] : (n = {});
+						}),
+						(o.prototype._mark = function() {
+							var e = this;
+							void 0 !== window.performance &&
+								void 0 !== window.performance.mark &&
+								window.performance.mark(this.props.name),
+								void 0 !== window.console &&
+									void 0 !== window.console.timeStamp &&
+									window.console.timeStamp(this.props.name),
+								(this.marked = !0),
+								this.onMarkListeners.forEach(function(r) {
+									return r(e);
+								});
+						}),
+						(o.prototype.addOnMarkListener = function(e) {
+							this.marked && e(this), this.onMarkListeners.push(e);
+						}),
+						(o.prototype.removeOnMarkListener = function(e) {
+							this.onMarkListeners = this.onMarkListeners.filter(function(r) {
+								return r !== e;
+							});
+						});
+					var i = o;
+					function a(e) {
+						var r = this;
+						(this.props = e),
+							(this.measureName = this.props.name),
+							(this.marks = this.props.marks.map(function(e) {
+								r.measured = !1;
+								return {
+									mark: i.create(e),
+									listener: function(t) {
+										r.props.onMark(e),
+											r.marks.every(function(e) {
+												return e.mark.marked;
+											}) && r.measure(e);
+									},
+								};
+							})),
+							this.marks.forEach(function(e) {
+								var r = e.mark,
+									t = e.listener;
+								r.addOnMarkListener(t);
+							});
+					}
+					(a.prototype.measure = function(e) {
+						if (!this.measured) {
+							var r = this.props,
+								t = r.name,
+								n = r.startMarkName,
+								o = r.onMeasure;
+							if (
+								void 0 !== window.performance &&
+								void 0 !== window.performance.measure
+							) {
+								var i = window.performance.getEntriesByName(e, 'mark'),
+									a = window.performance.getEntriesByName(n, 'mark'),
+									s = i.startTime < a.startTime ? a : e;
+								window.performance.measure(t, n, s);
+							}
+							(this.measured = !0), o(t);
+						}
+					}),
+						(a.prototype.destroy = function() {
+							void 0 !== window.performance &&
+								void 0 !== window.performance.measure &&
+								window.performance.clearMeasures(this.props.name),
+								this.marks.forEach(function(e) {
+									var r = e.mark,
+										t = e.listener;
+									return r.removeOnMarkListener(t);
+								}),
+								(this.marks = null);
+						});
+					var s = a;
+					function u(e) {
+						(this.props = e),
+							(this.expectedZones = this.setZones(this.props.zoneConfigs));
+					}
+					(u.prototype.update = function(e) {
+						this.expectedZones.push.apply(this.expectedZones, this.setZones(e));
+					}),
+						(u.prototype.setZones = function(e) {
+							var r = this;
+							return e.map(function(e) {
+								return r.createZone(e);
+							});
+						}),
+						(u.prototype.destroy = function() {
+							this.expectedZones.forEach(function(e) {
+								return e.destroy();
+							}),
+								(this.expectedZones = null);
+						}),
+						(u.prototype.createZone = function(e) {
+							return new s(
+								Object.assign(
+									{
+										onMark: this.props.onMark,
+										onMeasure: this.props.onMeasure,
+										startMarkName: this.props.startMarkName,
+									},
+									e
+								)
+							);
+						});
+					var c,
+						p,
+						f,
+						d = u,
+						m = function() {},
+						l = 'navigationStart',
+						w = {
+							clearMarks: function(e) {
+								i.destroy(e);
+							},
+							create: function(e) {
+								(c = e.onMark || m),
+									(p = e.onMeasure || m),
+									(l = 'navigationStart');
+							},
+							destroy: function() {
+								(c = void 0),
+									(p = void 0),
+									(l = void 0),
+									w.clearMarks(),
+									f && f.destroy,
+									(f = void 0);
+							},
+							startView: function(e) {
+								if (f)
+									throw new Error(
+										'[UX Capture] Application should call UXCapture.startTransition() before starting new view'
+									);
+								f = new d({
+									onMark: c,
+									onMeasure: p,
+									startMarkName: l,
+									zoneConfigs: e,
+								});
+							},
+							updateView: function(e) {
+								f
+									? f.update(e)
+									: window.console.error(
+											'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
+									  );
+							},
+							startTransition: function() {
+								f && (f.destroy(), (f = void 0)),
+									void 0 !== window.performance &&
+										void 0 !== window.performance.mark &&
+										window.performance.mark('transitionStart'),
+									(l = 'transitionStart');
+							},
+							mark: i.record,
+						};
+					r.a = w;
+				},
+				function(e, r, t) {
+					'use strict';
+					t.r(r),
+						function(e) {
+							var r = t(0);
+							'function' == typeof define && t(3)
+								? define([], function() {
+										return UXCapture;
+								  })
+								: void 0 !== e.exports
+								? (e.exports = r.a)
+								: (window.UXCapture = r.a);
+						}.call(this, t(2)(e));
+				},
+				function(e, r) {
+					e.exports = function(e) {
+						if (!e.webpackPolyfill) {
+							var r = Object.create(e);
+							r.children || (r.children = []),
+								Object.defineProperty(r, 'loaded', {
+									enumerable: !0,
+									get: function() {
+										return r.l;
+									},
+								}),
+								Object.defineProperty(r, 'id', {
+									enumerable: !0,
+									get: function() {
+										return r.i;
+									},
+								}),
+								Object.defineProperty(r, 'exports', { enumerable: !0 }),
+								(r.webpackPolyfill = 1);
+						}
+						return r;
+					};
+				},
+				function(e, r) {
+					(function(r) {
+						e.exports = r;
+					}.call(this, {}));
+				},
+			]);
+		</script>
+	</head>
+	<body>
+		<noscript> You need to enable JavaScript to run this app. </noscript>
+		<div id="root"></div>
+		<!--
+			This HTML file is a template.
+			If you open it directly in the browser, you will see an empty page.
+
+			You can add webfonts, meta tags, or analytics to this file.
+			The build step will place the bundled scripts into the <body> tag.
+
+			To begin the development, run `npm start` or `yarn start`.
+			To create a production bundle, use `npm run build` or `yarn build`.
+		-->
+	</body>
+</html>

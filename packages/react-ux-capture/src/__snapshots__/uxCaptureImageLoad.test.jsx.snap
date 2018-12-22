@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UXCaptureImageLoad renders component markup 1`] = `
+<div
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "
+				<img id=\\"ux-capture-ux-image-load-logo\\" src=\\"/foo.png\\" onload=\\" if (window.UXCapture && !window.UXCapture['ux-image-load-logo-LOADED']) { window.UXCapture.mark('ux-image-load-logo'); window.UXCapture['ux-image-load-logo-LOADED'] = true; } \\" class=\\"someClass\\" alt=\\"altText\\" height=\\"50\\" />
+			",
+    }
+  }
+/>
+`;
+
+exports[`getOnLoadJS renders the correct javascript as a string 1`] = `" if (window.UXCapture && !window.UXCapture['ux-image-load-logo-LOADED']) { window.UXCapture.mark('ux-image-load-logo'); window.UXCapture['ux-image-load-logo-LOADED'] = true; } "`;
+
+exports[`getPropsAsHTMLAttrs renders the correct javascript as a string 1`] = `"class=\\"someClass\\" alt=\\"altText\\" height=\\"50\\""`;
