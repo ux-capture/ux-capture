@@ -23,12 +23,7 @@
   "scripts": {
     "build": "webpack",
     "build:clean": "rm -rf lib/",
-    "lint": "eslint . --ext .js,.jsx --fix",
-    "test": "yarn test:unit",
-    "test:coverage": "yarn test:unit --coverage",
-    "test:unit": "NODE_ENV=test jest --config jest.config.json",
-    "test:watch": "jest test:unit --watch --verbose",
-    "typecheck": "flow",
+    "test": "jest --config jest.config.json",
     "watch": "webpack --watch"
   },
   "author": "Meetup",

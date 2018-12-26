@@ -1,0 +1,8 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "jsx"
+  ],
+  "testRegex": "test\/.*\\.test\\.js"
+}
