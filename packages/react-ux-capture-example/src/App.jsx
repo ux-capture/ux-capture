@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import UXCapture from '@meetup/ux-capture/UXCapture';
 import Logo from './Logo';
 import PerfContext from './marks/PerfContext';
 import Home from './Home';
@@ -21,6 +22,7 @@ class TransitionManager extends React.Component {
 class App extends Component {
 	constructor(props) {
 		super(props);
+		window.UXCapture = UXCapture;
 		window.UXCapture.create({
 			onMeasure: name => {
 				// there can be multiple entries with the same name, get the latest
@@ -73,29 +75,41 @@ class App extends Component {
 								<div className="bounds chunk">
 									<div className="chunk">
 										<h3>Recent marks:</h3>
-										{this.state.marks.slice(0, 8).map((mark, key) => (
-											<div
-												key={key}
-												className="flex text--secondary text--small border--top border--bottom"
-											>
-												<div className="flex-item">{mark}</div>
-												<div className="flex-item" />
-											</div>
-										))}
+										{this.state.marks
+											.slice(0, 8)
+											.map((mark, key) => (
+												<div
+													key={key}
+													className="flex text--secondary text--small border--top border--bottom"
+												>
+													<div className="flex-item">
+														{mark}
+													</div>
+													<div className="flex-item" />
+												</div>
+											))}
 									</div>
 									<div className="chunk">
 										<h3>Recent measures:</h3>
-										{this.state.measures.slice(0, 8).map((measure, key) => (
-											<div
-												key={key}
-												className="flex text--secondary text--small border--top border--bottom"
-											>
-												<div className="flex-item">{measure.name}</div>
-												<div className="flex-item">
-													🕒 {measure.duration.toString().substr(0, 10)}
+										{this.state.measures
+											.slice(0, 8)
+											.map((measure, key) => (
+												<div
+													key={key}
+													className="flex text--secondary text--small border--top border--bottom"
+												>
+													<div className="flex-item">
+														{measure.name}
+													</div>
+													<div className="flex-item">
+														🕒{' '}
+														{Math.round(
+															measure.duration * 10
+														) / 10}
+														ms
+													</div>
 												</div>
-											</div>
-										))}
+											))}
 									</div>
 								</div>
 							</div>

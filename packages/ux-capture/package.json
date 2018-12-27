@@ -2,7 +2,7 @@
   "name": "@meetup/ux-capture",
   "version": "4.0.0",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
-  "main": "src/ux-capture.js",
+  "main": "lib/ux-capture.min.js",
   "directories": {
     "doc": "docs"
   },

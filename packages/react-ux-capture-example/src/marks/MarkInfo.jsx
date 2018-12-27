@@ -2,7 +2,7 @@ import React from 'react';
 
 const getTime = name => {
 	const mark = window.performance.getEntriesByName(name).pop();
-	return mark ? mark.startTime.toString().substr(0, 10) : null;
+	return mark ? Math.round(mark.startTime * 10) / 10 : null;
 };
 
 export default props => {
@@ -13,7 +13,7 @@ export default props => {
 			className="flex text--secondary text--small border--top border--bottom"
 		>
 			<div className="flex-item">{props.mark}</div>
-			<div className="flex-item">🕒 {time}</div>
+			<div className="flex-item">🕒 {time}ms</div>
 		</div>
 	);
 };
