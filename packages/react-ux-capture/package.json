@@ -1,6 +1,6 @@
 {
   "name": "@meetup/react-ux-capture",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React bindings for the ux-capture UX speed library",
   "main": "index.js",
   "repository": "git@github.com:meetup/ux-capture.git",
@@ -16,6 +16,6 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "@meetup/ux-capture": "^4.1.1"
+    "@meetup/ux-capture": "^4.1.2"
   }
 }
