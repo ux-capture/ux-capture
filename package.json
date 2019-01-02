@@ -9,7 +9,6 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
-    "do-version": "lerna version",
     "do-publish": "lerna publish from-package --yes"
   },
   "workspaces": {
