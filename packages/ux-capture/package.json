@@ -23,7 +23,6 @@
   "scripts": {
     "build": "webpack",
     "build:clean": "rm -rf lib/",
-    "test": "jest --config jest.config.json",
     "watch": "webpack --watch"
   },
   "author": "Meetup",

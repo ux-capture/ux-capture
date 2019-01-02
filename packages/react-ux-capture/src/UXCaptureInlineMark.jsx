@@ -9,7 +9,7 @@ type Props = {
 // inject inline UXCapture.mark() call into rendered markup, in addition to
 // UXCaptureInteractiveMark behavior
 // @see https://github.com/meetup/ux-capture#text-without-custom-font
-const UXCaptureInlineMark = ({ mark }: Props) =>
+const UXCaptureInlineMark = ({ mark }: Props) => (
 	<UXCaptureInteractiveMark mark={mark}>
 		<div
 			// eslint-disable-next-line react/no-danger
@@ -21,6 +21,7 @@ const UXCaptureInlineMark = ({ mark }: Props) =>
 				</script>`,
 			}}
 		/>
-	</UXCaptureInteractiveMark>;
+	</UXCaptureInteractiveMark>
+);
 
 export default UXCaptureInlineMark;
