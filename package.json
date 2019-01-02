@@ -7,6 +7,10 @@
   "author": "Meetup",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "version": "lerna version",
+    "do-publish": "lerna publish from-git --yes"
+  },
   "workspaces": {
     "packages": [
       "packages/*"
