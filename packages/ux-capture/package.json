@@ -30,5 +30,6 @@
   "bugs": {
     "url": "https://github.com/meetup/ux-capture/issues"
   },
-  "homepage": "https://github.com/meetup/ux-capture#readme"
+  "homepage": "https://github.com/meetup/ux-capture#readme",
+  "gitHead": "f3b37fb3df060959fd13cdc9c32989caab4a9b23"
 }

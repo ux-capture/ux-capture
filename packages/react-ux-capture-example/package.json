@@ -1,7 +1,6 @@
 {
   "name": "@meetup/react-ux-capture-example",
   "version": "1.0.0",
-  "private": true,
   "dependencies": {
     "@meetup/react-ux-capture": "^1.0.0",
     "react": "^16.7.0",
