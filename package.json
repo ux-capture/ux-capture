@@ -1,5 +1,5 @@
 {
-  "name": "ux-capture",
+  "name": "ux-capture-root",
   "version": "5.0.0",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
   "main": "index.js",
