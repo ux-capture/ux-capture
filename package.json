@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "version": "lerna version",
+    "do-version": "lerna version",
     "do-publish": "lerna publish from-git --yes"
   },
   "workspaces": {
