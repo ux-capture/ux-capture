@@ -152,7 +152,23 @@ in the browser, but should not break if it doesn't. You can
 
    ```jsx
        history.push(‘/foo’)
-       window.UXCapture.startTransition();
+       UXCapture.startTransition();
+   ```
+   or, a little less controlled, using History API:
+   ```jsx
+       window.onpopstate = UXCapture.startTransition;
+
+       const pushState = window.history.pushState;
+       window.history.pushState = (...args) => {
+           UXCapture.startTransition();
+           return pushState.apply(window.history, args);
+       };
+
+       const replaceState = window.history.replaceState;
+       window.history.replaceState = (...args) => {
+           UXCapture.startTransition();
+           return replaceState.apply(window.history, args);
+       };
    ```
 
    Summary: A SPA view transition is comprised of the following calls:
