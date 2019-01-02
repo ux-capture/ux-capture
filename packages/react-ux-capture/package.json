@@ -6,6 +6,9 @@
   "repository": "git@github.com:meetup/ux-capture.git",
   "author": "Meetup",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "babel src --out-dir lib --ignore test.js,test.jsx --source-maps"
   },
@@ -15,5 +18,5 @@
   "dependencies": {
     "@meetup/ux-capture": "^4.1.0"
   },
-  "gitHead": "f3b37fb3df060959fd13cdc9c32989caab4a9b23"
+  "gitHead": "bbf806a7d7d0b625c21fde6f0b88bb43f000cfa2"
 }
