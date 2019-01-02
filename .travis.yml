@@ -35,8 +35,8 @@ before_deploy:
 #   script: "yarn lerna publish"
 #   skip_cleanup: true
 
-deploy:
-  provider: npm
-  email: "web-platform-bot@meetup.com"
-  api_key: $NPM_TOKEN
-  skip_cleanup: true
+# deploy:
+#   provider: script
+#   script: "yarn do-publish"
+#   skip_cleanup: true
+  # on:  something only for merges
