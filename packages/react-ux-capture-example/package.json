@@ -29,6 +29,5 @@
   "devDependencies": {
     "babel-eslint": "9.0.0",
     "eslint": "5.6.0"
-  },
-  "gitHead": "bbf806a7d7d0b625c21fde6f0b88bb43f000cfa2"
+  }
 }
