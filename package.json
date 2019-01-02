@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "do-version": "lerna version",
-    "do-publish": "lerna publish from-git --yes"
+    "do-publish": "lerna publish from-package --yes"
   },
   "workspaces": {
     "packages": [
