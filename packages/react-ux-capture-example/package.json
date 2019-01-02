@@ -1,11 +1,11 @@
 {
   "name": "@meetup/react-ux-capture-example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@meetup/react-ux-capture": "^1.0.0",
+    "@meetup/react-ux-capture": "^1.0.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
