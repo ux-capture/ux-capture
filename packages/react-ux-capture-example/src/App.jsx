@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import UXCapture from '@meetup/ux-capture/UXCapture';
+import UXCapture from '@meetup/ux-capture/src/UXCapture';
 import Logo from './Logo';
 import PerfContext from './marks/PerfContext';
 import Home from './Home';
