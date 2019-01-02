@@ -1,6 +1,6 @@
 {
   "name": "ux-capture-root",
-  "version": "5.0.1",
+  "version": "0.0.1",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
   "main": "index.js",
   "repository": "git@github.com:meetup/ux-capture.git",
