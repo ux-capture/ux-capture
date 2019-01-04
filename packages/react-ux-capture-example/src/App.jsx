@@ -13,6 +13,10 @@ class TransitionManager extends React.Component {
 		if (prevProps.path !== this.props.path) {
 			console.log('transition to', this.props.path);
 			window.UXCapture.startTransition();
+
+			this.props.onTransition(
+				window.performance.getEntriesByName('transitionStart').pop()
+			);
 		}
 	}
 	render() {
@@ -39,10 +43,22 @@ class App extends Component {
 					}));
 				}
 			},
-			onMark: lastMark =>
-				this.setState(state => ({ marks: [lastMark].concat(state.marks) })),
+			onMark: name => {
+				const mark = performance
+					.getEntriesByType('mark')
+					.filter(entry => entry.name === name)
+					.pop();
+
+				this.setState(state => ({ marks: [mark].concat(state.marks) }));
+			},
 		});
 		this.state = { measures: [], marks: [] };
+	}
+	recordTransition(transitionMark) {
+		this.setState(state => ({
+			measures: [transitionMark].concat(state.measures),
+			marks: [transitionMark].concat(state.marks),
+		}));
 	}
 	componentWillUnmount() {
 		window.UXCapture.destroy();
@@ -82,10 +98,29 @@ class App extends Component {
 													key={key}
 													className="flex text--secondary text--small border--top border--bottom"
 												>
-													<div className="flex-item">
-														{mark}
+													<div
+														className="flex-item"
+														style={
+															mark.name ===
+															'transitionStart'
+																? {
+																		fontWeight:
+																			'bold',
+																		color:
+																			'white',
+																  }
+																: {}
+														}
+													>
+														{mark.name}
 													</div>
-													<div className="flex-item" />
+													<div className="flex-item">
+														🕒{' '}
+														{Math.round(
+															mark.startTime * 10
+														) / 10}
+														ms
+													</div>
 												</div>
 											))}
 									</div>
@@ -98,16 +133,32 @@ class App extends Component {
 													key={key}
 													className="flex text--secondary text--small border--top border--bottom"
 												>
-													<div className="flex-item">
+													<div
+														className="flex-item"
+														style={
+															measure.name ===
+															'transitionStart'
+																? {
+																		fontWeight:
+																			'bold',
+																		color:
+																			'white',
+																  }
+																: {}
+														}
+													>
 														{measure.name}
 													</div>
-													<div className="flex-item">
-														🕒{' '}
-														{Math.round(
-															measure.duration * 10
-														) / 10}
-														ms
-													</div>
+													{measure.name !==
+														'transitionStart' && (
+														<div className="flex-item">
+															🕒{' '}
+															{Math.round(
+																measure.duration * 10
+															) / 10}
+															ms
+														</div>
+													)}
 												</div>
 											))}
 									</div>
@@ -117,7 +168,12 @@ class App extends Component {
 						<Route
 							children={({ location }) => (
 								<div className="stripe flex-item">
-									<TransitionManager path={location.pathname} />
+									<TransitionManager
+										path={location.pathname}
+										onTransition={mark => {
+											this.recordTransition(mark);
+										}}
+									/>
 									<Route exact path="/" component={Home} />
 									<Route exact path="/foo" component={Foo} />
 									<Route exact path="/bar" component={Bar} />

@@ -2,11 +2,8 @@ import React from 'react';
 import Inline from './marks/Inline';
 import Page from './Page';
 
-const destinationVerified = [
-	'ux-text-foo-title',
-	'ux-image-onload-script-logo',
-];
-const primaryContentDisplayed = ['ux-text-home-primary'];
+const destinationVerified = ['ux-text-foo-title', 'ux-image-onload-script-logo'];
+const primaryContentDisplayed = ['ux-text-foo-primary'];
 const secondaryContentDisplayed = ['ux-text-foo-secondary'];
 const primaryActionAvailable = ['ux-button-foo-primary'];
 const Foo = () => (
@@ -23,8 +20,8 @@ const Foo = () => (
 		<div className="chunk">
 			<p>
 				Primary content paragraph. All content in this view is loaded
-				synchronously - the measures correspond to the client-side app rendering
-				time
+				synchronously - the measures correspond to the client-side app
+				rendering time
 			</p>
 			<Inline mark="ux-text-foo-primary" />
 		</div>
