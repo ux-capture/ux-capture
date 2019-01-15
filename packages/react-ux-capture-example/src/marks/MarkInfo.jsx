@@ -18,7 +18,12 @@ export default props => {
 			className="flex text--secondary text--small border--top border--bottom"
 		>
 			<div className="flex-item">{mark.name}</div>
-			<div className="flex-item">🕒 {mark.startTime}ms</div>
+			<div className="flex-item">
+				<span role="img" aria-label="Moment in time icon">
+					🕒
+				</span>{' '}
+				{mark.startTime}ms
+			</div>
 		</div>
 	);
 };

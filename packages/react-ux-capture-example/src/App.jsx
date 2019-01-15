@@ -115,7 +115,12 @@ class App extends Component {
 														{mark.name}
 													</div>
 													<div className="flex-item">
-														🕒{' '}
+														<span
+															role="img"
+															aria-label="Moment in time icon"
+														>
+															🕒
+														</span>{' '}
 														{Math.round(
 															mark.startTime * 10
 														) / 10}
@@ -152,7 +157,12 @@ class App extends Component {
 													{measure.name !==
 														'transitionStart' && (
 														<div className="flex-item">
-															🕒{' '}
+															<span
+																role="img"
+																aria-label="Time duration icon"
+															>
+																⌛
+															</span>{' '}
 															{Math.round(
 																measure.duration * 10
 															) / 10}
