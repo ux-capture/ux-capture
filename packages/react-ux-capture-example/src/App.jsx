@@ -35,7 +35,7 @@ class App extends Component {
 					.filter(entry => entry.name === name)
 					.pop();
 
-				if (measure.duration) {
+				if (measure) {
 					// in real world you might be sending this to your custom monitoring solution
 					// (because it does not support W3C UserTiming API natively)
 					this.setState(state => ({
@@ -156,7 +156,14 @@ class App extends Component {
 													</div>
 													{measure.name !==
 														'transitionStart' && (
-														<div className="flex-item">
+														<div
+															className="flex-item"
+															style={
+																measure.duration < 0
+																	? { color: 'red' }
+																	: {}
+															}
+														>
 															<span
 																role="img"
 																aria-label="Time duration icon"
