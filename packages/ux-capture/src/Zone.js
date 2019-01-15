@@ -1,5 +1,4 @@
 import ExpectedMark from './ExpectedMark';
-import { NAVIGATION_START_MARK_NAME } from './UXCapture';
 
 /**
  * A `Zone` is a collection of DOM elements on a page that correspond
@@ -56,29 +55,22 @@ Zone.prototype.measure = function(triggerName) {
 		typeof window.performance !== 'undefined' &&
 		typeof window.performance.measure !== 'undefined'
 	) {
-		let endMarkName;
+		// check if 'end mark' was recorded before start mark - if so, end should
+		// be same as start (measured time is 0)
+		const triggerMark = window.performance
+			.getEntriesByName(triggerName, 'mark')
+			.pop();
+		const startMark = window.performance
+			.getEntriesByName(startMarkName, 'mark')
+			.pop();
 
 		// "navigationStart" string is not a UserTiming mark, but a record in NavTiming API
-		// It has special treatment in window.performance.measure() call
-		//
-		// So, in page view mode, nothing can happen before navigationStart which acts as timeOrigin (e.g. zero)
-		if (startMarkName === NAVIGATION_START_MARK_NAME) {
-			endMarkName = triggerName;
-		} else {
-			// check if 'end mark' was recorded before start mark - if so, end should
-			// be same as start (measured time is 0)
-			const triggerMark = window.performance
-				.getEntriesByName(triggerName, 'mark')
-				.pop();
-			const startMark = window.performance
-				.getEntriesByName(startMarkName, 'mark')
-				.pop();
-
-			endMarkName =
-				triggerMark.startTime < startMark.startTime
-					? startMarkName
-					: triggerName;
-		}
+		// It is not found with getEntries*() calls, but has special treatment and works as an argument in
+		// window.performance.measure() call
+		const endMarkName =
+			startMark && triggerMark.startTime < startMark.startTime
+				? startMarkName
+				: triggerName;
 
 		window.performance.measure(name, startMarkName, endMarkName);
 	}
