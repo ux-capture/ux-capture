@@ -8,7 +8,7 @@ const NOOP = () => {};
  *
  * See: https://github.com/w3c/user-timing/issues/22
  */
-const NAVIGATION_START_MARK_NAME = 'navigationStart';
+export const NAVIGATION_START_MARK_NAME = 'navigationStart';
 /**
  * Used to mark start of interactive view
  */
