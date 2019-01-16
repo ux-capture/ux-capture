@@ -36,6 +36,7 @@
 						'ux-text-intro',
 						'ux-text-story',
 						'ux-image-inline-kitten',
+						'ux-image-onload-kitten',
 					],
 				},
 				{
@@ -44,7 +45,7 @@
 				},
 				{
 					name: 'ux-secondary-content-displayed',
-					marks: ['ux-text-page2'],
+					marks: ['ux-text-page2', 'ux-handler-page2-clickable'],
 				},
 			]);
 		</script>
@@ -61,9 +62,10 @@
 			<p id="intro">
 				<img
 					class="cute"
-					src="http://placekitten.com/400/400"
+					src="http://placekitten.com/2000/2000"
 					style="float: left; margin: 0 1em 1em 0"
 					onload="UXCapture.mark('ux-image-onload-kitten')"
+					width="30%"
 				/>
 				<script>
 					UXCapture.mark('ux-image-inline-kitten');
@@ -96,7 +98,9 @@
 				burgdoggen ham hock, pork belly beef ribs chicken meatloaf jowl strip
 				steak t-bone. Pork chop turducken drumstick kevin leberkas jowl
 				chicken prosciutto salami meatloaf, tri-tip doner boudin ground round
-				<a href="story-details.html" id="morelink">read more...</a>
+				<a href="story-details.html" id="morelink" style="display: none"
+					>read more...</a
+				>
 				<script>
 					UXCapture.mark('ux-text-story-details-link');
 				</script>
@@ -111,7 +115,7 @@
 				dolor, yet velitesse so omnis vitae aspernatur. Modi. Aliqua.
 			</p>
 
-			<a href="page2.html">Page 2 &gt; &gt;</a>
+			<a href="page2.html" style="display: none">Page 2 &gt; &gt;</a>
 			<script>
 				UXCapture.mark('ux-text-page2');
 			</script>
