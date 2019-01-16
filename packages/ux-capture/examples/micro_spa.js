@@ -1,7 +1,7 @@
 // emulating a long-running JS event attachment, e.g. React re-hydration
 setTimeout(() => {
 	const morelink = document.getElementById('morelink');
-	morelink.style.display = 'inline';
+	morelink.style.color = 'blue';
 	morelink.addEventListener('click', function(e) {
 		e.preventDefault();
 
@@ -14,7 +14,7 @@ setTimeout(() => {
 // mini-SPA
 setTimeout(() => {
 	const page2link = document.querySelector('a[href="page2.html"]');
-	page2link.style.display = 'inline';
+	page2link.style.color = 'blue';
 	page2link.addEventListener('click', e => {
 		e.preventDefault();
 
