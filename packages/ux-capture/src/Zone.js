@@ -57,10 +57,21 @@ Zone.prototype.measure = function(triggerName) {
 	) {
 		// check if 'end mark' was recorded before start mark - if so, end should
 		// be same as start (measured time is 0)
-		const triggerMark = window.performance.getEntriesByName(triggerName, 'mark');
-		const startMark = window.performance.getEntriesByName(startMarkName, 'mark');
+		const triggerMark = window.performance
+			.getEntriesByName(triggerName, 'mark')
+			.pop();
+		const startMark = window.performance
+			.getEntriesByName(startMarkName, 'mark')
+			.pop();
+
+		// "navigationStart" string is not a UserTiming mark, but a record in NavTiming API
+		// It is not found with getEntries*() calls, but has special treatment and works as an argument in
+		// window.performance.measure() call
 		const endMarkName =
-			triggerMark.startTime < startMark.startTime ? startMark : triggerName;
+			startMark && triggerMark.startTime < startMark.startTime
+				? startMarkName
+				: triggerName;
+
 		window.performance.measure(name, startMarkName, endMarkName);
 	}
 
