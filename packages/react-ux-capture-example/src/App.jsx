@@ -68,7 +68,12 @@ class App extends Component {
 				}));
 			},
 		});
-		this.state = { measures: [], marks: [] };
+
+		// records in the Marks and Measures table
+		this.state = {
+			measures: [{ measure: { name: 'navigationStart', startTime: 0 } }],
+			marks: [{ mark: { name: 'navigationStart', startTime: 0 } }],
+		};
 	}
 	recordTransition(transitionMark) {
 		this.setState(state => ({
@@ -128,7 +133,7 @@ class App extends Component {
 							<div className="section inverted">
 								<div className="bounds chunk">
 									<div className="chunk">
-										<h3>Recent marks:</h3>
+										<h3>Marks:</h3>
 										{this.state.marks.map(
 											({ mark, transitionStart }, key) => (
 												<div
@@ -139,7 +144,9 @@ class App extends Component {
 														className="flex-item"
 														style={
 															mark.name ===
-															'transitionStart'
+																'transitionStart' ||
+															mark.name ===
+																'navigationStart'
 																? {
 																		fontWeight:
 																			'bold',
@@ -163,21 +170,28 @@ class App extends Component {
 														) / 10}
 														ms{' '}
 														{mark.name !==
-															'transitionStart' && (
-															<span>
-																{' '}
-																=>{' '}
-																{mark.startTime <
-																transitionStart.startTime
-																	? 0
-																	: Math.round(
-																			(mark.startTime -
-																				transitionStart.startTime) *
-																				10
-																	  ) / 10}
-																ms
-															</span>
-														)}
+															'transitionStart' &&
+															mark.name !==
+																'navigationStart' && (
+																<span>
+																	=>
+																	<span
+																		role="img"
+																		aria-label="Moment in time measured from latest transition start"
+																	>
+																		⏳
+																	</span>
+																	{mark.startTime <
+																	transitionStart.startTime
+																		? 0
+																		: Math.round(
+																				(mark.startTime -
+																					transitionStart.startTime) *
+																					10
+																		  ) / 10}
+																	ms
+																</span>
+															)}
 													</div>
 												</div>
 											)
@@ -193,7 +207,7 @@ class App extends Component {
 							<div className="section inverted">
 								<div className="bounds chunk">
 									<div className="chunk">
-										<h3>Recent measures:</h3>
+										<h3>Measures:</h3>
 										{this.state.measures.map((record, key) => (
 											<div
 												key={key}
@@ -203,7 +217,9 @@ class App extends Component {
 													className="flex-item"
 													style={
 														record.measure.name ===
-														'transitionStart'
+															'transitionStart' ||
+														record.measure.name ===
+															'navigationStart'
 															? {
 																	fontWeight:
 																		'bold',
@@ -215,29 +231,31 @@ class App extends Component {
 													{record.measure.name}
 												</div>
 												{record.measure.name !==
-													'transitionStart' && (
-													<div
-														className="flex-item"
-														style={
-															record.measure.duration <
-															0
-																? { color: 'red' }
-																: {}
-														}
-													>
-														<span
-															role="img"
-															aria-label="Time duration icon"
+													'transitionStart' &&
+													record.measure.name !==
+														'navigationStart' && (
+														<div
+															className="flex-item"
+															style={
+																record.measure
+																	.duration < 0
+																	? { color: 'red' }
+																	: {}
+															}
 														>
-															⌛
-														</span>{' '}
-														{Math.round(
-															record.measure.duration *
-																10
-														) / 10}
-														ms
-													</div>
-												)}
+															<span
+																role="img"
+																aria-label="Time duration icon"
+															>
+																⌛
+															</span>{' '}
+															{Math.round(
+																record.measure
+																	.duration * 10
+															) / 10}
+															ms
+														</div>
+													)}
 											</div>
 										))}
 									</div>
