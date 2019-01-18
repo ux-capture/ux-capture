@@ -8,6 +8,8 @@ import Bar from './Bar';
 import Foo from './Foo';
 import './App.css';
 
+const fakeNavigationStartMark = { startTime: 0 };
+
 class TransitionManager extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.path !== this.props.path) {
@@ -35,11 +37,17 @@ class App extends Component {
 					.filter(entry => entry.name === name)
 					.pop();
 
+				const transitionStart =
+					performance.getEntriesByName('transitionStart').pop() ||
+					fakeNavigationStartMark;
+
 				if (measure) {
 					// in real world you might be sending this to your custom monitoring solution
 					// (because it does not support W3C UserTiming API natively)
 					this.setState(state => ({
-						measures: [measure].concat(state.measures),
+						measures: [
+							{ measure, transitionStart: transitionStart },
+						].concat(state.measures),
 					}));
 				}
 			},
@@ -49,15 +57,30 @@ class App extends Component {
 					.filter(entry => entry.name === name)
 					.pop();
 
-				this.setState(state => ({ marks: [mark].concat(state.marks) }));
+				const transitionStart =
+					performance.getEntriesByName('transitionStart').pop() ||
+					fakeNavigationStartMark;
+
+				this.setState(state => ({
+					marks: [{ mark, transitionStart: transitionStart }].concat(
+						state.marks
+					),
+				}));
 			},
 		});
 		this.state = { measures: [], marks: [] };
 	}
 	recordTransition(transitionMark) {
 		this.setState(state => ({
-			measures: [transitionMark].concat(state.measures),
-			marks: [transitionMark].concat(state.marks),
+			measures: [
+				{
+					measure: transitionMark,
+					transitionStart: transitionMark,
+				},
+			].concat(state.measures),
+			marks: [{ mark: transitionMark, transitionStart: transitionMark }].concat(
+				state.marks
+			),
 		}));
 	}
 	componentWillUnmount() {
@@ -83,6 +106,21 @@ class App extends Component {
 						</Link>
 					</div>
 					<div className="flex flex--column atLarge_flex--row">
+						<Route
+							children={({ location }) => (
+								<div className="stripe flex-item">
+									<TransitionManager
+										path={location.pathname}
+										onTransition={mark => {
+											this.recordTransition(mark);
+										}}
+									/>
+									<Route exact path="/" component={Home} />
+									<Route exact path="/foo" component={Foo} />
+									<Route exact path="/bar" component={Bar} />
+								</div>
+							)}
+						/>
 						<div
 							className="stripe inverted flex-item"
 							style={{ backgroundColor: '#444', maxWidth: '480px' }}
@@ -91,9 +129,8 @@ class App extends Component {
 								<div className="bounds chunk">
 									<div className="chunk">
 										<h3>Recent marks:</h3>
-										{this.state.marks
-											.slice(0, 8)
-											.map((mark, key) => (
+										{this.state.marks.map(
+											({ mark, transitionStart }, key) => (
 												<div
 													key={key}
 													className="flex text--secondary text--small border--top border--bottom"
@@ -124,79 +161,89 @@ class App extends Component {
 														{Math.round(
 															mark.startTime * 10
 														) / 10}
-														ms
+														ms{' '}
+														{mark.name !==
+															'transitionStart' && (
+															<span>
+																{' '}
+																=>{' '}
+																{mark.startTime <
+																transitionStart.startTime
+																	? 0
+																	: Math.round(
+																			(mark.startTime -
+																				transitionStart.startTime) *
+																				10
+																	  ) / 10}
+																ms
+															</span>
+														)}
 													</div>
 												</div>
-											))}
-									</div>
-									<div className="chunk">
-										<h3>Recent measures:</h3>
-										{this.state.measures
-											.slice(0, 8)
-											.map((measure, key) => (
-												<div
-													key={key}
-													className="flex text--secondary text--small border--top border--bottom"
-												>
-													<div
-														className="flex-item"
-														style={
-															measure.name ===
-															'transitionStart'
-																? {
-																		fontWeight:
-																			'bold',
-																		color:
-																			'white',
-																  }
-																: {}
-														}
-													>
-														{measure.name}
-													</div>
-													{measure.name !==
-														'transitionStart' && (
-														<div
-															className="flex-item"
-															style={
-																measure.duration < 0
-																	? { color: 'red' }
-																	: {}
-															}
-														>
-															<span
-																role="img"
-																aria-label="Time duration icon"
-															>
-																⌛
-															</span>{' '}
-															{Math.round(
-																measure.duration * 10
-															) / 10}
-															ms
-														</div>
-													)}
-												</div>
-											))}
+											)
+										)}
 									</div>
 								</div>
 							</div>
 						</div>
-						<Route
-							children={({ location }) => (
-								<div className="stripe flex-item">
-									<TransitionManager
-										path={location.pathname}
-										onTransition={mark => {
-											this.recordTransition(mark);
-										}}
-									/>
-									<Route exact path="/" component={Home} />
-									<Route exact path="/foo" component={Foo} />
-									<Route exact path="/bar" component={Bar} />
+						<div
+							className="stripe inverted flex-item"
+							style={{ backgroundColor: '#444', maxWidth: '480px' }}
+						>
+							<div className="section inverted">
+								<div className="bounds chunk">
+									<div className="chunk">
+										<h3>Recent measures:</h3>
+										{this.state.measures.map((record, key) => (
+											<div
+												key={key}
+												className="flex text--secondary text--small border--top border--bottom"
+											>
+												<div
+													className="flex-item"
+													style={
+														record.measure.name ===
+														'transitionStart'
+															? {
+																	fontWeight:
+																		'bold',
+																	color: 'white',
+															  }
+															: {}
+													}
+												>
+													{record.measure.name}
+												</div>
+												{record.measure.name !==
+													'transitionStart' && (
+													<div
+														className="flex-item"
+														style={
+															record.measure.duration <
+															0
+																? { color: 'red' }
+																: {}
+														}
+													>
+														<span
+															role="img"
+															aria-label="Time duration icon"
+														>
+															⌛
+														</span>{' '}
+														{Math.round(
+															record.measure.duration *
+																10
+														) / 10}
+														ms
+													</div>
+												)}
+											</div>
+										))}
+									</div>
 								</div>
-							)}
-						/>
+							</div>
+						</div>
 					</div>
 				</PerfContext.Provider>
 			</Router>
