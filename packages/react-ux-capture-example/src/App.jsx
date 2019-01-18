@@ -8,6 +8,8 @@ import Bar from './Bar';
 import Foo from './Foo';
 import './App.css';
 
+import TimeLabel from './TimeLabel';
+
 const fakeNavigationStartMark = { startTime: 0 };
 
 class TransitionManager extends React.Component {
@@ -93,7 +95,8 @@ class App extends Component {
 		window.UXCapture.destroy();
 	}
 	render() {
-		const menuLinkClass = 'flex-item flex-item--shrink padding--all';
+		const navClass = 'flex-item flex-item--shrink padding--all';
+
 		return (
 			<Router>
 				<PerfContext.Provider value={this.state}>
@@ -101,13 +104,14 @@ class App extends Component {
 						<div className="flex-item valign-middle">
 							<Logo />
 						</div>
-						<Link className={menuLinkClass} to="/">
+						<b className={navClass}>UX Capture Example: React SPA</b>
+						<Link className={navClass} to="/">
 							Home
 						</Link>
-						<Link className={menuLinkClass} to="/foo">
+						<Link className={navClass} to="/foo">
 							Foo
 						</Link>
-						<Link className={menuLinkClass} to="/bar">
+						<Link className={navClass} to="/bar">
 							Bar
 						</Link>
 					</div>
@@ -166,39 +170,42 @@ class App extends Component {
 														)}
 													</div>
 													<div className="flex-item">
-														<span
-															role="img"
-															aria-label="Moment in time icon"
+														<div
+															key={key}
+															className="flex text--secondary text--small border--top border--bottom"
 														>
-															🕒
-														</span>{' '}
-														{Math.round(
-															mark.startTime * 10
-														) / 10}
-														ms{' '}
-														{mark.name !==
-															'transitionStart' &&
+															<TimeLabel
+																time={
+																	Math.round(
+																		mark.startTime *
+																			10
+																	) / 10
+																}
+																label="Moment in time icon"
+																emoji="🕒"
+															/>
+															{mark.name !==
+																'transitionStart' &&
 															mark.name !==
-																'navigationStart' && (
-																<span>
-																	=>
-																	<span
-																		role="img"
-																		aria-label="Moment in time measured from latest transition start"
-																	>
-																		⏳
-																	</span>
-																	{mark.startTime <
-																	transitionStart.startTime
-																		? 0
-																		: Math.round(
-																				(mark.startTime -
-																					transitionStart.startTime) *
-																					10
-																		  ) / 10}
-																	ms
-																</span>
+																'navigationStart' ? (
+																<TimeLabel
+																	time={
+																		mark.startTime <
+																		transitionStart.startTime
+																			? 0
+																			: Math.round(
+																					(mark.startTime -
+																						transitionStart.startTime) *
+																						10
+																			  ) / 10
+																	}
+																	label="Moment in time measured from latest transition start icon"
+																	emoji="⏳"
+																/>
+															) : (
+																<div className="flex-item" />
 															)}
+														</div>
 													</div>
 												</div>
 											)
@@ -215,56 +222,51 @@ class App extends Component {
 								<div className="bounds chunk">
 									<div className="chunk">
 										<h3>Measures:</h3>
-										{this.state.measures.map((record, key) => (
-											<div
-												key={key}
-												className="flex text--secondary text--small border--top border--bottom"
-											>
+										{this.state.measures.map(
+											({ measure, path }, key) => (
 												<div
-													className="flex-item"
-													style={
-														record.measure.name ===
-															'transitionStart' ||
-														record.measure.name ===
-															'navigationStart'
-															? {
-																	fontWeight:
-																		'bold',
-																	color: 'white',
-															  }
-															: {}
-													}
+													key={key}
+													className="flex text--secondary text--small border--top border--bottom"
 												>
-													{record.measure.name}
+													<div
+														className="flex-item"
+														style={
+															measure.name ===
+																'transitionStart' ||
+															measure.name ===
+																'navigationStart'
+																? {
+																		fontWeight:
+																			'bold',
+																		color:
+																			'white',
+																  }
+																: {}
+														}
+													>
+														{measure.name}{' '}
+														{path && (
+															<span>(to {path})</span>
+														)}
+													</div>
+													{measure.name !==
+														'transitionStart' &&
+														measure.name !==
+															'navigationStart' && (
+															<TimeLabel
+																time={
+																	Math.round(
+																		measure.duration *
+																			10
+																	) / 10
+																}
+																label="Time duration icon"
+																emoji="⌛"
+															/>
+														)}
 												</div>
-												{record.measure.name !==
-													'transitionStart' &&
-													record.measure.name !==
-														'navigationStart' && (
-														<div
-															className="flex-item"
-															style={
-																record.measure
-																	.duration < 0
-																	? { color: 'red' }
-																	: {}
-															}
-														>
-															<span
-																role="img"
-																aria-label="Time duration icon"
-															>
-																⌛
-															</span>{' '}
-															{Math.round(
-																record.measure
-																	.duration * 10
-															) / 10}
-															ms
-														</div>
-													)}
-											</div>
-										))}
+											)
+										)}
 									</div>
 								</div>
 							</div>
