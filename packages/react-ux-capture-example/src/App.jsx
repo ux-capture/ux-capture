@@ -13,10 +13,10 @@ const fakeNavigationStartMark = { startTime: 0 };
 class TransitionManager extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.path !== this.props.path) {
-			console.log('transition to', this.props.path);
 			window.UXCapture.startTransition();
 
 			this.props.onTransition(
+				this.props.path,
 				window.performance.getEntriesByName('transitionStart').pop()
 			);
 		}
@@ -75,17 +75,18 @@ class App extends Component {
 			marks: [{ mark: { name: 'navigationStart', startTime: 0 } }],
 		};
 	}
-	recordTransition(transitionMark) {
+	recordTransition(path, transitionMark) {
 		this.setState(state => ({
 			measures: [
 				{
 					measure: transitionMark,
+					path,
 					transitionStart: transitionMark,
 				},
 			].concat(state.measures),
-			marks: [{ mark: transitionMark, transitionStart: transitionMark }].concat(
-				state.marks
-			),
+			marks: [
+				{ mark: transitionMark, path, transitionStart: transitionMark },
+			].concat(state.marks),
 		}));
 	}
 	componentWillUnmount() {
@@ -116,8 +117,8 @@ class App extends Component {
 								<div className="stripe flex-item">
 									<TransitionManager
 										path={location.pathname}
-										onTransition={mark => {
-											this.recordTransition(mark);
+										onTransition={(path, mark) => {
+											this.recordTransition(path, mark);
 										}}
 									/>
 									<Route exact path="/" component={Home} />
@@ -135,7 +136,10 @@ class App extends Component {
 									<div className="chunk">
 										<h3>Marks:</h3>
 										{this.state.marks.map(
-											({ mark, transitionStart }, key) => (
+											(
+												{ mark, path, transitionStart },
+												key
+											) => (
 												<div
 													key={key}
 													className="flex text--secondary text--small border--top border--bottom"
@@ -156,7 +160,10 @@ class App extends Component {
 																: {}
 														}
 													>
-														{mark.name}
+														{mark.name}{' '}
+														{path && (
+															<span>(to {path})</span>
+														)}
 													</div>
 													<div className="flex-item">
 														<span
