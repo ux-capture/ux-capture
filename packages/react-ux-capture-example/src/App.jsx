@@ -13,8 +13,7 @@ import './App.css';
 
 import TimeLabel from './TimeLabel';
 
-import MarkInfo, { fakeNavigationStartMark } from './marks/MarkInfo';
-import Inline from './marks/Inline';
+import { fakeNavigationStartMark } from './marks/MarkInfo';
 
 class TransitionManager extends React.Component {
 	componentDidUpdate(prevProps) {
