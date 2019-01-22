@@ -16,6 +16,13 @@ const primaryContentDisplayed = [
 const primaryActionAvailable = ['ux-handler-home-button'];
 const secondaryContentDisplayed = ['ux-text-home-secondary'];
 
+export const Zones = {
+	'ux-destination-verified': destinationVerified,
+	'ux-primary-content-displayed': primaryContentDisplayed,
+	'ux-primary-action-available': primaryActionAvailable,
+	'ux-secondary-content-displayed': secondaryContentDisplayed,
+};
+
 const Home = () => (
 	<Page
 		destinationVerified={destinationVerified}

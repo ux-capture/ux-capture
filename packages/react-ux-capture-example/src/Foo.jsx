@@ -10,6 +10,14 @@ const destinationVerified = [
 const primaryContentDisplayed = ['ux-text-foo-primary'];
 const secondaryContentDisplayed = ['ux-text-foo-secondary'];
 const primaryActionAvailable = ['ux-button-foo-primary'];
+
+export const Zones = {
+	'ux-destination-verified': destinationVerified,
+	'ux-primary-content-displayed': primaryContentDisplayed,
+	'ux-primary-action-available': primaryActionAvailable,
+	'ux-secondary-content-displayed': secondaryContentDisplayed,
+};
+
 const Foo = () => (
 	<Page
 		destinationVerified={destinationVerified}

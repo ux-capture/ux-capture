@@ -2,7 +2,7 @@ import React from 'react';
 
 import TimeLabel from './../TimeLabel';
 
-export const fakeNavigationStartMark = { startTime: 0 };
+export const fakeNavigationStartMark = { name: 'navigationStart', startTime: 0 };
 
 const getMark = name => {
 	const mark = window.performance.getEntriesByName(name).pop();

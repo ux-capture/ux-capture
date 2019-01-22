@@ -8,15 +8,17 @@ const Inline = props => {
 	return (
 		<React.Fragment>
 			<PerfContext.Consumer>
-				{({ marks }) => (
-					<MarkInfo
-						mark={
-							marks.find(record => record.mark.name === mark)
-								? mark
-								: null
-						}
-					/>
-				)}
+				{view =>
+					view && (
+						<MarkInfo
+							mark={
+								view.marks.find(record => record.mark.name === mark)
+									? mark
+									: null
+							}
+						/>
+					)
+				}
 			</PerfContext.Consumer>
 			<UXCaptureInlineMark mark={mark} />
 		</React.Fragment>

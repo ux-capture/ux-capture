@@ -10,6 +10,12 @@ const destinationVerified = [
 	'ux-image-onload-logo',
 ];
 const primaryContentDisplayed = ['ux-text-lazy'];
+
+export const Zones = {
+	'ux-destination-verified': destinationVerified,
+	'ux-primary-content-displayed': primaryContentDisplayed,
+};
+
 class Bar extends Component {
 	render() {
 		return (
