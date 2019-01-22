@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import UXCapture from '@meetup/ux-capture/src/UXCapture';
+import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+
 import Logo from './Logo';
 import PerfContext from './marks/PerfContext';
 import Home from './Home';
@@ -10,7 +13,8 @@ import './App.css';
 
 import TimeLabel from './TimeLabel';
 
-const fakeNavigationStartMark = { startTime: 0 };
+import MarkInfo, { fakeNavigationStartMark } from './marks/MarkInfo';
+import Inline from './marks/Inline';
 
 class TransitionManager extends React.Component {
 	componentDidUpdate(prevProps) {
@@ -100,178 +104,200 @@ class App extends Component {
 		return (
 			<Router>
 				<PerfContext.Provider value={this.state}>
-					<div className="flex flex-item">
-						<div className="flex-item valign-middle">
-							<Logo />
-						</div>
-						<b className={navClass}>UX Capture Example: React SPA</b>
-						<Link className={navClass} to="/">
-							Home
-						</Link>
-						<Link className={navClass} to="/foo">
-							Foo
-						</Link>
-						<Link className={navClass} to="/bar">
-							Bar
-						</Link>
-					</div>
 					<div className="flex flex--column atLarge_flex--row">
-						<Route
-							children={({ location }) => (
-								<div className="stripe flex-item">
-									<TransitionManager
-										path={location.pathname}
-										onTransition={(path, mark) => {
-											this.recordTransition(path, mark);
-										}}
-									/>
-									<Route exact path="/" component={Home} />
-									<Route exact path="/foo" component={Foo} />
-									<Route exact path="/bar" component={Bar} />
+						<div className="flex flex-item flex--column">
+							<div className="flex flex-item">
+								<div className="flex-item valign-middle">
+									<Logo />
+									<UXCaptureInlineMark mark="ux-image-inline-logo" />
 								</div>
-							)}
-						/>
-						<div
-							className="stripe inverted flex-item"
-							style={{ backgroundColor: '#444', maxWidth: '480px' }}
-						>
-							<div className="section inverted">
-								<div className="bounds chunk">
-									<div className="chunk">
-										<h3>Marks:</h3>
-										{this.state.marks.map(
-											(
-												{ mark, path, transitionStart },
-												key
-											) => (
-												<div
-													key={key}
-													className="flex text--secondary text--small border--top border--bottom"
-												>
+								<b className={navClass}>
+									UX Capture Example: React SPA
+								</b>
+								<Link className={navClass} to="/">
+									Home
+								</Link>
+								<Link className={navClass} to="/foo">
+									Foo
+								</Link>
+								<Link className={navClass} to="/bar">
+									Bar
+								</Link>
+							</div>
+							<div className="flex flex-item">
+								<Route
+									children={({ location }) => (
+										<div className="stripe flex-item">
+											<TransitionManager
+												path={location.pathname}
+												onTransition={(path, mark) => {
+													this.recordTransition(path, mark);
+												}}
+											/>
+											<Route exact path="/" component={Home} />
+											<Route
+												exact
+												path="/foo"
+												component={Foo}
+											/>
+											<Route
+												exact
+												path="/bar"
+												component={Bar}
+											/>
+										</div>
+									)}
+								/>
+							</div>
+						</div>
+						<div className="flex flex-item flex--column atLarge_flex--row">
+							<div
+								className="flex flex-item"
+								style={{ backgroundColor: '#444' }}
+							>
+								<div className="flex-item section inverted">
+									<div className="bounds chunk">
+										<div className="chunk">
+											<h3>Marks:</h3>
+											{this.state.marks.map(
+												(
+													{ mark, path, transitionStart },
+													key
+												) => (
 													<div
-														className="flex-item"
-														style={
-															mark.name ===
-																'transitionStart' ||
-															mark.name ===
-																'navigationStart'
-																? {
-																		fontWeight:
-																			'bold',
-																		color:
-																			'white',
-																  }
-																: {}
-														}
+														key={key}
+														className="flex text--secondary text--small border--top border--bottom"
 													>
-														{mark.name}{' '}
-														{path && (
-															<span>(to {path})</span>
-														)}
-													</div>
-													<div className="flex-item">
 														<div
-															key={key}
-															className="flex text--secondary text--small border--top border--bottom"
+															className="flex-item"
+															style={
+																mark.name ===
+																	'transitionStart' ||
+																mark.name ===
+																	'navigationStart'
+																	? {
+																			fontWeight:
+																				'bold',
+																			color:
+																				'white',
+																	  }
+																	: {}
+															}
 														>
-															<TimeLabel
-																time={
-																	Math.round(
-																		mark.startTime *
-																			10
-																	) / 10
-																}
-																label="Moment in time icon"
-																emoji="🕒"
-															/>
-															{mark.name !==
-																'transitionStart' &&
-															mark.name !==
-																'navigationStart' ? (
-																<TimeLabel
-																	time={
-																		mark.startTime <
-																		transitionStart.startTime
-																			? 0
-																			: Math.round(
-																					(mark.startTime -
-																						transitionStart.startTime) *
-																						10
-																			  ) / 10
-																	}
-																	label="Moment in time measured from latest transition start icon"
-																	emoji="⏳"
-																/>
-															) : (
-																<div className="flex-item" />
+															{mark.name}{' '}
+															{path && (
+																<span>
+																	(to {path})
+																</span>
 															)}
 														</div>
+														<div className="flex-item">
+															<div
+																key={key}
+																className="flex text--secondary text--small border--top border--bottom"
+															>
+																<TimeLabel
+																	time={
+																		Math.round(
+																			mark.startTime *
+																				10
+																		) / 10
+																	}
+																	label="Moment in time icon"
+																	emoji="🕒"
+																/>
+																{mark.name !==
+																	'transitionStart' &&
+																mark.name !==
+																	'navigationStart' ? (
+																	<TimeLabel
+																		time={
+																			mark.startTime <
+																			transitionStart.startTime
+																				? 0
+																				: Math.round(
+																						(mark.startTime -
+																							transitionStart.startTime) *
+																							10
+																				  ) /
+																				  10
+																		}
+																		label="Moment in time measured from latest transition start icon"
+																		emoji="⏳"
+																	/>
+																) : (
+																	<div className="flex-item" />
+																)}
+															</div>
+														</div>
 													</div>
-												</div>
-											)
-										)}
+												)
+											)}
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div
-							className="stripe inverted flex-item"
-							style={{ backgroundColor: '#444', maxWidth: '480px' }}
-						>
-							<div className="section inverted">
-								<div className="bounds chunk">
-									<div className="chunk">
-										<h3>Measures:</h3>
-										{this.state.measures.map(
-											({ measure, path }, key) => (
-												<div
-													key={key}
-													className="flex text--secondary text--small border--top border--bottom"
-												>
+							<div
+								className="flex  flex-item  "
+								style={{ backgroundColor: '#444' }}
+							>
+								<div className="flex-item section inverted">
+									<div className="bounds chunk">
+										<div className="chunk">
+											<h3>Measures:</h3>
+											{this.state.measures.map(
+												({ measure, path }, key) => (
 													<div
-														className="flex-item"
-														style={
-															measure.name ===
-																'transitionStart' ||
-															measure.name ===
-																'navigationStart'
-																? {
-																		fontWeight:
-																			'bold',
-																		color:
-																			'white',
-																  }
-																: {}
-														}
+														key={key}
+														className="flex text--secondary text--small border--top border--bottom"
 													>
-														{measure.name}{' '}
-														{path && (
-															<span>(to {path})</span>
-														)}
+														<div
+															className="flex-item"
+															style={
+																measure.name ===
+																	'transitionStart' ||
+																measure.name ===
+																	'navigationStart'
+																	? {
+																			fontWeight:
+																				'bold',
+																			color:
+																				'white',
+																	  }
+																	: {}
+															}
+														>
+															{measure.name}{' '}
+															{path && (
+																<span>
+																	(to {path})
+																</span>
+															)}
+														</div>
+														{measure.name !==
+															'transitionStart' &&
+															measure.name !==
+																'navigationStart' && (
+																<TimeLabel
+																	time={
+																		Math.round(
+																			measure.duration *
+																				10
+																		) / 10
+																	}
+																	label="Time duration icon"
+																	emoji="⌛"
+																/>
+															)}
 													</div>
-													{measure.name !==
-														'transitionStart' &&
-														measure.name !==
-															'navigationStart' && (
-															<TimeLabel
-																time={
-																	Math.round(
-																		measure.duration *
-																			10
-																	) / 10
-																}
-																label="Time duration icon"
-																emoji="⌛"
-															/>
-														)}
-												</div>
-											)
-										)}
+												)
+											)}
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>{' '}
 				</PerfContext.Provider>
 			</Router>
 		);

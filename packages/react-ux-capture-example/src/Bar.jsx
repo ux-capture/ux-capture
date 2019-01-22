@@ -6,7 +6,8 @@ import Page from './Page';
 
 const destinationVerified = [
 	'ux-text-bar-title',
-	'ux-image-onload-script-logo',
+	'ux-image-inline-logo',
+	'ux-image-onload-logo',
 ];
 const primaryContentDisplayed = ['ux-text-lazy'];
 class Bar extends Component {

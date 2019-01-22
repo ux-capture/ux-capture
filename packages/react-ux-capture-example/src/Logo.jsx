@@ -6,7 +6,7 @@ import logo from './logo.svg';
 export default () => {
 	return (
 		<UXCaptureImageLoad
-			mark="ux-image-onload-script-logo"
+			mark="ux-image-onload-logo"
 			src={logo}
 			alt="logo"
 			height="44px"

@@ -7,7 +7,7 @@ import Page from './Page';
 
 import MarkInfo from './marks/MarkInfo';
 
-const destinationVerified = ['ux-image-onload-script-logo'];
+const destinationVerified = ['ux-image-inline-logo', 'ux-image-onload-logo'];
 const primaryContentDisplayed = [
 	'ux-text-home-copy',
 	'ux-image-inline-kitten250',

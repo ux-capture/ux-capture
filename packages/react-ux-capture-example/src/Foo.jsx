@@ -2,7 +2,11 @@ import React from 'react';
 import Inline from './marks/Inline';
 import Page from './Page';
 
-const destinationVerified = ['ux-text-foo-title', 'ux-image-onload-script-logo'];
+const destinationVerified = [
+	'ux-text-foo-title',
+	'ux-image-inline-logo',
+	'ux-image-onload-logo',
+];
 const primaryContentDisplayed = ['ux-text-foo-primary'];
 const secondaryContentDisplayed = ['ux-text-foo-secondary'];
 const primaryActionAvailable = ['ux-button-foo-primary'];
