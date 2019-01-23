@@ -1,6 +1,7 @@
 import React from 'react';
 
-import TimeLabel from './../TimeLabel';
+import TimeOffsetLabel from '../TimeOffsetLabel';
+import MomentInTimeLabel from '../MomentInTimeLabel';
 
 export const fakeNavigationStartMark = { name: 'navigationStart', startTime: 0 };
 
@@ -16,7 +17,7 @@ const getMark = name => {
 const MarkInfo = props => {
 	const mark = getMark(props.mark);
 
-	const transitionStart =
+	const startMark =
 		performance.getEntriesByName('transitionStart').pop() ||
 		fakeNavigationStartMark;
 
@@ -26,22 +27,8 @@ const MarkInfo = props => {
 			className="flex text--secondary text--small border--top border--bottom"
 		>
 			<div className="flex-item">{mark.name}</div>
-			<TimeLabel
-				time={Math.round(mark.startTime * 10) / 10}
-				label="Moment in time icon"
-				emoji="🕒"
-			/>
-			<TimeLabel
-				time={
-					mark.startTime < transitionStart.startTime
-						? 0
-						: Math.round(
-								(mark.startTime - transitionStart.startTime) * 10
-						  ) / 10
-				}
-				label="Moment in time measured from latest transition start icon"
-				emoji="⏳"
-			/>
+			<MomentInTimeLabel time={mark.startTime} />
+			<TimeOffsetLabel time={mark.startTime} origin={startMark.startTime} />
 		</div>
 	);
 };

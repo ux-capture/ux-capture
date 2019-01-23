@@ -11,7 +11,10 @@ import Bar from './Bar';
 import Foo from './Foo';
 import './App.css';
 
-import TimeLabel from './TimeLabel';
+import MomentInTimeLabel from './MomentInTimeLabel';
+import TimeOriginLabel from './TimeOriginLabel';
+import TimeOffsetLabel from './TimeOffsetLabel';
+import DurationLabel from './DurationLabel';
 
 import { fakeNavigationStartMark } from './marks/MarkInfo';
 
@@ -50,27 +53,19 @@ class App extends Component {
 		super(props);
 		window.UXCapture = UXCapture;
 		window.UXCapture.create({
-			// onMeasure: name => {
-			// 	// there can be multiple entries with the same name, get the latest
-			// 	const measure = performance
-			// 		.getEntriesByType('measure')
-			// 		.filter(entry => entry.name === name)
-			// 		.pop();
+			onMeasure: name => {
+				// there can be multiple entries with the same name, get the latest
+				const measure = performance
+					.getEntriesByType('measure')
+					.filter(entry => entry.name === name)
+					.pop();
 
-			// 	const transitionStart =
-			// 		performance.getEntriesByName('transitionStart').pop() ||
-			// 		fakeNavigationStartMark;
-
-			// 	if (measure) {
-			// 		// in real world you might be sending this to your custom monitoring solution
-			// 		// (because it does not support W3C UserTiming API natively)
-			// 		this.setState(state => ({
-			// 			measures: [
-			// 				{ measure, transitionStart: transitionStart },
-			// 			].concat(state.measures),
-			// 		}));
-			// 	}
-			// },
+				this.setState(state => ({
+					currentView: Object.assign(state.currentView, {
+						measures: [measure].concat(state.currentView.measures),
+					}),
+				}));
+			},
 			onMark: name => {
 				const mark = performance
 					.getEntriesByType('mark')
@@ -79,7 +74,7 @@ class App extends Component {
 
 				this.setState(state => ({
 					currentView: Object.assign(state.currentView, {
-						marks: [{ mark }].concat(state.currentView.marks),
+						marks: [mark].concat(state.currentView.marks),
 					}),
 				}));
 			},
@@ -175,72 +170,42 @@ class App extends Component {
 										<div className="chunk">
 											<h3>Marks:</h3>
 											{this.state.views.map(view => [
-												view.marks.map(
-													(
-														{
-															mark,
-															path,
-															transitionStart,
-														},
-														key
-													) => (
+												view.marks.map((mark, key) => (
+													<div
+														key={key}
+														className="flex text--secondary text--small border--top border--bottom"
+													>
 														<div
-															key={key}
-															className="flex text--secondary text--small border--top border--bottom"
+															className="flex-item"
+															style={{
+																whiteSpace: 'nowrap',
+															}}
 														>
+															{mark.name}
+														</div>
+														<div className="flex-item">
 															<div
-																className="flex-item"
-																style={{
-																	whiteSpace:
-																		'nowrap',
-																}}
+																key={key}
+																className="flex text--secondary text--small"
 															>
-																{mark.name}{' '}
-																{path && (
-																	<span>
-																		&rarr; {path}
-																	</span>
-																)}
-															</div>
-															<div className="flex-item">
-																<div
-																	key={key}
-																	className="flex text--secondary text--small"
-																>
-																	<TimeLabel
-																		time={
-																			Math.round(
-																				mark.startTime *
-																					10
-																			) / 10
-																		}
-																		label="Moment in time icon"
-																		emoji="🕒"
-																	/>
-																	<TimeLabel
-																		time={
-																			mark.startTime <
-																			view
-																				.startMark
-																				.startTime
-																				? 0
-																				: Math.round(
-																						(mark.startTime -
-																							view
-																								.startMark
-																								.startTime) *
-																							10
-																				  ) /
-																				  10
-																		}
-																		label="Moment in time measured from latest transition start icon"
-																		emoji="⏳"
-																	/>
-																</div>
+																<MomentInTimeLabel
+																	time={
+																		mark.startTime
+																	}
+																/>
+																<TimeOffsetLabel
+																	time={
+																		mark.startTime
+																	}
+																	origin={
+																		view.startMark
+																			.startTime
+																	}
+																/>
 															</div>
 														</div>
-													)
-												),
+													</div>
+												)),
 												<div className="flex text--secondary text--small border--top border--bottom">
 													<div
 														className="flex flex-item"
@@ -255,16 +220,11 @@ class App extends Component {
 													</div>
 													<div className="flex  flex-item">
 														<div className="flex flex-item">
-															<TimeLabel
+															<TimeOriginLabel
 																time={
-																	Math.round(
-																		view.startMark
-																			.startTime *
-																			10
-																	) / 10
+																	view.startMark
+																		.startTime
 																}
-																label="Moment in time icon"
-																emoji="🕒"
 															/>
 														</div>
 														<div className="flex flex-item" />
@@ -275,65 +235,7 @@ class App extends Component {
 									</div>
 								</div>
 							</div>
-							{/* <div
-								className="flex  flex-item  "
-								style={{ backgroundColor: '#444' }}
-							>
-								<div className="flex-item section inverted">
-									<div className="bounds chunk">
-										<div className="chunk">
-											<h3>Measures:</h3>
-											{this.state.measures.map(
-												({ measure, path }, key) => (
-													<div
-														key={key}
-														className="flex text--secondary text--small border--top border--bottom"
-													>
-														<div
-															className="flex-item"
-															style={
-																measure.name ===
-																	'transitionStart' ||
-																measure.name ===
-																	'navigationStart'
-																	? {
-																			fontWeight:
-																				'bold',
-																			color:
-																				'white',
-																	  }
-																	: {}
-															}
-														>
-															{measure.name}{' '}
-															{path && (
-																<span>
-																	(to {path})
-																</span>
-															)}
-														</div>
-														{measure.name !==
-															'transitionStart' &&
-															measure.name !==
-																'navigationStart' && (
-																<TimeLabel
-																	time={
-																		Math.round(
-																			measure.duration *
-																				10
-																		) / 10
-																	}
-																	label="Time duration icon"
-																	emoji="⌛"
-																/>
-															)}
-													</div>
-												)
-											)}
-										</div>
-									</div>
-								</div>
-							</div> */}
+
 							<div
 								className="flex flex-item inverted"
 								style={{ backgroundColor: '#444' }}
@@ -358,85 +260,99 @@ class App extends Component {
 													</div>
 
 													<div className="flex flex-item align--right">
-														<TimeLabel
+														<TimeOriginLabel
 															time={
-																Math.round(
-																	view.startMark
-																		.startTime *
-																		10
-																) / 10
+																view.startMark
+																	.startTime
 															}
-															label="Time duration icon"
-															emoji="⌛"
 														/>
 													</div>
 												</div>,
 
 												Object.keys(view.zones).map(
-													measure => [
-														<div
-															key={measure}
-															className="flex text--secondary text--small border--top border--bottom padding--halfLeft"
-														>
+													expectedMeasureName => {
+														const measure = view.measures.find(
+															measure =>
+																measure.name ===
+																expectedMeasureName
+														);
+														return [
 															<div
-																className="flex flex-item"
-																style={{
-																	whiteSpace:
-																		'nowrap',
-																}}
+																key={
+																	expectedMeasureName
+																}
+																className="flex text--secondary text--small border--top border--bottom padding--halfLeft"
 															>
-																{measure}
-															</div>
-
-															<div className="flex flex-item align--right">
-																{/* <TimeLabel
-																	time={
-																		Math.round(
-																			view
-																				.startMark
-																				.startTime *
-																				10
-																		) / 10
-																	}
-																	label="Time duration icon"
-																	emoji="⌛"
-																/> */}
-															</div>
-														</div>,
-														Zones[view.path][measure].map(
-															mark => (
 																<div
-																	key={mark}
-																	className="flex text--secondary text--small border--top border--bottom padding--left"
+																	className="flex flex-item"
+																	style={{
+																		whiteSpace:
+																			'nowrap',
+																	}}
 																>
-																	<div
-																		className="flex flex-item"
-																		style={{
-																			whiteSpace:
-																				'nowrap',
-																		}}
-																	>
-																		{mark}
-																	</div>
-
-																	<div className="flex flex-item align--right">
-																		{/* <TimeLabel
-																			time={
-																				Math.round(
-																					view
-																						.startMark
-																						.startTime *
-																						10
-																				) / 10
-																			}
-																			label="Time duration icon"
-																			emoji="⌛"
-																		/> */}
-																	</div>
+																	{
+																		expectedMeasureName
+																	}
 																</div>
-															)
-														),
-													]
+
+																<div className="flex flex-item align--right">
+																	{measure && (
+																		<DurationLabel
+																			time={
+																				measure.duration
+																			}
+																		/>
+																	)}
+																</div>
+															</div>,
+															Zones[view.path][
+																expectedMeasureName
+															].map(
+																expectedMarkName => {
+																	const mark = view.marks.find(
+																		mark =>
+																			mark.name ===
+																			expectedMarkName
+																	);
+																	return (
+																		<div
+																			key={
+																				expectedMarkName
+																			}
+																			className="flex text--secondary text--small border--top border--bottom padding--left"
+																		>
+																			<div
+																				className="flex flex-item"
+																				style={{
+																					whiteSpace:
+																						'nowrap',
+																				}}
+																			>
+																				{
+																					expectedMarkName
+																				}
+																			</div>
+
+																			<div className="flex flex-item align--right">
+																				{mark && (
+																					<TimeOffsetLabel
+																						time={
+																							mark.startTime
+																						}
+																						origin={
+																							view
+																								.startMark
+																								.startTime
+																						}
+																					/>
+																				)}
+																			</div>
+																		</div>
+																	);
+																}
+															),
+														];
+													}
 												),
 											])}
 										</div>
