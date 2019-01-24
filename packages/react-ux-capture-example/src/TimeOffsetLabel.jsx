@@ -9,7 +9,7 @@ const TimeOffsetLabel = props => {
 		<TimeLabel
 			time={time < origin ? 0 : Math.round(time - origin)}
 			label="Time offset icon"
-			emoji="⌛"
+			emoji="⏳"
 		/>
 	);
 };

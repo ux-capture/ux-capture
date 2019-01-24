@@ -168,7 +168,7 @@ class App extends Component {
 								<div className="flex-item section inverted">
 									<div className="bounds chunk">
 										<div className="chunk">
-											<h3>Marks:</h3>
+											<h3 className="margin--bottom">Marks:</h3>
 											{this.state.views.map(view => [
 												view.marks.map((mark, key) => (
 													<div
@@ -243,10 +243,12 @@ class App extends Component {
 								<div className="flex-item section inverted">
 									<div className="bounds chunk">
 										<div className="chunk">
-											<h3>Views, Zones &amp; Measures:</h3>
+											<h3 className="margin--bottom">
+												Views, Zones &amp; Measures:
+											</h3>
 
 											{this.state.views.map(view => [
-												<div className="flex text--secondary text--small border--top border--bottom">
+												<div className="flex text--secondary text--small margin--top">
 													<div
 														className="flex flex-item"
 														style={{
@@ -281,7 +283,7 @@ class App extends Component {
 																key={
 																	expectedMeasureName
 																}
-																className="flex text--secondary text--small border--top border--bottom padding--halfLeft"
+																className="flex text--secondary text--small border--top padding--halfLeft margin--halfTop"
 															>
 																<div
 																	className="flex flex-item"
@@ -319,7 +321,7 @@ class App extends Component {
 																			key={
 																				expectedMarkName
 																			}
-																			className="flex text--secondary text--small border--top border--bottom padding--left"
+																			className="flex text--secondary text--small padding--left"
 																		>
 																			<div
 																				className="flex flex-item"
