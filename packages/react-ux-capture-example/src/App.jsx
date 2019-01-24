@@ -173,7 +173,7 @@ class App extends Component {
 												view.marks.map((mark, key) => (
 													<div
 														key={key}
-														className="flex text--secondary text--small border--top border--bottom"
+														className="flex text--secondary text--small border--top"
 													>
 														<div
 															className="flex-item"
@@ -206,7 +206,7 @@ class App extends Component {
 														</div>
 													</div>
 												)),
-												<div className="flex text--secondary text--small border--top border--bottom">
+												<div className="flex text--secondary text--small border--top">
 													<div
 														className="flex flex-item"
 														style={{

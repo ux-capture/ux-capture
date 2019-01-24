@@ -11,11 +11,7 @@ const Inline = props => {
 				{view =>
 					view && (
 						<MarkInfo
-							mark={
-								view.marks.find(mark => mark.name === mark)
-									? mark
-									: null
-							}
+							mark={view.marks.find(m => m.name === mark) ? mark : null}
 						/>
 					)
 				}

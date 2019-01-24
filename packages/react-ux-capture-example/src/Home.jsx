@@ -33,7 +33,7 @@ const Home = () => (
 		<div className="chunk">
 			<UXCaptureImageLoad
 				mark="ux-image-onload-kitten250"
-				src="http://placekitten.com/250/250"
+				src="http://placekitten.com/1250/1250"
 				alt="kitten"
 				width="250"
 				height="250"
