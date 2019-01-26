@@ -15,6 +15,6 @@ export const getZoneColor = measureName => {
 
 export const getBoxStyle = measureName => ({
 	border: `1px solid ${getZoneColor(measureName)}`,
-	borderLeft: `5px solid ${getZoneColor(measureName)}`,
+	borderLeft: `8px solid ${getZoneColor(measureName)}`,
 	padding: '5px',
 });
