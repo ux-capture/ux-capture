@@ -2,10 +2,11 @@ import React from 'react';
 
 import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
 
-import Inline from './marks/Inline';
 import Page from './Page';
 
-import MarkInfo from './marks/MarkInfo';
+// import MarkInfo from './marks/MarkInfo';
+import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+import { getBoxStyle } from './ZoneHelper';
 
 const destinationVerified = ['ux-image-inline-logo', 'ux-image-onload-logo'];
 const primaryContentDisplayed = [
@@ -30,7 +31,7 @@ const Home = () => (
 		secondaryContentDisplayed={secondaryContentDisplayed}
 		primaryActionAvailable={primaryActionAvailable}
 	>
-		<div className="chunk">
+		<div className="chunk" style={getBoxStyle('ux-primary-content-displayed')}>
 			<UXCaptureImageLoad
 				mark="ux-image-onload-kitten250"
 				src="http://placekitten.com/1250/1250"
@@ -38,24 +39,43 @@ const Home = () => (
 				width="250"
 				height="250"
 			/>
-			<MarkInfo mark="ux-image-onload-kitten250" />
-			<Inline mark="ux-image-inline-kitten250" />
+			{/* <MarkInfo mark="ux-image-onload-kitten250" /> */}
+			<UXCaptureInlineMark mark="ux-image-inline-kitten250" />
 		</div>
 		<div className="chunk">
-			<p>
+			<p style={getBoxStyle('ux-primary-content-displayed')}>
 				Primary content paragraph. All content in this view is loaded
 				synchronously - the measures correspond to the client-side app
 				rendering time
 			</p>
-			<Inline mark="ux-text-home-copy" />
+			<UXCaptureInlineMark mark="ux-text-home-copy" />
 		</div>
 		<div className="chunk">
-			<button>Primary action button</button>
-			<Inline mark="ux-handler-home-button" />
+			<button
+				className="button"
+				style={getBoxStyle('ux-primary-action-available')}
+			>
+				Primary action button
+			</button>
+			<UXCaptureInlineMark mark="ux-handler-home-button" />
 		</div>
 		<div className="chunk">
-			<p>Secondary content paragraph</p>
-			<Inline mark="ux-text-home-secondary" />
+			<p style={getBoxStyle('ux-secondary-content-displayed')}>
+				Secondary content paragraph
+			</p>
+			<UXCaptureInlineMark mark="ux-text-home-secondary" />
+		</div>
+
+		<div className="chunk">
+			<p>
+				The Restum ipsum dolor sit amet, consectetur adipiscing elit, sed do
+				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+				minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+				aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+				culpa qui officia deserunt mollit anim id est laborum.
+			</p>
 		</div>
 	</Page>
 );

@@ -1,5 +1,6 @@
 import React from 'react';
-import Inline from './marks/Inline';
+import { getBoxStyle } from './ZoneHelper';
+import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 
 export default class Lazy extends React.Component {
 	constructor(props) {
@@ -20,9 +21,9 @@ export default class Lazy extends React.Component {
 			return null;
 		}
 		return (
-			<div>
+			<div style={getBoxStyle(this.props.zone)}>
 				This was loaded lazily in {this.props.delay}ms
-				<Inline mark={this.props.mark} />
+				<UXCaptureInlineMark mark={this.props.mark} />
 			</div>
 		);
 	}

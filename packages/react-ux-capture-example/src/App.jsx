@@ -21,6 +21,7 @@ import { fakeNavigationStartMark } from './marks/MarkInfo';
 import { Zones as homeZones } from './Home';
 import { Zones as fooZones } from './Foo';
 import { Zones as barZones } from './Bar';
+import { getZoneColor, getBoxStyle } from './ZoneHelper';
 
 const Zones = {
 	'/': homeZones,
@@ -114,7 +115,10 @@ class App extends Component {
 					<div className="flex flex--column atLarge_flex--row">
 						<div className="flex flex-item flex--column">
 							<div className="flex flex-item">
-								<div className="flex-item valign-middle">
+								<div
+									className="flex-item valign-middle destinationVerified"
+									style={getBoxStyle('ux-destination-verified')}
+								>
 									<Logo />
 									<UXCaptureInlineMark mark="ux-image-inline-logo" />
 								</div>
@@ -163,12 +167,39 @@ class App extends Component {
 						<div className="flex flex-item flex--column atLarge_flex--row">
 							<div
 								className="flex flex-item"
-								style={{ backgroundColor: '#444' }}
+								style={{ backgroundColor: '#555' }}
 							>
 								<div className="flex-item section inverted">
-									<div className="bounds chunk">
+									<div key="tab1" className="bounds chunk">
 										<div className="chunk">
-											<h3 className="margin--bottom">Marks:</h3>
+											<div key="tab1" className="flex">
+												<div className="flex-item">
+													<h3>Marks</h3>
+												</div>
+											</div>
+											<div className="flex">
+												<div className="flex-item" />
+												<div className="flex-item">
+													<div className="flex text--secondary text--small">
+														<div
+															className="flex-item"
+															style={{
+																whiteSpace: 'nowrap',
+															}}
+														>
+															Timestamp
+														</div>
+														<div
+															className="flex-item"
+															style={{
+																whiteSpace: 'nowrap',
+															}}
+														>
+															Offset
+														</div>
+													</div>
+												</div>
+											</div>
 											{this.state.views.map(view => [
 												view.marks.map((mark, key) => (
 													<div
@@ -244,119 +275,128 @@ class App extends Component {
 									<div className="bounds chunk">
 										<div className="chunk">
 											<h3 className="margin--bottom">
-												Views, Zones &amp; Measures:
+												Current View
 											</h3>
 
-											{this.state.views.map(view => [
-												<div className="flex text--secondary text--small margin--top">
-													<div
-														className="flex flex-item"
-														style={{
-															fontWeight: 'bold',
-															color: 'white',
-															whiteSpace: 'nowrap',
-														}}
-													>
-														{view.startMark.name} &rarr;{' '}
-														{view.path}
-													</div>
+											{this.state.views
+												.slice(0, 1)
+												.map(view => [
+													<div className="flex text--secondary text--small margin--top">
+														<div
+															className="flex flex-item"
+															style={{
+																fontWeight: 'bold',
+																color: 'white',
+																whiteSpace: 'nowrap',
+															}}
+														>
+															{view.startMark.name}{' '}
+															&rarr; {view.path}
+														</div>
 
-													<div className="flex flex-item align--right">
-														<TimeOriginLabel
-															time={
-																view.startMark
-																	.startTime
-															}
-														/>
-													</div>
-												</div>,
-
-												Object.keys(view.zones).map(
-													expectedMeasureName => {
-														const measure = view.measures.find(
-															measure =>
-																measure.name ===
-																expectedMeasureName
-														);
-														return [
-															<div
-																key={
-																	expectedMeasureName
+														<div className="flex flex-item align--right">
+															<TimeOriginLabel
+																time={
+																	view.startMark
+																		.startTime
 																}
-																className="flex text--secondary text--small border--top padding--halfLeft margin--halfTop"
-															>
+															/>
+														</div>
+													</div>,
+
+													Object.keys(view.zones).map(
+														expectedMeasureName => {
+															const measure = view.measures.find(
+																measure =>
+																	measure.name ===
+																	expectedMeasureName
+															);
+
+															const color = getZoneColor(
+																expectedMeasureName
+															);
+
+															return [
 																<div
-																	className="flex flex-item"
-																	style={{
-																		whiteSpace:
-																			'nowrap',
-																	}}
-																>
-																	{
+																	key={
 																		expectedMeasureName
 																	}
-																</div>
+																	className="flex text--secondary text--small border--top margin--halfTop padding--halfTop"
+																>
+																	<div
+																		className="padding--halfLeft padding--halfRight"
+																		style={{
+																			whiteSpace:
+																				'nowrap',
+																			border: `1px solid ${color}`,
+																			borderLeft: `5px solid ${color}`,
+																		}}
+																	>
+																		{
+																			expectedMeasureName
+																		}
+																	</div>
 
-																<div className="flex flex-item align--right">
-																	{measure && (
-																		<DurationLabel
-																			time={
-																				measure.duration
-																			}
-																		/>
-																	)}
-																</div>
-															</div>,
-															Zones[view.path][
-																expectedMeasureName
-															].map(
-																expectedMarkName => {
-																	const mark = view.marks.find(
-																		mark =>
-																			mark.name ===
-																			expectedMarkName
-																	);
-																	return (
-																		<div
-																			key={
+																	<div className="flex flex-item align--right">
+																		{measure && (
+																			<DurationLabel
+																				time={
+																					measure.duration
+																				}
+																			/>
+																		)}
+																	</div>
+																</div>,
+																Zones[view.path][
+																	expectedMeasureName
+																].map(
+																	expectedMarkName => {
+																		const mark = view.marks.find(
+																			mark =>
+																				mark.name ===
 																				expectedMarkName
-																			}
-																			className="flex text--secondary text--small padding--left"
-																		>
+																		);
+																		return (
 																			<div
-																				className="flex flex-item"
-																				style={{
-																					whiteSpace:
-																						'nowrap',
-																				}}
-																			>
-																				{
+																				key={
 																					expectedMarkName
 																				}
-																			</div>
+																				className="flex text--secondary text--small padding--left"
+																			>
+																				<div
+																					className="flex flex-item"
+																					style={{
+																						whiteSpace:
+																							'nowrap',
+																					}}
+																				>
+																					{
+																						expectedMarkName
+																					}
+																				</div>
 
-																			<div className="flex flex-item align--right">
-																				{mark && (
-																					<TimeOffsetLabel
-																						time={
-																							mark.startTime
-																						}
-																						origin={
-																							view
-																								.startMark
-																								.startTime
-																						}
-																					/>
-																				)}
+																				<div className="flex flex-item align--right">
+																					{mark && (
+																						<TimeOffsetLabel
+																							time={
+																								mark.startTime
+																							}
+																							origin={
+																								view
+																									.startMark
+																									.startTime
+																							}
+																						/>
+																					)}
+																				</div>
 																			</div>
-																		</div>
-																	);
-																}
-															),
-														];
-													}
-												),
-											])}
+																		);
+																	}
+																),
+															];
+														}
+													),
+												])}
 										</div>
 									</div>
 								</div>

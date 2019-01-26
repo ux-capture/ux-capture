@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import Inline from './marks/Inline';
 import Lazy from './Lazy';
 
 import Page from './Page';
+import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+import { getBoxStyle } from './ZoneHelper';
 
 const destinationVerified = [
 	'ux-text-bar-title',
@@ -24,11 +25,20 @@ class Bar extends Component {
 				primaryContentDisplayed={primaryContentDisplayed}
 			>
 				<div className="chunk">
-					<h1 className="text--pageTitle">Bar Lazy Title</h1>
-					<Inline mark="ux-text-bar-title" />
+					<h1
+						className="text--pageTitle"
+						style={getBoxStyle('ux-destination-verified')}
+					>
+						Bar Lazy Title
+					</h1>
+					<UXCaptureInlineMark mark="ux-text-bar-title" />
 				</div>
 				<div className="chunk">
-					<Lazy mark="ux-text-lazy" delay={2000} />
+					<Lazy
+						mark="ux-text-lazy"
+						zone="ux-primary-content-displayed"
+						delay={2000}
+					/>
 				</div>
 			</Page>
 		);
