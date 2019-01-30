@@ -9,17 +9,19 @@ const TimeLabel = props => {
 			style={{
 				whiteSpace: 'nowrap',
 			}}
+			title={label}
 		>
-			<span
-				style={{
-					marginRight: '0.2em',
-				}}
-				role="img"
-				title={label}
-				aria-label={label}
-			>
-				{emoji}
-			</span>
+			{emoji && (
+				<span
+					style={{
+						marginRight: '0.2em',
+					}}
+					role="img"
+					aria-label={label}
+				>
+					{emoji}
+				</span>
+			)}
 			{time}
 			ms
 		</div>

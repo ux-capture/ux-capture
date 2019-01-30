@@ -117,7 +117,10 @@ class App extends Component {
 							<div className="flex flex-item">
 								<div
 									className="flex-item valign-middle destinationVerified"
-									style={getBoxStyle('ux-destination-verified')}
+									style={{
+										...getBoxStyle('ux-destination-verified'),
+										paddingTop: 0,
+									}}
 								>
 									<Logo />
 									<UXCaptureInlineMark mark="ux-image-inline-logo" />

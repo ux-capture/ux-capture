@@ -5,9 +5,7 @@ import TimeLabel from './TimeLabel';
 const DurationLabel = props => {
 	const { time } = props;
 
-	return (
-		<TimeLabel time={Math.round(time)} label="Time duration icon" emoji="🕒" />
-	);
+	return <TimeLabel time={Math.round(time)} label="Time duration" emoji="🕒" />;
 };
 
 export default DurationLabel;
