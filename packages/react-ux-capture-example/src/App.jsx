@@ -174,16 +174,12 @@ class App extends Component {
 							>
 								<div className="flex-item section inverted">
 									<div key="tab1" className="bounds chunk">
-										<div className="chunk">
-											<div key="tab1" className="flex">
-												<div className="flex-item">
-													<h3>Marks</h3>
-												</div>
-											</div>
+										<div className="chunk  text--small">
+											<h3>Marks</h3>
 											<div className="flex">
 												<div className="flex-item" />
 												<div className="flex-item">
-													<div className="flex text--secondary text--small">
+													<div className="flex text--secondary">
 														<div
 															className="flex-item"
 															style={{
@@ -207,7 +203,7 @@ class App extends Component {
 												view.marks.map((mark, key) => (
 													<div
 														key={key}
-														className="flex text--secondary text--small border--top"
+														className="flex text--secondary border--top"
 													>
 														<div
 															className="flex-item"
@@ -220,7 +216,7 @@ class App extends Component {
 														<div className="flex-item">
 															<div
 																key={key}
-																className="flex text--secondary text--small"
+																className="flex text--secondary"
 															>
 																<MomentInTimeLabel
 																	time={
@@ -240,7 +236,7 @@ class App extends Component {
 														</div>
 													</div>
 												)),
-												<div className="flex text--secondary text--small border--top">
+												<div className="flex text--secondary border--top">
 													<div
 														className="flex flex-item"
 														style={{
@@ -275,16 +271,14 @@ class App extends Component {
 								style={{ backgroundColor: '#444' }}
 							>
 								<div className="flex-item section inverted">
-									<div className="bounds chunk">
+									<div className="bounds chunk text--small">
 										<div className="chunk">
-											<h3 className="margin--bottom">
-												Current View
-											</h3>
+											<h3>Current View</h3>
 
 											{this.state.views
 												.slice(0, 1)
 												.map(view => [
-													<div className="flex text--secondary text--small margin--top">
+													<div className="flex text--secondary margin--halfTop">
 														<div
 															className="flex flex-item"
 															style={{
@@ -328,7 +322,7 @@ class App extends Component {
 																		border: `1px solid ${color}`,
 																		borderLeft: `5px solid ${color}`,
 																	}}
-																	className="flex text--secondary text--small margin--halfTop"
+																	className="flex text--secondary margin--halfTop"
 																>
 																	<div
 																		className="padding--halfLeft padding--halfRight"
@@ -366,7 +360,7 @@ class App extends Component {
 																				key={
 																					expectedMarkName
 																				}
-																				className="flex text--secondary text--small padding--left"
+																				className="flex text--secondary text-- padding--left"
 																			>
 																				<div
 																					className="flex flex-item"
