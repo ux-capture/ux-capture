@@ -85,8 +85,6 @@ const Foo = () => (
 					fallback={
 						<div
 							style={{
-								width: '100%',
-								height: '50px',
 								backgroundColor: '#F7F7F7',
 								padding: '1em',
 								color: 'silver',
