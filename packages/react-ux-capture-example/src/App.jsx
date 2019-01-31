@@ -324,15 +324,17 @@ class App extends Component {
 																	key={
 																		expectedMeasureName
 																	}
-																	className="flex text--secondary text--small border--top margin--halfTop padding--halfTop"
+																	style={{
+																		border: `1px solid ${color}`,
+																		borderLeft: `5px solid ${color}`,
+																	}}
+																	className="flex text--secondary text--small margin--halfTop"
 																>
 																	<div
 																		className="padding--halfLeft padding--halfRight"
 																		style={{
 																			whiteSpace:
 																				'nowrap',
-																			border: `1px solid ${color}`,
-																			borderLeft: `5px solid ${color}`,
 																		}}
 																	>
 																		{

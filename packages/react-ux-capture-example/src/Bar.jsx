@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Lazy from './Lazy';
 
-import Page from './Page';
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
+
+import Lazy from './Lazy';
+import Page from './Page';
 import { getBoxStyle } from './ZoneHelper';
 
 const destinationVerified = [
@@ -29,16 +31,26 @@ class Bar extends Component {
 						className="text--pageTitle"
 						style={getBoxStyle('ux-destination-verified')}
 					>
-						Bar Lazy Title
+						Lazy Bar Title
 					</h1>
 					<UXCaptureInlineMark mark="ux-text-bar-title" />
 				</div>
 				<div className="chunk">
-					<Lazy
-						mark="ux-text-lazy"
-						zone="ux-primary-content-displayed"
-						delay={2000}
-					/>
+					This view only defines two zones and cuptures corresponding
+					measures: <code>ux-destination-verified</code> and{' '}
+					<code>ux-primary-content-displayed</code>.
+				</div>
+				<div className="chunk">
+					Primary content in this view loads lazily below.
+				</div>
+				<div className="chunk">
+					<Lazy delay={2000}>
+						<UXCaptureInteractiveMark mark={'ux-text-lazy'}>
+							<div style={getBoxStyle('ux-primary-content-displayed')}>
+								Primary content paragraph was loaded lazily in 2000ms
+							</div>
+						</UXCaptureInteractiveMark>
+					</Lazy>
 				</div>
 			</Page>
 		);
