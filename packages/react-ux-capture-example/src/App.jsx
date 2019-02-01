@@ -16,7 +16,7 @@ import TimeOriginLabel from './TimeOriginLabel';
 import TimeOffsetLabel from './TimeOffsetLabel';
 import DurationLabel from './DurationLabel';
 
-import { fakeNavigationStartMark } from './marks/MarkInfo';
+import { MOCK_NAVIGATION_START_MARK } from './marks/MarkInfo';
 
 import { Zones as homeZones } from './Home';
 import { Zones as fooZones } from './Foo';
@@ -31,7 +31,7 @@ const Zones = {
 
 class TransitionManager extends React.Component {
 	componentDidMount() {
-		this.props.onRouteChange(this.props.path, fakeNavigationStartMark);
+		this.props.onRouteChange(this.props.path, MOCK_NAVIGATION_START_MARK);
 	}
 
 	componentDidUpdate(prevProps) {

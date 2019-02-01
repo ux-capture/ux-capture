@@ -9,7 +9,7 @@ const TimeOriginLabel = props => {
 		<TimeLabel
 			time={Math.round(time)}
 			label="Moment of navigationStart in page view or intractive transitionStart in SPA"
-			emoji="🎬"
+			icon="🎬"
 		/>
 	);
 };

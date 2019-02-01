@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TimeLabel = props => {
-	const { time, label, emoji } = props;
+	const { time, label, icon } = props;
 
 	return (
 		<div
@@ -11,7 +11,7 @@ const TimeLabel = props => {
 			}}
 			title={label}
 		>
-			{emoji && (
+			{icon && (
 				<span
 					style={{
 						marginRight: '0.2em',
@@ -19,7 +19,7 @@ const TimeLabel = props => {
 					role="img"
 					aria-label={label}
 				>
-					{emoji}
+					{icon}
 				</span>
 			)}
 			{time}

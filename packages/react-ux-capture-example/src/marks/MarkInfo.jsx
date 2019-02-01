@@ -3,7 +3,7 @@ import React from 'react';
 import TimeOffsetLabel from '../TimeOffsetLabel';
 import MomentInTimeLabel from '../MomentInTimeLabel';
 
-export const fakeNavigationStartMark = { name: 'navigationStart', startTime: 0 };
+export const MOCK_NAVIGATION_START_MARK = { name: 'navigationStart', startTime: 0 };
 
 const getMark = name => {
 	const mark = window.performance.getEntriesByName(name).pop();
@@ -19,7 +19,7 @@ const MarkInfo = props => {
 
 	const startMark =
 		performance.getEntriesByName('transitionStart').pop() ||
-		fakeNavigationStartMark;
+		MOCK_NAVIGATION_START_MARK;
 
 	return (
 		<div

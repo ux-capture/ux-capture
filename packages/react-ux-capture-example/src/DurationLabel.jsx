@@ -10,7 +10,7 @@ const DurationLabel = props => {
 			time={Math.round(time)}
 			label="UserTiming measure that
 	is recorded representing UX metric"
-			emoji="🕒"
+			icon="🕒"
 		/>
 	);
 };
