@@ -28,16 +28,16 @@ rendering instrumentation of paint events in the browser. These include:
 -   Group together multiple display events for elements of a web page that
     represent the same design/product components.
 -   Group together multiple components to reflect various phases of page load
--   Collect captured events and [_UX speed metrics_](#UX_speed_metrics 'metrics
-representing speed of the human-computer interface as it is perceived by the
-user') for all users using RUM (Real User Measurement) tools.
+-   Collect captured events and [_UX speed metrics_](#UX_speed_metrics) ('metrics
+    representing speed of the human-computer interface as it is perceived by the
+    user') for all users using RUM (Real User Measurement) tools.
 -   Calibrate in-browser instrumentation by recording page load video using
-    synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics 'metrics representing speed of the human-computer interface as it is perceived
-by the user')
--   Create uniform instrumentation for both [_page views_](#page_view 'view
-resulting in full browser navigation and re-creation of browser DOM') and
-    [_interactive views_](#interactive_view 'view resulting in partial updates of
-browser DOM'), to be usable with any back-end and front-end framework
+    synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics) ('metrics representing speed of the human-computer interface as it is perceived
+    by the user')
+-   Create uniform instrumentation for both [_page views_](#page_view) ('view
+    resulting in full browser navigation and re-creation of browser DOM') and
+    [_interactive views_](#interactive_view) ('view resulting in partial updates of
+    browser DOM'), to be usable with any back-end and front-end framework
 -   Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30)
     that aims at adding instrumentation directly into browser
 
