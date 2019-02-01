@@ -33,8 +33,8 @@ const MarkLog = ({ views }) => (
 							</div>
 						</div>
 					</div>
-					{views.map(view => (
-						<React.Fragment key="marks-table">
+					{views.map((view, index) => (
+						<React.Fragment key={`marks-table_${index}`}>
 							{view.marks.map(mark => (
 								<div
 									key={mark.name}

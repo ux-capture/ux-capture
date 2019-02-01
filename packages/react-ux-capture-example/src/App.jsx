@@ -5,28 +5,25 @@ import UXCapture from '@meetup/ux-capture/src/UXCapture';
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 
 import Logo from './Logo';
-import PerfContext from './marks/PerfContext';
-import Home from './Home';
-import Bar from './Bar';
-import Foo from './Foo';
+
 import './App.css';
 
-import { MOCK_NAVIGATION_START_MARK } from './marks/MarkInfo';
+import Home, { Zones as homeZones } from './views/Home';
+import Foo, { Zones as fooZones } from './views/Foo';
+import Bar, { Zones as barZones } from './views/Bar';
 
-import { Zones as homeZones } from './Home';
-import { Zones as fooZones } from './Foo';
-import { Zones as barZones } from './Bar';
+import { getBoxStyle } from './reports/ZoneHelper';
 
-import { getBoxStyle } from './ZoneHelper';
-
-import MarkLog from './MarkLog';
-import ZoneReport from './ZoneReport';
+import MarkLog from './reports/MarkLog';
+import ZoneReport from './reports/ZoneReport';
 
 export const Zones = {
 	'/': homeZones,
 	'/foo': fooZones,
 	'/bar': barZones,
 };
+
+const MOCK_NAVIGATION_START_MARK = { name: 'navigationStart', startTime: 0 };
 
 class TransitionManager extends React.Component {
 	componentDidMount() {
@@ -110,69 +107,57 @@ class App extends Component {
 
 		return (
 			<Router>
-				<PerfContext.Provider value={this.state.currentView}>
-					<div className="flex flex--column atLarge_flex--row">
-						<div className="flex flex-item flex--column">
-							<div className="flex flex-item">
-								<div
-									className="flex-item valign-middle destinationVerified"
-									style={{
-										...getBoxStyle('ux-destination-verified'),
-										paddingTop: 0,
-									}}
-								>
-									<Logo />
-									<UXCaptureInlineMark mark="ux-image-inline-logo" />
-								</div>
-								<b className={navClass}>
-									UX Capture Example: React SPA
-								</b>
-								<Link className={navClass} to="/">
-									Home
-								</Link>
-								<Link className={navClass} to="/foo">
-									Foo
-								</Link>
-								<Link className={navClass} to="/bar">
-									Bar
-								</Link>
+				<div className="flex flex--column atLarge_flex--row">
+					<div className="flex flex-item flex--column">
+						<div className="flex flex-item">
+							<div
+								className="flex-item valign-middle destinationVerified"
+								style={{
+									...getBoxStyle('ux-destination-verified'),
+									paddingTop: 0,
+								}}
+							>
+								<Logo />
+								<UXCaptureInlineMark mark="ux-image-inline-logo" />
 							</div>
-							<div className="flex flex-item">
-								<Route
-									children={({ location }) => (
-										<div className="stripe flex-item">
-											<TransitionManager
-												path={location.pathname}
-												onRouteChange={(path, startMark) => {
-													this.recordRouteChange(
-														path,
-														startMark
-													);
-												}}
-											/>
-											<Route exact path="/" component={Home} />
-											<Route
-												exact
-												path="/foo"
-												component={Foo}
-											/>
-											<Route
-												exact
-												path="/bar"
-												component={Bar}
-											/>
-										</div>
-									)}
-								/>
-							</div>
+							<b className={navClass}>UX Capture Example: React SPA</b>
+							<Link className={navClass} to="/">
+								Home
+							</Link>
+							<Link className={navClass} to="/foo">
+								Foo
+							</Link>
+							<Link className={navClass} to="/bar">
+								Bar
+							</Link>
 						</div>
-						<div className="flex flex-item flex--column atLarge_flex--row">
-							<MarkLog views={this.state.views} />
-
-							<ZoneReport views={this.state.views} />
+						<div className="flex flex-item">
+							<Route
+								children={({ location }) => (
+									<div className="stripe flex-item">
+										<TransitionManager
+											path={location.pathname}
+											onRouteChange={(path, startMark) => {
+												this.recordRouteChange(
+													path,
+													startMark
+												);
+											}}
+										/>
+										<Route exact path="/" component={Home} />
+										<Route exact path="/foo" component={Foo} />
+										<Route exact path="/bar" component={Bar} />
+									</div>
+								)}
+							/>
 						</div>
 					</div>
-				</PerfContext.Provider>
+					<div className="flex flex-item flex--column atLarge_flex--row">
+						<MarkLog views={this.state.views} />
+
+						<ZoneReport views={this.state.views} />
+					</div>
+				</div>
 			</Router>
 		);
 	}

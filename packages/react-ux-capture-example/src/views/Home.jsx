@@ -4,10 +4,10 @@ import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad'
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
 
-import Page from './Page';
+import Page from './shared/Page';
 
-import { getBoxStyle } from './ZoneHelper';
-import Lazy from './Lazy';
+import { getBoxStyle } from '../reports/ZoneHelper';
+import Lazy from './shared/Lazy';
 
 const destinationVerified = ['ux-image-inline-logo', 'ux-image-onload-logo'];
 const primaryContentDisplayed = [

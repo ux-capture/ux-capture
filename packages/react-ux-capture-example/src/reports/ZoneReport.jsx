@@ -6,7 +6,7 @@ import DurationLabel from './DurationLabel';
 
 import { getZoneColor } from './ZoneHelper';
 
-import { Zones } from './App.jsx';
+import { Zones } from '../App.jsx';
 
 const ZoneReport = ({ views }) => (
 	<div className="flex flex-item inverted" style={{ backgroundColor: '#444' }}>

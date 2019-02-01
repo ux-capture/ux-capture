@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
 
-import Lazy from './Lazy';
-import Page from './Page';
-import { getBoxStyle } from './ZoneHelper';
+import Lazy from './shared/Lazy';
+import Page from './shared/Page';
+import { getBoxStyle } from '../reports/ZoneHelper';
 
 const destinationVerified = [
 	'ux-text-bar-title',

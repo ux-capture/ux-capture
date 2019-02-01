@@ -4,9 +4,9 @@ import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMar
 import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
 import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
 
-import Page from './Page';
-import { getBoxStyle } from './ZoneHelper';
-import Lazy from './Lazy';
+import Page from './shared/Page';
+import { getBoxStyle } from '../reports/ZoneHelper';
+import Lazy from './shared/Lazy';
 
 const destinationVerified = [
 	'ux-text-foo-title',
