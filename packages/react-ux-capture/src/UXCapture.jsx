@@ -11,7 +11,13 @@ type Props = {|
 |};
 
 export const onMark = (mark: string) => {
-	if (!(window.newrelic && window.performance)) {
+	if (
+		!(
+			window.newrelic &&
+			window.performance &&
+			window.performance.getEntriesByType
+		)
+	) {
 		return;
 	}
 
@@ -22,14 +28,19 @@ export const onMark = (mark: string) => {
 	// Set a marker in the trace details
 	window.newrelic.addToTrace({
 		name: mark,
-		start:
-			window.performance.timing.navigationStart + performanceMark.startTime, // this is an epoch ms timestamp
+		start: window.performance.timing.navigationStart + performanceMark.startTime, // this is an epoch ms timestamp
 		type: 'UX Capture mark',
 	});
 };
 
 export const onMeasure = (measure: string) => {
-	if (!(window.newrelic && window.performance)) {
+	if (
+		!(
+			window.newrelic &&
+			window.performance &&
+			window.performance.getEntriesByType
+		)
+	) {
 		return;
 	}
 
@@ -46,7 +57,7 @@ export default ({
 	primaryContentDisplayed,
 	primaryActionAvailable,
 	secondaryContentDisplayed,
-}: Props) =>
+}: Props) => (
 	<React.Fragment>
 		<UXCaptureCreate onMark={onMark} onMeasure={onMeasure} />
 		<UXCaptureStartView
@@ -55,4 +66,5 @@ export default ({
 			primaryActionAvailable={primaryActionAvailable}
 			secondaryContentDisplayed={secondaryContentDisplayed}
 		/>
-	</React.Fragment>;
+	</React.Fragment>
+);

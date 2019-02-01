@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 
-type Props = React$ElementConfig<typeof HTMLImageElement> & { mark: string };
+type Props = React$ElementProps<'img'> & { mark: string };
 
 export const getOnLoadJS = (mark: string): string => {
 	const onload = `
@@ -15,9 +15,7 @@ export const getOnLoadJS = (mark: string): string => {
 	return onload.replace(/[\n\t]+/g, ' ');
 };
 
-export const getPropsAsHTMLAttrs = (
-	props: React$ElementConfig<typeof HTMLImageElement>
-): string => {
+export const getPropsAsHTMLAttrs = (props: React$ElementProps<'img'>): string => {
 	return Object.keys(props)
 		.map(prop => {
 			let attribute = prop;
@@ -34,8 +32,12 @@ export const getPropsAsHTMLAttrs = (
 				// handles camelCased attributes like `onLoad`
 				attribute = attribute.toLowerCase();
 			}
+			const value = props[prop];
+			if (typeof value !== 'string') {
+				return '';
+			}
 
-			return `${attribute}="${props[prop]}"`;
+			return `${attribute}="${value}"`;
 		})
 		.join(' ');
 };

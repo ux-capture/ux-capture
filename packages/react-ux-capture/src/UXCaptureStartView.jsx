@@ -8,7 +8,14 @@ type Props = {|
 	secondaryContentDisplayed?: Array<string>,
 |};
 
-const makeZones = (props: Props) =>
+type SupportedZone =
+	| 'ux-destination-verified'
+	| 'ux-primary-content-displayed'
+	| 'ux-primary-action-available'
+	| 'ux-secondary-content-displayed';
+type ZoneConfig = { name: SupportedZone, marks: ?Array<string> };
+
+const makeZones = (props: Props): Array<ZoneConfig> =>
 	[
 		{
 			name: 'ux-destination-verified',
@@ -26,7 +33,7 @@ const makeZones = (props: Props) =>
 			name: 'ux-secondary-content-displayed',
 			marks: props.secondaryContentDisplayed,
 		},
-	].filter(({ marks }) => marks && marks.length > 0);
+	].filter(({ marks }: ZoneConfig) => marks && marks.length > 0);
 
 export default class UXCaptureStartView extends React.Component<Props> {
 	zones = makeZones(this.props);

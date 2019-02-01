@@ -26,12 +26,22 @@
   "scripts": {
     "build": "webpack",
     "build:clean": "rm -rf lib/",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "test": "jest --config jest.config.js"
   },
   "author": "Meetup",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/meetup/ux-capture/issues"
   },
-  "homepage": "https://github.com/meetup/ux-capture#readme"
+  "homepage": "https://github.com/meetup/ux-capture#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.0.0",
+    "jest": "^24.0.0",
+    "usertiming": "^0.1.8"
+  }
 }
