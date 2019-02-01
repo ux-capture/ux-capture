@@ -8,9 +8,9 @@ import Logo from './Logo';
 
 import './App.css';
 
-import Home, { Zones as homeZones } from './views/Home';
-import Foo, { Zones as fooZones } from './views/Foo';
-import Bar, { Zones as barZones } from './views/Bar';
+import Basic, { Zones as basicZones } from './views/Basic';
+import Progressive, { Zones as progressiveZones } from './views/Progressive';
+import Minimal, { Zones as minimalZones } from './views/Minimal';
 
 import { getBoxStyle } from './reports/ZoneHelper';
 
@@ -18,9 +18,9 @@ import MarkLog from './reports/MarkLog';
 import ZoneReport from './reports/ZoneReport';
 
 export const Zones = {
-	'/': homeZones,
-	'/foo': fooZones,
-	'/bar': barZones,
+	'/': basicZones,
+	'/pro': progressiveZones,
+	'/min': minimalZones,
 };
 
 const MOCK_NAVIGATION_START_MARK = { name: 'navigationStart', startTime: 0 };
@@ -122,13 +122,13 @@ class App extends Component {
 							</div>
 							<b className={navClass}>UX Capture Example: React SPA</b>
 							<Link className={navClass} to="/">
-								Home
+								Basic
 							</Link>
-							<Link className={navClass} to="/foo">
-								Foo
+							<Link className={navClass} to="/pro">
+								Progressive
 							</Link>
-							<Link className={navClass} to="/bar">
-								Bar
+							<Link className={navClass} to="/min">
+								Minimal
 							</Link>
 						</div>
 						<div className="flex flex-item">
@@ -144,9 +144,17 @@ class App extends Component {
 												);
 											}}
 										/>
-										<Route exact path="/" component={Home} />
-										<Route exact path="/foo" component={Foo} />
-										<Route exact path="/bar" component={Bar} />
+										<Route exact path="/" component={Basic} />
+										<Route
+											exact
+											path="/pro"
+											component={Progressive}
+										/>
+										<Route
+											exact
+											path="/min"
+											component={Minimal}
+										/>
 									</div>
 								)}
 							/>

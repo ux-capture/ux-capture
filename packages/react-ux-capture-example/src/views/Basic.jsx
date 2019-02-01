@@ -4,19 +4,18 @@ import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad'
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
 
-import Page from './shared/Page';
-
-import { getBoxStyle } from '../reports/ZoneHelper';
+import View from './shared/View';
 import Lazy from './shared/Lazy';
+import { getBoxStyle } from '../reports/ZoneHelper';
 
 const destinationVerified = ['ux-image-inline-logo', 'ux-image-onload-logo'];
 const primaryContentDisplayed = [
-	'ux-text-home-copy',
+	'ux-text-primary',
 	'ux-image-inline-kitten',
 	'ux-image-onload-kitten',
 ];
 const primaryActionAvailable = ['ux-text-button', 'ux-handler-button'];
-const secondaryContentDisplayed = ['ux-text-home-secondary'];
+const secondaryContentDisplayed = ['ux-text-secondary'];
 
 export const Zones = {
 	'ux-destination-verified': destinationVerified,
@@ -25,8 +24,8 @@ export const Zones = {
 	'ux-secondary-content-displayed': secondaryContentDisplayed,
 };
 
-const Home = () => (
-	<Page
+const Basic = () => (
+	<View
 		destinationVerified={destinationVerified}
 		primaryContentDisplayed={primaryContentDisplayed}
 		secondaryContentDisplayed={secondaryContentDisplayed}
@@ -43,12 +42,20 @@ const Home = () => (
 			<UXCaptureInlineMark mark="ux-image-inline-kitten" />
 		</div>
 		<div className="chunk">
-			<p style={getBoxStyle('ux-primary-content-displayed')}>
-				Primary content paragraph. All content in this view is loaded
-				synchronously, but click action for the button still takes time to
-				attach.
-			</p>
-			<UXCaptureInlineMark mark="ux-text-home-copy" />
+			<div style={getBoxStyle('ux-primary-content-displayed')}>
+				<p>Primary content paragraph.</p>{' '}
+				<p>
+					All content in this view is loaded synchronously, but click action
+					for the button still takes time to attach.
+				</p>
+				<p>
+					This view also has no title so transitioning here from another
+					view immediately satisfies <code>ux-destination-verified</code>{' '}
+					zone because logo is always there, recording a UserTiming with{' '}
+					<code>0ms</code> duration.
+				</p>
+			</div>
+			<UXCaptureInlineMark mark="ux-text-primary" />
 		</div>
 		<div className="chunk">
 			<Lazy
@@ -70,7 +77,11 @@ const Home = () => (
 					<button
 						className="button"
 						style={getBoxStyle('ux-primary-action-available')}
-						onClick={() => alert('Home is the best!')}
+						onClick={() =>
+							alert(
+								'Views with synchronously loaded content are the most common'
+							)
+						}
 					>
 						Primary action button
 					</button>
@@ -81,7 +92,7 @@ const Home = () => (
 			<p style={getBoxStyle('ux-secondary-content-displayed')}>
 				Secondary content paragraph
 			</p>
-			<UXCaptureInlineMark mark="ux-text-home-secondary" />
+			<UXCaptureInlineMark mark="ux-text-secondary" />
 		</div>
 
 		<div className="chunk">
@@ -95,7 +106,7 @@ const Home = () => (
 				culpa qui officia deserunt mollit anim id est laborum.
 			</p>
 		</div>
-	</Page>
+	</View>
 );
 
-export default Home;
+export default Basic;

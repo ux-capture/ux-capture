@@ -8,7 +8,7 @@ const TimeOriginLabel = props => {
 	return (
 		<TimeLabel
 			time={Math.round(time)}
-			title="Moment of navigationStart in page view or intractive transitionStart in SPA"
+			title="Moment of navigationStart in page view mode or intractive transitionStart in SPA mode"
 			icon="🎬"
 		/>
 	);

@@ -4,18 +4,18 @@ import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMar
 import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
 import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
 
-import Page from './shared/Page';
-import { getBoxStyle } from '../reports/ZoneHelper';
+import View from './shared/View';
 import Lazy from './shared/Lazy';
+import { getBoxStyle } from '../reports/ZoneHelper';
 
 const destinationVerified = [
-	'ux-text-foo-title',
+	'ux-text-title',
 	'ux-image-inline-logo',
 	'ux-image-onload-logo',
 ];
-const primaryContentDisplayed = ['ux-text-foo-primary'];
+const primaryContentDisplayed = ['ux-text-primary'];
 const secondaryContentDisplayed = [
-	'ux-text-foo-secondary',
+	'ux-text-secondary',
 	'ux-image-inline-kitten',
 	'ux-image-onload-kitten',
 ];
@@ -28,8 +28,8 @@ export const Zones = {
 	'ux-secondary-content-displayed': secondaryContentDisplayed,
 };
 
-const Foo = () => (
-	<Page
+const Progressive = () => (
+	<View
 		destinationVerified={destinationVerified}
 		primaryContentDisplayed={primaryContentDisplayed}
 		secondaryContentDisplayed={secondaryContentDisplayed}
@@ -40,16 +40,20 @@ const Foo = () => (
 				className="text--pageTitle"
 				style={getBoxStyle('ux-destination-verified')}
 			>
-				Foo Title
+				Progressive View
 			</h1>
-			<UXCaptureInlineMark mark="ux-text-foo-title" />
+			<UXCaptureInlineMark mark="ux-text-title" />
 		</div>
 		<div className="chunk">
-			<p style={getBoxStyle('ux-primary-content-displayed')}>
-				Primary content paragraph. Click action for the button still takes
-				time to attach and content for the rest of the view is lazy-loaded.
-			</p>
-			<UXCaptureInlineMark mark="ux-text-foo-primary" />
+			<div style={getBoxStyle('ux-primary-content-displayed')}>
+				<p>Primary content paragraph.</p>
+				<p>
+					This view uses progressive enhancement, lazy-loading all but
+					primary content.
+				</p>
+				<p>Click action for the button also takes time to attach.</p>
+			</div>
+			<UXCaptureInlineMark mark="ux-text-primary" />
 		</div>
 		<div className="chunk">
 			<Lazy
@@ -71,7 +75,7 @@ const Foo = () => (
 					<button
 						className="button"
 						style={getBoxStyle('ux-primary-action-available')}
-						onClick={() => alert('Foo is the best!')}
+						onClick={() => alert('Progressive enhancement is the best!')}
 					>
 						Primary action button
 					</button>
@@ -109,7 +113,7 @@ const Foo = () => (
 		<Lazy delay={1500}>
 			<div className="chunk">
 				<p style={getBoxStyle('ux-secondary-content-displayed')}>
-					<UXCaptureInteractiveMark mark="ux-text-foo-secondary">
+					<UXCaptureInteractiveMark mark="ux-text-secondary">
 						Secondary content paragraph
 					</UXCaptureInteractiveMark>
 				</p>
@@ -127,7 +131,7 @@ const Foo = () => (
 				</p>
 			</div>
 		</Lazy>
-	</Page>
+	</View>
 );
 
-export default Foo;
+export default Progressive;
