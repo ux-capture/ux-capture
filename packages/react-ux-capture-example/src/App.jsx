@@ -11,19 +11,18 @@ import Bar from './Bar';
 import Foo from './Foo';
 import './App.css';
 
-import MomentInTimeLabel from './MomentInTimeLabel';
-import TimeOriginLabel from './TimeOriginLabel';
-import TimeOffsetLabel from './TimeOffsetLabel';
-import DurationLabel from './DurationLabel';
-
 import { MOCK_NAVIGATION_START_MARK } from './marks/MarkInfo';
 
 import { Zones as homeZones } from './Home';
 import { Zones as fooZones } from './Foo';
 import { Zones as barZones } from './Bar';
-import { getZoneColor, getBoxStyle } from './ZoneHelper';
 
-const Zones = {
+import { getBoxStyle } from './ZoneHelper';
+
+import MarkLog from './MarkLog';
+import ZoneReport from './ZoneReport';
+
+export const Zones = {
 	'/': homeZones,
 	'/foo': fooZones,
 	'/bar': barZones,
@@ -168,238 +167,9 @@ class App extends Component {
 							</div>
 						</div>
 						<div className="flex flex-item flex--column atLarge_flex--row">
-							<div
-								className="flex flex-item"
-								style={{ backgroundColor: '#555' }}
-							>
-								<div className="flex-item section inverted">
-									<div key="tab1" className="bounds chunk">
-										<div className="chunk  text--small">
-											<h3>Marks</h3>
-											<div className="flex">
-												<div className="flex-item" />
-												<div className="flex-item">
-													<div className="flex text--secondary">
-														<div
-															className="flex-item"
-															style={{
-																whiteSpace: 'nowrap',
-															}}
-														>
-															Timestamp
-														</div>
-														<div
-															className="flex-item"
-															style={{
-																whiteSpace: 'nowrap',
-															}}
-														>
-															Offset
-														</div>
-													</div>
-												</div>
-											</div>
-											{this.state.views.map(view => [
-												view.marks.map((mark, key) => (
-													<div
-														key={key}
-														className="flex text--secondary border--top"
-													>
-														<div
-															className="flex-item"
-															style={{
-																whiteSpace: 'nowrap',
-															}}
-														>
-															{mark.name}
-														</div>
-														<div className="flex-item">
-															<div
-																key={key}
-																className="flex text--secondary"
-															>
-																<MomentInTimeLabel
-																	time={
-																		mark.startTime
-																	}
-																/>
-																<TimeOffsetLabel
-																	time={
-																		mark.startTime
-																	}
-																	origin={
-																		view.startMark
-																			.startTime
-																	}
-																/>
-															</div>
-														</div>
-													</div>
-												)),
-												<div className="flex text--secondary border--top">
-													<div
-														className="flex flex-item"
-														style={{
-															fontWeight: 'bold',
-															color: 'white',
-															whiteSpace: 'nowrap',
-														}}
-													>
-														{view.startMark.name} &rarr;{' '}
-														{view.path}
-													</div>
-													<div className="flex  flex-item">
-														<div className="flex flex-item">
-															<TimeOriginLabel
-																time={
-																	view.startMark
-																		.startTime
-																}
-															/>
-														</div>
-														<div className="flex flex-item" />
-													</div>
-												</div>,
-											])}
-										</div>
-									</div>
-								</div>
-							</div>
+							<MarkLog views={this.state.views} />
 
-							<div
-								className="flex flex-item inverted"
-								style={{ backgroundColor: '#444' }}
-							>
-								<div className="flex-item section inverted">
-									<div className="bounds chunk text--small">
-										<div className="chunk">
-											<h3>Current View</h3>
-
-											{this.state.views
-												.slice(0, 1)
-												.map(view => [
-													<div className="flex text--secondary margin--halfTop">
-														<div
-															className="flex flex-item"
-															style={{
-																fontWeight: 'bold',
-																color: 'white',
-																whiteSpace: 'nowrap',
-															}}
-														>
-															{view.startMark.name}{' '}
-															&rarr; {view.path}
-														</div>
-
-														<div className="flex flex-item align--right">
-															<TimeOriginLabel
-																time={
-																	view.startMark
-																		.startTime
-																}
-															/>
-														</div>
-													</div>,
-
-													Object.keys(view.zones).map(
-														expectedMeasureName => {
-															const measure = view.measures.find(
-																measure =>
-																	measure.name ===
-																	expectedMeasureName
-															);
-
-															const color = getZoneColor(
-																expectedMeasureName
-															);
-
-															return [
-																<div
-																	key={
-																		expectedMeasureName
-																	}
-																	style={{
-																		border: `1px solid ${color}`,
-																		borderLeft: `5px solid ${color}`,
-																	}}
-																	className="flex text--secondary margin--halfTop"
-																>
-																	<div
-																		className="padding--halfLeft padding--halfRight"
-																		style={{
-																			whiteSpace:
-																				'nowrap',
-																		}}
-																	>
-																		{
-																			expectedMeasureName
-																		}
-																	</div>
-
-																	<div className="flex flex-item align--right">
-																		{measure && (
-																			<DurationLabel
-																				time={
-																					measure.duration
-																				}
-																			/>
-																		)}
-																	</div>
-																</div>,
-																Zones[view.path][
-																	expectedMeasureName
-																].map(
-																	expectedMarkName => {
-																		const mark = view.marks.find(
-																			mark =>
-																				mark.name ===
-																				expectedMarkName
-																		);
-																		return (
-																			<div
-																				key={
-																					expectedMarkName
-																				}
-																				className="flex text--secondary text-- padding--left"
-																			>
-																				<div
-																					className="flex flex-item"
-																					style={{
-																						whiteSpace:
-																							'nowrap',
-																					}}
-																				>
-																					{
-																						expectedMarkName
-																					}
-																				</div>
-
-																				<div className="flex flex-item align--right">
-																					{mark && (
-																						<TimeOffsetLabel
-																							time={
-																								mark.startTime
-																							}
-																							origin={
-																								view
-																									.startMark
-																									.startTime
-																							}
-																						/>
-																					)}
-																				</div>
-																			</div>
-																		);
-																	}
-																),
-															];
-														}
-													),
-												])}
-										</div>
-									</div>
-								</div>
-							</div>
+							<ZoneReport views={this.state.views} />
 						</div>
 					</div>
 				</PerfContext.Provider>

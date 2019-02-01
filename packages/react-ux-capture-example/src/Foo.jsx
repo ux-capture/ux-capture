@@ -79,7 +79,7 @@ const Foo = () => (
 			</Lazy>
 		</div>
 		<div className="chunk">
-			<p style={getBoxStyle('ux-secondary-content-displayed')}>
+			<div style={getBoxStyle('ux-secondary-content-displayed')}>
 				<Lazy
 					delay={2000}
 					fallback={
@@ -103,7 +103,7 @@ const Foo = () => (
 						/>
 					</UXCaptureInteractiveMark>
 				</Lazy>
-			</p>
+			</div>
 		</div>
 
 		<Lazy delay={1500}>

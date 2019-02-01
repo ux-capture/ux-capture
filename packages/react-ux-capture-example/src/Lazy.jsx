@@ -16,8 +16,8 @@ export default class Lazy extends React.Component {
 	}
 	render() {
 		if (!this.state.loaded) {
-			return <React.Fragment>{this.props.fallback}</React.Fragment> || null;
+			return this.props.fallback || null;
 		}
-		return <React.Fragment>{this.props.children}</React.Fragment>;
+		return this.props.children;
 	}
 }
