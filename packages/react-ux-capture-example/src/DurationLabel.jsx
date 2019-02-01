@@ -8,7 +8,7 @@ const DurationLabel = props => {
 	return (
 		<TimeLabel
 			time={Math.round(time)}
-			label="UserTiming measure that
+			title="UserTiming measure that
 	is recorded representing UX metric"
 			icon="🕒"
 		/>

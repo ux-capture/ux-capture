@@ -8,7 +8,7 @@ const TimeOffsetLabel = props => {
 	return (
 		<TimeLabel
 			time={time < origin ? 0 : Math.round(time - origin)}
-			label="Moment in time offset from latest navigationStart or transitionStart"
+			title="Moment in time offset from latest navigationStart or transitionStart"
 		/>
 	);
 };

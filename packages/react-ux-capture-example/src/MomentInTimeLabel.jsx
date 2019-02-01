@@ -8,7 +8,7 @@ const MomentInTimeLabel = props => {
 	return (
 		<TimeLabel
 			time={Math.round(time)}
-			label="Moment in time recorded as UserTiming mark"
+			title="Moment in time recorded as UserTiming mark"
 		/>
 	);
 };
