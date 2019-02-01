@@ -12,7 +12,7 @@ type InteractiveMarkProps = {
 // the client application to be running in order to correctly handle click callbacks
 // @see https://github.com/meetup/ux-capture#event-handler-attachment
 class UXCaptureInteractiveMark extends React.Component<InteractiveMarkProps> {
-	componentDidUpdate(prevProps: Props) {
+	componentDidUpdate(prevProps: InteractiveMarkProps) {
 		// updated on client - if mark name has changed, clear old mark and trigger new
 		const { mark } = this.props;
 		if (prevProps.mark !== mark && window.UXCapture) {
