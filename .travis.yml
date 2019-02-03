@@ -7,7 +7,6 @@ cache:
   directories:
     - node_modules
 
-# exclude tags
 branches:
   only:
     - master
@@ -19,24 +18,18 @@ before_install:
   - yarn --version
 
 before_script:
-  # - yarn check # create-react-app requires mismatched versions
+  # - yarn check # DISABLED because create-react-app requires mismatched versions
 
 script:
   - yarn flow
   - yarn test
-  - yarn build
 
 before_deploy:
+  - yarn build
   - rm .gitignore
 
-# https://github.com/geut/lerna-travis-demo/blob/master/.travis.yml
-# deploy:
-#   provider: script
-#   script: "yarn lerna publish"
-#   skip_cleanup: true
-
-# deploy:
-#   provider: script
-#   script: "yarn do-publish"
-#   skip_cleanup: true
-  # on:  something only for merges
+deploy:
+  provider: script
+  script: "yarn deploy" 
+  skip_cleanup: true
+  on: $TRAVIS_EVENT_TYPE = push

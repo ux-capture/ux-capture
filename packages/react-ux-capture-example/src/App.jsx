@@ -8,6 +8,10 @@ import Bar from './Bar';
 import Foo from './Foo';
 import './App.css';
 
+/**
+ * Component that manages navigation transitions by calling UXCapture.startTransition,
+ * firing an optional callback, and logging activity. Non-rendering
+ */
 class TransitionManager extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.path !== this.props.path) {
@@ -23,6 +27,18 @@ class TransitionManager extends React.Component {
 		return null;
 	}
 }
+
+/**
+ * Root-level app container
+ * - activate UXCapture and assign event callbacks
+ * - keep track of all recorded `marks` and `measures` in component state
+ * - pass `marks` and `measures` into `PerfContext`
+ *
+ * State: {
+ *   measures: Array<PerformanceMeasure>, https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure
+ *   marks: Array<PerformanceMark>, https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMark
+ * }
+ */
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -36,8 +52,8 @@ class App extends Component {
 					.pop();
 
 				if (measure) {
-					// in real world you might be sending this to your custom monitoring solution
-					// (because it does not support W3C UserTiming API natively)
+					// new measure available - record it. In a real app, you might send this
+					// info to an external logger/monitor
 					this.setState(state => ({
 						measures: [measure].concat(state.measures),
 					}));
@@ -56,7 +72,7 @@ class App extends Component {
 	}
 	recordTransition(transitionMark) {
 		this.setState(state => ({
-			measures: [transitionMark].concat(state.measures),
+			// measures: [transitionMark].concat(state.measures),
 			marks: [transitionMark].concat(state.marks),
 		}));
 	}
