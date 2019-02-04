@@ -25,6 +25,10 @@ export const Zones = {
 
 const MOCK_NAVIGATION_START_MARK = { name: 'navigationStart', startTime: 0 };
 
+/**
+ * Component that manages navigation transitions by calling UXCapture.startTransition,
+ * firing an optional callback, and logging activity. Non-rendering
+ */
 class TransitionManager extends React.Component {
 	componentDidMount() {
 		this.props.onRouteChange(this.props.path, MOCK_NAVIGATION_START_MARK);
@@ -45,6 +49,18 @@ class TransitionManager extends React.Component {
 		return null;
 	}
 }
+
+/**
+ * Root-level app container
+ * - activate UXCapture and assign event callbacks
+ * - keep track of all recorded `marks` and `measures` in component state
+ * - pass `marks` and `measures` into `PerfContext`
+ *
+ * State: {
+ *   measures: Array<PerformanceMeasure>, https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure
+ *   marks: Array<PerformanceMark>, https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMark
+ * }
+ */
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -57,11 +73,15 @@ class App extends Component {
 					.filter(entry => entry.name === name)
 					.pop();
 
-				this.setState(state => ({
-					currentView: Object.assign(state.currentView, {
-						measures: [measure].concat(state.currentView.measures),
-					}),
-				}));
+				if (measure) {
+					// new measure available - record it. In a real app, you might send this
+					// info to an external logger/monitor
+					this.setState(state => ({
+						currentView: Object.assign(state.currentView, {
+							measures: [measure].concat(state.currentView.measures),
+						}),
+					}));
+				}
 			},
 			onMark: name => {
 				const mark = performance

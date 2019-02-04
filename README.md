@@ -24,9 +24,9 @@ manually _before_ a PR is merged. Lerna will walk you through the process of
 tagging new versions when you run
 
 ```
-$ yarn do-version
+$ yarn make-version
 ```
 
 The Travis deploy step will then publish _only updated packages_ when the PR
 merges. If you forget to bump a version, the deploy will fail and you will have
-to run `yarn do-version` to push the latest tags
+to run `yarn make-version` to push the latest tags

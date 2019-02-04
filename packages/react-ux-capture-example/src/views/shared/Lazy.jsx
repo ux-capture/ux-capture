@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Simple lazy-loading content that records the supplied user timing mark
+// after the supplied `delay` milliseconds
 export default class Lazy extends React.Component {
 	constructor(props) {
 		super(props);
