@@ -4,3 +4,7 @@ coverage
 
 # visual studio code settings
 .vscode
+
+*.log
+
+.DS_Store
