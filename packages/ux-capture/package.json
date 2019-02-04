@@ -26,8 +26,9 @@
   "scripts": {
     "build": "webpack",
     "build:clean": "rm -rf lib/",
-    "watch": "webpack --watch",
-    "test": "jest --config jest.config.js"
+    "prepublishOnly": "yarn build",
+    "test": "jest --config jest.config.js",
+    "watch": "webpack --watch"
   },
   "author": "Meetup",
   "license": "MIT",

@@ -28,3 +28,5 @@ deploy:
   provider: script
   script: "yarn deploy" 
   skip_cleanup: true
+  on:
+    condition: $TRAVIS_EVENT_TYPE = push
