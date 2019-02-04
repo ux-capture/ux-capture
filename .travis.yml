@@ -24,12 +24,7 @@ script:
   - yarn flow
   - yarn test
 
-before_deploy:
-  - yarn build
-  - rm .gitignore
-
 deploy:
   provider: script
   script: "yarn deploy" 
   skip_cleanup: true
-  on: $TRAVIS_EVENT_TYPE = push
