@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 76.370919 36.794178"
+   version="1.1"
+   sodipodi:docname="ux-capture-logo-right.svg"
+   width="76.370918"
+   height="36.794178"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <metadata
+     id="metadata19">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>UX Capture Logo</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview17"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.7217161"
+     inkscape:cx="33.015917"
+     inkscape:cy="19.291254"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#fff;}.cls-2{fill:#8cb0dd;}.cls-3{fill:#b0d79b;}.cls-4{fill:#eabf92;}</style>
+  </defs>
+  <title
+     id="title6">UX Capture Logo</title>
+  <path
+     class="cls-2"
+     d="m 63.920917,10.147923 h -0.55 a 7.91,7.91 0 0 1 0.06,0.86 6.89,6.89 0 1 1 -4,-6.2599998 v 0 l 3.5,-2.67 a 11,11 0 1 0 4.23,11.6199998 h 9.21 v -3.55 z"
+     id="path10"
+     inkscape:connector-curvature="0"
+     style="fill:#8cb0dd" />
+  <path
+     class="cls-3"
+     d="m 50.010917,31.147923 -4.29,-6.3 -0.49,-0.7 -0.08,-0.11 0.92,-0.7 2.25,-1.7 6.7,-5 c 2,-1.52 2.81,-4 1.78,-5.51 -1.03,-1.5099998 -3.53,-1.5199998 -5.55,0 l -8,6.05 -0.92,0.7 -0.92,0.69 -0.08,-0.11 -1.49,-2.18 -3.33,-4.86 a 3.28,3.28 0 0 0 -4.71,-0.81 3.65,3.65 0 0 0 -0.75,4.93 l 2.46,3.58 2.36,3.46 0.08,0.11 -0.92,0.7 -2.77,2.04 -6.16,4.72 c -2,1.52 -2.79,4 -1.75,5.51 1.04,1.51 3.51,1.52 5.52,0 l 4.53,-3.51 4.38,-3.32 0.88,-0.68 0.08,0.11 1.2,1.77 3.58,5.26 a 3.23,3.23 0 0 0 4.67,0.82 3.68,3.68 0 0 0 0.82,-4.96 z"
+     id="path12"
+     inkscape:connector-curvature="0"
+     style="fill:#b0d79b" />
+  <path
+     class="cls-4"
+     d="m 26.660917,9.9479232 a 4.36,4.36 0 0 0 -3.86,2.9199998 l -1.84,5.85 -0.53,1.68 -1.67,5.3 c -0.91,2.87 -4.38,5.2 -7.74,5.2 -3.3599998,0 -5.3699998,-2.33 -4.4699998,-5.2 l 1.66,-5.3 0.52,-1.68 1.8299998,-5.85 a 2.07,2.07 0 0 0 -1.9999998,-2.9199998 4.35,4.35 0 0 0 -3.9,2.9199998 l -4.24000001,13.68 c -1.75999999,5.6 2.16000001,10.2 8.76000001,10.2 6.5999998,0 13.3799998,-4.6 15.1699998,-10.2 l 4.31,-13.68 a 2.07,2.07 0 0 0 -2,-2.9199998 z"
+     id="path14"
+     inkscape:connector-curvature="0"
+     style="fill:#eabf92" />
+</svg>

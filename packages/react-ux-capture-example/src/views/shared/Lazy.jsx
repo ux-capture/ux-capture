@@ -1,5 +1,4 @@
 import React from 'react';
-import Inline from './marks/Inline';
 
 // Simple lazy-loading content that records the supplied user timing mark
 // after the supplied `delay` milliseconds
@@ -19,13 +18,8 @@ export default class Lazy extends React.Component {
 	}
 	render() {
 		if (!this.state.loaded) {
-			return null;
+			return this.props.fallback || null;
 		}
-		return (
-			<div>
-				This was loaded lazily in {this.props.delay}ms
-				<Inline mark={this.props.mark} />
-			</div>
-		);
+		return this.props.children;
 	}
 }

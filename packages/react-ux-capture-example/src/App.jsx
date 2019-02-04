@@ -1,26 +1,48 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import UXCapture from '@meetup/ux-capture/src/UXCapture';
+import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+
 import Logo from './Logo';
-import PerfContext from './marks/PerfContext';
-import Home from './Home';
-import Bar from './Bar';
-import Foo from './Foo';
+
 import './App.css';
+
+import Basic, { Zones as basicZones } from './views/Basic';
+import Progressive, { Zones as progressiveZones } from './views/Progressive';
+import Minimal, { Zones as minimalZones } from './views/Minimal';
+
+import { getBoxStyle } from './reports/ZoneHelper';
+
+import MarkLog from './reports/MarkLog';
+import ZoneReport from './reports/ZoneReport';
+
+export const Zones = {
+	'/': basicZones,
+	'/pro': progressiveZones,
+	'/min': minimalZones,
+};
+
+const MOCK_NAVIGATION_START_MARK = { name: 'navigationStart', startTime: 0 };
 
 /**
  * Component that manages navigation transitions by calling UXCapture.startTransition,
  * firing an optional callback, and logging activity. Non-rendering
  */
 class TransitionManager extends React.Component {
+	componentDidMount() {
+		this.props.onRouteChange(this.props.path, MOCK_NAVIGATION_START_MARK);
+	}
+
 	componentDidUpdate(prevProps) {
 		if (prevProps.path !== this.props.path) {
-			console.log('transition to', this.props.path);
 			window.UXCapture.startTransition();
 
-			this.props.onTransition(
-				window.performance.getEntriesByName('transitionStart').pop()
-			);
+			const transitionStart = window.performance
+				.getEntriesByName('transitionStart')
+				.pop();
+
+			this.props.onRouteChange(this.props.path, transitionStart);
 		}
 	}
 	render() {
@@ -55,7 +77,9 @@ class App extends Component {
 					// new measure available - record it. In a real app, you might send this
 					// info to an external logger/monitor
 					this.setState(state => ({
-						measures: [measure].concat(state.measures),
+						currentView: Object.assign(state.currentView, {
+							measures: [measure].concat(state.currentView.measures),
+						}),
 					}));
 				}
 			},
@@ -65,156 +89,103 @@ class App extends Component {
 					.filter(entry => entry.name === name)
 					.pop();
 
-				this.setState(state => ({ marks: [mark].concat(state.marks) }));
+				this.setState(state => ({
+					currentView: Object.assign(state.currentView, {
+						marks: [mark].concat(state.currentView.marks),
+					}),
+				}));
 			},
 		});
-		this.state = { measures: [], marks: [] };
+
+		// records in the Marks and Measures table
+		this.state = {
+			views: [],
+			currentView: null,
+			latestStartMark: null,
+		};
 	}
-	recordTransition(transitionMark) {
+	recordRouteChange(path, startMark) {
+		const newViewRecord = {
+			path,
+			startMark,
+			zones: Zones[path],
+			marks: [],
+			measures: [],
+		};
+
 		this.setState(state => ({
-			// measures: [transitionMark].concat(state.measures),
-			marks: [transitionMark].concat(state.marks),
+			views: [newViewRecord].concat(state.views),
+			currentView: newViewRecord,
+			latestStartMark: startMark,
 		}));
 	}
 	componentWillUnmount() {
 		window.UXCapture.destroy();
 	}
 	render() {
-		const menuLinkClass = 'flex-item flex-item--shrink padding--all';
+		const navClass = 'flex-item flex-item--shrink padding--all';
+
 		return (
 			<Router>
-				<PerfContext.Provider value={this.state}>
-					<div className="flex flex-item">
-						<div className="flex-item valign-middle">
-							<Logo />
-						</div>
-						<Link className={menuLinkClass} to="/">
-							Home
-						</Link>
-						<Link className={menuLinkClass} to="/foo">
-							Foo
-						</Link>
-						<Link className={menuLinkClass} to="/bar">
-							Bar
-						</Link>
-					</div>
-					<div className="flex flex--column atLarge_flex--row">
-						<div
-							className="stripe inverted flex-item"
-							style={{ backgroundColor: '#444', maxWidth: '480px' }}
-						>
-							<div className="section inverted">
-								<div className="bounds chunk">
-									<div className="chunk">
-										<h3>Recent marks:</h3>
-										{this.state.marks
-											.slice(0, 8)
-											.map((mark, key) => (
-												<div
-													key={key}
-													className="flex text--secondary text--small border--top border--bottom"
-												>
-													<div
-														className="flex-item"
-														style={
-															mark.name ===
-															'transitionStart'
-																? {
-																		fontWeight:
-																			'bold',
-																		color:
-																			'white',
-																  }
-																: {}
-														}
-													>
-														{mark.name}
-													</div>
-													<div className="flex-item">
-														<span
-															role="img"
-															aria-label="Moment in time icon"
-														>
-															🕒
-														</span>{' '}
-														{Math.round(
-															mark.startTime * 10
-														) / 10}
-														ms
-													</div>
-												</div>
-											))}
-									</div>
-									<div className="chunk">
-										<h3>Recent measures:</h3>
-										{this.state.measures
-											.slice(0, 8)
-											.map((measure, key) => (
-												<div
-													key={key}
-													className="flex text--secondary text--small border--top border--bottom"
-												>
-													<div
-														className="flex-item"
-														style={
-															measure.name ===
-															'transitionStart'
-																? {
-																		fontWeight:
-																			'bold',
-																		color:
-																			'white',
-																  }
-																: {}
-														}
-													>
-														{measure.name}
-													</div>
-													{measure.name !==
-														'transitionStart' && (
-														<div
-															className="flex-item"
-															style={
-																measure.duration < 0
-																	? { color: 'red' }
-																	: {}
-															}
-														>
-															<span
-																role="img"
-																aria-label="Time duration icon"
-															>
-																⌛
-															</span>{' '}
-															{Math.round(
-																measure.duration * 10
-															) / 10}
-															ms
-														</div>
-													)}
-												</div>
-											))}
-									</div>
-								</div>
+				<div className="flex flex--column atLarge_flex--row">
+					<div className="flex flex-item flex--column">
+						<div className="flex flex-item">
+							<div
+								className="flex-item valign-middle destinationVerified"
+								style={{
+									...getBoxStyle('ux-destination-verified'),
+									paddingTop: 0,
+								}}
+							>
+								<Logo />
+								<UXCaptureInlineMark mark="ux-image-inline-logo" />
 							</div>
+							<b className={navClass}>UX Capture Example: React SPA</b>
+							<Link className={navClass} to="/">
+								Basic
+							</Link>
+							<Link className={navClass} to="/pro">
+								Progressive
+							</Link>
+							<Link className={navClass} to="/min">
+								Minimal
+							</Link>
 						</div>
-						<Route
-							children={({ location }) => (
-								<div className="stripe flex-item">
-									<TransitionManager
-										path={location.pathname}
-										onTransition={mark => {
-											this.recordTransition(mark);
-										}}
-									/>
-									<Route exact path="/" component={Home} />
-									<Route exact path="/foo" component={Foo} />
-									<Route exact path="/bar" component={Bar} />
-								</div>
-							)}
-						/>
+						<div className="flex flex-item">
+							<Route
+								children={({ location }) => (
+									<div className="stripe flex-item">
+										<TransitionManager
+											path={location.pathname}
+											onRouteChange={(path, startMark) => {
+												this.recordRouteChange(
+													path,
+													startMark
+												);
+											}}
+										/>
+										<Route exact path="/" component={Basic} />
+										<Route
+											exact
+											path="/pro"
+											component={Progressive}
+										/>
+										<Route
+											exact
+											path="/min"
+											component={Minimal}
+										/>
+									</div>
+								)}
+							/>
+						</div>
 					</div>
-				</PerfContext.Provider>
+					<div className="flex flex-item flex--column atLarge_flex--row">
+						<MarkLog views={this.state.views} />
+
+						<ZoneReport views={this.state.views} />
+					</div>
+				</div>
 			</Router>
 		);
 	}

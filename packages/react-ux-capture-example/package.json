@@ -1,33 +1,35 @@
 {
-  "name": "@meetup/react-ux-capture-example",
-  "version": "1.1.1",
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@meetup/react-ux-capture": "^1.1.1",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "test": "echo 'skipping tests for demo app'",
-    "watch": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "babel-eslint": "9.0.0",
-    "eslint": "5.6.0"
-  }
+	"name": "@meetup/react-ux-capture-example",
+	"version": "1.1.1",
+	"author": "Meetup",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"@meetup/react-ux-capture": "^1.1.1",
+		"react": "^16.7.0",
+		"react-dom": "^16.7.0",
+		"react-router-dom": "^4.3.1",
+		"react-scripts": "2.1.1"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"test": "echo 'skipping tests for demo app'",
+		"watch": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	],
+	"devDependencies": {
+		"babel-eslint": "9.0.0",
+		"eslint": "5.6.0"
+	}
 }
