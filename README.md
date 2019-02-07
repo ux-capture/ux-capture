@@ -2,6 +2,21 @@
 
 Browser instrumentation approach and libraries that makes it easier to capture UX performance metrics.
 
+- [Packages](#packages)
+  - [Publish workflow](#publish-workflow)
+- [Internal documentation](#internal-documentation)
+- [Project Goals](#project-goals)
+- [Instrumentation Approach](#instrumentation-approach)
+  - [Individual Element Instrumentation](#individual-element-instrumentation)
+    - [Image elements](#image-elements)
+    - [Text without custom font](#text-without-custom-font)
+    - [Text with custom font](#text-with-custom-font)
+    - [Event handler attachment](#event-handler-attachment)
+  - [Aggregating component metrics](#aggregating-component-metrics)
+  - [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
+- [Testing results](#testing-results)
+- [Glossary](#glossary)
+
 ## Packages
 
 -   [@meetup/ux-capture](./packages/ux-capture) - Core library
