@@ -1,7 +1,7 @@
 # UX Capture JavaScript Library
 
 Browser instrumentation JavaScript library that makes it easier to capture UX performance
-metrics using [UX Capture](../../) approach
+metrics using [UX Capture](../../README.md) approach
 
 - [Usage](#usage)
 - [Sample page](#sample-page)
@@ -16,7 +16,7 @@ The intent of this library is to help developers instrument technical events
 load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics)
 of user experience.
 
-React bindings for this library exists as a separate module [@meetup/react-ux-capture](../packages/react-ux-capture)
+React bindings for this library exists as a separate module [@meetup/react-ux-capture](../react-ux-capture/)
 
 ## Usage
 
