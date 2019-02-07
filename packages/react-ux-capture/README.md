@@ -2,7 +2,15 @@
 
 The [UX Capture Library](../ux-capture) is a browser instrumentation library that makes it easier to capture UX Speed metrics. In order to make the library easy and effective to use in React-based applications, this module implements a set of React Bindings (Components).
 
-## <UXCapture />
+- [`<UXCapture />`](#uxcapture-)
+- [`<UXCaptureCreate />`](#uxcapturecreate-)
+- [`<UXCaptureStartView />`](#uxcapturestartview-)
+- [`<UXCaptureInlineMark />`](#uxcaptureinlinemark-)
+- [`<UXCaptureImageLoad />`](#uxcaptureimageload-)
+- [`<UXCaptureInteractiveMark />`](#uxcaptureinteractivemark-)
+- [`<UXCaptureFont />`](#uxcapturefont-)
+
+## `<UXCapture />`
 
 This React component is a wrapper for `<UXCaptureCreate />` and `<UXCaptureStartView />`, along with NewRelic logging instrumentation in the onMark and onMeasure callbacks for the View. This should only ever be used once per page load.
 
@@ -17,7 +25,7 @@ Usage:
 />
 ```
 
-## <UXCaptureCreate />
+## `<UXCaptureCreate />`
 
 This React component implements UXCapture.create(), which initializes the global window.UXCapture singleton object. This should only ever be used per page load.
 
@@ -44,7 +52,7 @@ render() {
 }
 ```
 
-## <UXCaptureStartView />
+## `<UXCaptureStartView />`
 
 This React component implements UXCapture.startView(), which creates a new View that manages its corresponding Zones. If called more than once, it will replace previous Views.
 
@@ -59,7 +67,7 @@ Usage:
 />
 ```
 
-## <UXCaptureInlineMark />
+## `<UXCaptureInlineMark />`
 
 This React component injects into the rendered markup an inline script tag that calls UXCapture.mark().
 
@@ -75,7 +83,7 @@ render() {
 }
 ```
 
-## <UXCaptureImageLoad />
+## `<UXCaptureImageLoad />`
 
 This React component injects into the rendered markup an <img> tag with an onload attribute that calls UXCapture.mark().
 
@@ -95,7 +103,7 @@ render() {
 }
 ```
 
-## <UXCaptureInteractiveMark />
+## `<UXCaptureInteractiveMark />`
 
 This React component calls UXCapture.mark() within it's componentDidMount lifecycle method, thus only performing the mark in the browser and not in server-side render. It wall pass through and render all children.
 
@@ -105,16 +113,16 @@ Usage:
 
 ```jsx
 render() {
-...
-<UXCaptureInteractiveMark mark="ux-handler-about-subnav-routable">
-<Stripe className={cx(NAV_BAR_CLASS, className)}>
-...
-</Stripe>
-</UXCaptureInteractiveMark>
+    ...
+    <UXCaptureInteractiveMark mark="ux-handler-about-subnav-routable">
+    <Stripe className={cx(NAV_BAR_CLASS, className)}>
+        ...
+    </Stripe>
+    </UXCaptureInteractiveMark>
 }
 ```
 
-## <UXCaptureFont />
+## `<UXCaptureFont />`
 
 Before using UXCaptureFont component, make sure the page also includes fontLoaderInlineCode which inlines Web Font Loader library on the page.
 
@@ -135,7 +143,7 @@ render() {
     ...
 
     return (
-        <PageWrap head={head} ...>
+        <PageWrap head={head} ... >
         <UXCaptureFont
                 fontFamily="Graphik Meetup:n4"
                 mark="ux-font-meetup-regular-400"
