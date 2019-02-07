@@ -12,7 +12,7 @@ The [UX Capture Library](../ux-capture) is a browser instrumentation library tha
 
 ## `<UXCapture />`
 
-This React component is a wrapper for `<UXCaptureCreate />` and `<UXCaptureStartView />`, along with NewRelic logging instrumentation in the onMark and onMeasure callbacks for the View. This should only ever be used once per page load.
+This React component is a wrapper for `<UXCaptureCreate />` and `<UXCaptureStartView />`, along with NewRelic logging instrumentation in the `onMark` and `onMeasure` callbacks for the `View`. This should only ever be used once per page load.
 
 Usage:
 
@@ -27,7 +27,7 @@ Usage:
 
 ## `<UXCaptureCreate />`
 
-This React component implements UXCapture.create(), which initializes the global window.UXCapture singleton object. This should only ever be used per page load.
+This React component implements `UXCapture.create()`, which initializes the global `window.UXCapture` singleton object. This should only ever be used per page load.
 
 Usage:
 
@@ -54,7 +54,7 @@ render() {
 
 ## `<UXCaptureStartView />`
 
-This React component implements UXCapture.startView(), which creates a new View that manages its corresponding Zones. If called more than once, it will replace previous Views.
+This React component implements `UXCapture.startView()`, which creates a new `View` that manages its corresponding `Zones`. If called more than once, it will replace previous `Views`.
 
 Usage:
 
@@ -69,7 +69,7 @@ Usage:
 
 ## `<UXCaptureInlineMark />`
 
-This React component injects into the rendered markup an inline script tag that calls UXCapture.mark().
+This React component injects into the rendered markup an inline script tag that calls `UXCapture.mark()`.
 
 Usage:
 
@@ -85,9 +85,10 @@ render() {
 
 ## `<UXCaptureImageLoad />`
 
-This React component injects into the rendered markup an <img> tag with an onload attribute that calls UXCapture.mark().
+This React component injects into the rendered markup an `<img>` tag with an onload attribute that calls `UXCapture.mark()`.
 
-When you use this component, make sure to include a corresponding <UXCaptureInlineMark /> below it as well to indicate when image tag is inserted into the DOM.
+> When you use this component, make sure to include a corresponding `<UXCaptureInlineMark />` below it as well to indicate when image tag is inserted into the DOM.
+
 Usage:
 
 ```jsx
@@ -105,7 +106,7 @@ render() {
 
 ## `<UXCaptureInteractiveMark />`
 
-This React component calls UXCapture.mark() within it's componentDidMount lifecycle method, thus only performing the mark in the browser and not in server-side render. It wall pass through and render all children.
+This React component calls `UXCapture.mark()` within it's `componentDidMount` lifecycle method, thus only performing the mark in the browser and not in server-side render. It wall pass through and render all children.
 
 This component should be used when simply rendering the component is not sufficient to consider the component 'ready for interaction', e.g. buttons that require the client application to be hydrated and running in order to handle click callbacks.
 
@@ -124,9 +125,9 @@ render() {
 
 ## `<UXCaptureFont />`
 
-Before using UXCaptureFont component, make sure the page also includes fontLoaderInlineCode which inlines Web Font Loader library on the page.
+Before using UXCaptureFont component, make sure the page also includes `fontLoaderInlineCode` which inlines [Web Font Loader library](https://github.com/typekit/webfontloader) on the page.
 
-It is most likely that you will include this code in global app container component as your fonts are loaded globally using CSS. Then just add the marks to zones next to the marks for individual text nodes, make sure to check which specific variation of the font is used by particular text element. See font variation description docs for details about variation notation used in fontFamily props below, e.g. after colon in "Graphik Meetup:n4".
+It is most likely that you will include this code in global app container component as your fonts are loaded globally using CSS. Then just add the marks to zones next to the marks for individual text nodes, make sure to check which specific variation of the font is used by particular text element. See [font variation description docs](https://github.com/typekit/fvd) for details about variation notation used in fontFamily props below, e.g. after colon in "Graphik Meetup:**n4**".
 
 ```jsx
 import UXCaptureFont, { fontLoaderInlineCode } from '@meetup/react-ux-capture/UXCaptureFont';
