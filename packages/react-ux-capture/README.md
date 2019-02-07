@@ -1,6 +1,6 @@
 # UX Capture React Bindings
 
-The [UX-Capture Library](../ux-capture) is a browser instrumentation library that makes it easier to capture UX Speed metrics. In order to make the library easy and effective to use in React-based applications, this module implements a set of React Bindings (Components).
+The [UX Capture Library](../ux-capture) is a browser instrumentation library that makes it easier to capture UX Speed metrics. In order to make the library easy and effective to use in React-based applications, this module implements a set of React Bindings (Components).
 
 ## <UXCapture />
 
