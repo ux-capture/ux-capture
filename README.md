@@ -61,7 +61,7 @@ rendering instrumentation of paint events in the browser. These include:
     synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics)
 -   Create uniform instrumentation for both [_page views_](#page_view) and
     [_interactive views_](#interactive_view), to be usable with any back-end and front-end framework
--   Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30)
+-   Future compatibility with [Element Timing API](https://wicg.github.io/element-timing/)
     that aims at adding instrumentation directly into browser and other similar innovations
 
 ## Instrumentation Approach
