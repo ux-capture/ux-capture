@@ -1,13 +1,12 @@
 # UX Capture
 
-Browser instrumentation library that makes it easier to capture UX performance
-metrics.
+Browser instrumentation approach and libraries that makes it easier to capture UX performance metrics.
 
+- [Packages](#packages)
+  - [Publish workflow](#publish-workflow)
+- [Internal documentation](#internal-documentation)
 - [Project Goals](#project-goals)
-- [JS library](#js-library)
-  - [Usage](#usage)
-  - [Sample page](#sample-page)
-- [Instrumentation](#instrumentation)
+- [Instrumentation Approach](#instrumentation-approach)
   - [Individual Element Instrumentation](#individual-element-instrumentation)
     - [Image elements](#image-elements)
     - [Text without custom font](#text-without-custom-font)
@@ -18,148 +17,65 @@ metrics.
 - [Testing results](#testing-results)
 - [Glossary](#glossary)
 
+## Packages
+
+-   [@meetup/ux-capture](./packages/ux-capture) - Core library
+-   [@meetup/react-ux-capture](./packages/react-ux-capture) - React component wrappers around library API
+-   [@meetup/react-ux-capture-example](./packages/react-ux-capture-example) - Demo of React bindings in a simple SPA
+
+### Publish workflow
+
+The packages are published with independent versions, which must be updated
+manually _before_ a PR is merged. Lerna will walk you through the process of
+tagging new versions when you run
+
+```
+$ yarn make-version
+```
+
+The Travis deploy step will then publish _only updated packages_ when the PR
+merges. If you forget to bump a version, the deploy will fail and you will have
+to run `yarn make-version` to push the latest tags
+
+## Internal documentation
+
+See [Meetup Confluence docs](https://meetup.atlassian.net/wiki/spaces/WEG/pages/718700545/UX+Capture)
+for more info.
+
+**@TODO: move all public documentation into this README**.
+
+---
+
 ## Project Goals
 
 There are multiple goals for this project, many dictated by the lack of real
 rendering instrumentation of paint events in the browser. These include:
 
-- Capture display and interactivity events for various UI elements (e.g. images,
-  text, video, fonts, buttons, etc.)
-- Group together multiple display events for elements of a web page that
-  represent the same design/product components.
-- Group together multiple components to reflect various phases of page load
-- Collect captured events and [_UX speed metrics_](#UX_speed_metrics 'metrics representing speed of the human-computer interface as it is perceived by the user') for all users using
-  RUM (Real User Measurement) tools.
-- Calibrate in-browser instrumentation by recording page load video using
-  synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics 'metrics representing speed of the human-computer interface as it is perceived by the user')
-- Create uniform instrumentation for both [_page views_](#page_view 'view resulting in full browser navigation and re-creation of browser DOM') and [_interactive views_](#interactive_view 'view resulting in partial updates of browser DOM'),
-  to be usable with any back-end and front-end framework
-- Future compatibility with [Element Timing API](https://github.com/w3c/charter-webperf/issues/30) that aims
-  at adding instrumentation directly into browser
+-   Capture display and interactivity events for various UI elements (e.g. images,
+    text, video, fonts, buttons, etc.)
+-   Group together multiple display events for elements of a web page that
+    represent the same design/product components.
+-   Group together multiple components to reflect various phases of page load
+-   Collect captured events and [_UX speed metrics_](#UX_speed_metrics) for all users using RUM (Real User Measurement) tools.
+-   Calibrate in-browser instrumentation by recording page load video using
+    synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics)
+-   Create uniform instrumentation for both [_page views_](#page_view) and
+    [_interactive views_](#interactive_view), to be usable with any back-end and front-end framework
+-   Future compatibility with [Element Timing API](https://wicg.github.io/element-timing/)
+    that aims at adding instrumentation directly into browser and other similar innovations
 
-## JS library
+## Instrumentation Approach
 
-The intent of this library is to help developers instrument technical events
-(marks) on their pages and group them into "zones" that represent "phases" of page
-load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics) of user experience.
+To understand speed of user's experience as it relates to specific product rather than using generic technical metrics metrics captured using the browser or automated tools.
 
-### Usage
-
-**NOTE:** this version of the library relies on `UserTiming API` to be available in the browser, but should not break if it doesn't. You can [use a polyfill](https://www.npmjs.com/package/usertiming) if you want to support older browsers.
-
-1. Load the library by inlining the contents of ux-capture.min.js in a `<script>`
-   tag in the HTML document `<head>`. Here's an example using server-side React:
-
-   ```jsx
-   const uxCaptureFilename = require.resolve('ux-capture/lib/ux-capture.min.js');
-   const uxCaptureJS = fs.readFileSync(uxCaptureFilename, 'utf8');
-   ...
-   render() {
-       <head>
-           <title>My Page</title>
-           <script dangerouslySetInnerHTML={{ __html: uxCaptureJS }} />
-           ...
-       </head>
-       ...
-   }
-   ```
-
-   **NOTE**: The script must be inlined. Do not use a script tag with a `src` attribute.
-   Waiting for network requests might artifically skew event timings on the page
-   and lead to race conditions.
-
-   **NOTE**: It is important to have this code available very early on the page since
-   we need to instrument events that happen as early as HTML parsing, so ideally in
-   the `<head>`.
-
-2. Initialize UXCapture using `UXCapture.create()`, optionally with mark and
-   measure event handlers, e.g.
-
-   ```jsx
-       <script>
-           UXCapture.create({
-               onMark: name => console.log('marked', name),
-               onMeasure: name => console.log('measured', name),
-           });
-       </script>
-   ```
-
-   Custom event handlers are useful in cases where the monitoring solution you use
-   (e.g., NewRelic) does not support the W3C UserTiming API natively. You can then
-   provide a custom method of recording the results.
-
-   - `onMark` - provides a custom handler to be called every time a mark is recorded
-     with the name of the mark as the only argument
-   - `onMeasure` - provides a custom handler to be called every time a measure is
-     recorded with the name of the measure as the only argument
-
-3. At the top of the view markup, define the expected zones and corresponding
-   marks with `UXCapture.startView()`, e.g.
-
-   ```jsx
-       <script>
-           UXCapture.startView([
-               {
-                   name: 'ux-destination-verified',
-                   marks: ['ux-1', 'ux-2']
-               },{
-                   name: 'ux-primary-content-available',
-                   marks: ['ux-3', 'ux-4']
-               }
-               ...
-           ]);
-       </script>
-   ```
-
-   **NOTE**: `UXCapture.startView()` will throw an error if called while previous view is active, so be careful to only call it once, before any of the marks are triggered within the view markup.
-
-   Each individual zone configuration object contains of zone's `name` that will be
-   used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure) and `marks` array of individual event name strings that zone groups together,
-   each individual name will be used when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
-
-4. You can optionally update a view that has already been started and add more
-   zones by calling `UXCapture.updateView()`.
-
-5. Call UXCapture.mark in the HTML markup for each ‘mark’ name passed into
-   `UXCapture.startView()`/`updateView()`.
-
-   ```jsx
-       <script>UXCapture.mark('ux-1')</script>
-       <img onload="UXCapture.mark('ux-2')" … />
-       ...
-   ```
-
-6. In the client app code that is called for interactive/soft/dynamic navigation, call `UXCapture.startTransition()` immediately when user triggers transition to indicate the start of the view.
-
-   This call does not need to be in the markup (and generally shouldn’t be).
-
-   ```jsx
-       history.push(‘/foo’)
-       window.UXCapture.startTransition();
-
-       // or, a little less controlled:
-       window.onpopstate = window.UXCapture.startTransition
-   ```
-
-   **NOTE**: For interactive views, all `UXCapture.startView()` calls must be preceded by a `UXCapture.startTransition()` call which deactivates previous view.
-
-7. Repeat from step 3.
-
-### Sample page
-
-This repository contains a sample page that implements basic instrumentation
-for your reference:
-https://cdn.rawgit.com/sergeychernyshev/ux-capture/master/examples/index.html
-
-## Instrumentation
+Documentation below describes generic approach using Browser's native [UserTiming API](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API), but this project also maintains a [UX Capture JavaScript Library](./packages/ux-capture), which replaces `performance.mark()` method with `UXCapture.mark()` method and aggregates multiple elements into multiple elements in the zone into a single measurement recorded as [UserTiming API's measures](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure) to be used as [_UX speed metrics_](#UX_speed_metrics).
 
 ### Individual Element Instrumentation
 
-Each element that needs to be instrumented might require multiple snippets of
-code injected into a page to measure several events which in turn are aggregated
-into element-level measurements using _element aggregation algorythm_ (can vary
-for different element instrumentation methods, but "latest of events" is
-generally a good default).
+Each element that needs to be instrumented might require one or more snippets
+of code injected into a page to approximate browser events, they are then
+aggregated and lastest of the events is considered to represent the moment when
+element is ready for the user.
 
 Number of snippets and exact code to be added to the page depends on the type
 of element being measured and must be determined experimentally or discovered
@@ -175,8 +91,8 @@ the image itself and another within inline `<script>` tag directly after the
 image.
 
 ```jsx
-<img src="hero.jpg" onload="UXCapture.mark('ux-image-onload-logo')">
-<script>UXCapture.mark('ux-image-inline-logo')</script>
+<img src="hero.jpg" onload="performance.mark('ux-image-onload-logo')">
+<script>performance.mark('ux-image-inline-logo')</script>
 ```
 
 Element aggregation algorythm: latest of the two (`inline` and `onload`)
@@ -184,7 +100,8 @@ measurements.
 
 References:
 
-- Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/), published on May 12, 2015
+-   Steve Souders: [Hero Image Custom Metrics](https://www.stevesouders.com/blog/2015/05/12/hero-image-custom-metrics/),
+    published on May 12, 2015
 
 #### Text without custom font
 
@@ -193,20 +110,26 @@ Text that does not use a custom font can be instrumented by supplying one inline
 
 ```jsx
 <h1>Headline</h1>
-<script>UXCapture.mark("ux-text-headline");</script>
+<script>performance.mark("ux-text-headline");</script>
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
 
 References:
 
-- Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/) (example 5), published on November 12, 2015
+-   Steve Souders: [User Timing and Custom Metrics](https://speedcurve.com/blog/user-timing-and-custom-metrics/)
+    (example 5), published on November 12, 2015
 
 #### Text with custom font
 
-Many pages use custom fonts to display text and often experience Flash of Invisible Text or [FOIT](https://www.zachleat.com/web/fout-vs-foit/). It is important to take into account time to load custom fonts. You can do it using font loaders provided by [using event tracking in Web Font Loader](https://github.com/typekit/webfontloader#events) used by Typekit and Google.
+Many pages use custom fonts to display text and often experience Flash of
+Invisible Text or [FOIT](https://www.zachleat.com/web/fout-vs-foit/). It is
+important to take into account time to load custom fonts. You can do it using
+font loaders provided by [using event tracking in Web Font Loader](https://github.com/typekit/webfontloader#events)
+used by Typekit and Google.
 
-You can inline the library in HTML and then use the following code to fire a mark when font loaded.
+You can inline the library in HTML and then use the following code to fire a mark
+when font loaded.
 
 ```jsx
 <script>
@@ -215,19 +138,21 @@ WebFont.load({
         families: ["Montserrat:n4"]
     },
     active: function() {
-        UXCapture.mark("ux-font-montserrat-normal");
+        performance.mark("ux-font-montserrat-normal");
     }
 });
 </script>
 ```
 
-**NOTE:** See [Font Variation Description](https://github.com/typekit/fvd) format used by Web Font Loader for specifying particular font variation to track.
+**NOTE:** See [Font Variation Description](https://github.com/typekit/fvd) format
+used by Web Font Loader for specifying particular font variation to track.
 
-Similarly to tracking text without custom font, inject a mark inline after text that uses custom font in question.
+Similarly to tracking text without custom font, inject a mark inline after text
+that uses custom font in question.
 
 ```jsx
 <h2>Title with font</h2>
-<script>UXCapture.mark("ux-text-title-using-montserrat-normal");</script>
+<script>performance.mark("ux-text-title-using-montserrat-normal");</script>
 ```
 
 Element aggregation algorythm: latest of the two (`font` and `text`) measurements.
@@ -240,9 +165,8 @@ visible AND clickable). Instrumenting handler attachment is straightforward, jus
 include the call right after handler attachment in JavaScript code.
 
 ```jsx
-var button_element = document.getElementById('mybutton');
-button_element.addEventListener('click', myActionHandler);
-UXCapture.mark('ux-handler-myaction');
+button.addEventListener('click', myActionHandler);
+performance.mark('ux-handler-myaction');
 ```
 
 Element aggregation algorythm: no aggregation, just one event.
@@ -268,13 +192,11 @@ but can be useful for modularity and more detailed analysis across the system.
 
 ### Aggregating experience/perception phase metrics
 
-It is critical to group metrics into categories that are not specific to individual
-pages, but can be used universally across the property and just comprised of
-different components / elements on each page.
+[Time to first tweet](https://blog.twitter.com/engineering/en_us/a/2012/improving-performance-on-twittercom.html) is a known example of user-centric metric introduced at Twitter and concentrates on measuring speed of specific parts of user experience.
 
-Well known example of such "category" is **_first meaningful paint_** which has
-different meaning on differeng parts of user experience, but represents a universal
-improvement over "first paint" [_technical metric_](#technical_performance_metrics 'performance metrics that represent time spent executing various technical components of the application as opposed to metrics representing speed of the human-computer interface as it is perceived by the user').
+Performance team at Pinterest took a different approach which allows measurements to differ between views and introduced "Pinner Wait Time" (mentioned in [1](https://medium.com/@Pinterest_Engineering/driving-user-growth-with-performance-improvements-cfc50dafadd7) & [2](https://medium.com/@Pinterest_Engineering/four-lessons-in-making-pinterest-faster-on-android-5a3c69c045af)), metric that is defined by individual teams differently, but specific to product UI they maintain.
+
+It is important to group metrics into such categories that are not specific to individual views, but can be used universally across the product and just comprised of different components / elements on each page so organization can unite around a user-centric understanding of speed metrics rather than technical interpretation.
 
 This can be taken further to represent user's intent in more detail. Each view
 can be broken down into several phases which all contribute to keeping user on
@@ -288,18 +210,17 @@ different perspectives:
 3.  Primary action available (`ux-primary-action-available`)
 4.  Secondary content displayed (`ux-secondary-content-displayed`)
 
-Each phase's component or element metrics (marks) can be combined and reported as measures:
+Each phase's component or element metrics (marks) can be combined and recorded as UserTiming API's measures:
 
 ```jsx
 // assuming logo's onload event was last to fire among all element timers for this phase
 performance.measure('ux-destination-verified', 0, 'ux-image-onload-logo');
 ```
 
-the can be then collected using RUM beacon or using synthetic testing tool like
+these measures can be then collected using RUM beacon or using synthetic testing tool like
 WebPageTest or [Chrome Developer Tools' Timeline tab](https://twitter.com/igrigorik/status/690636030727159808).
 
-This is done automatically by the library and no additional instrumentation is
-necessary.
+[UX Capture](./packages/ux-capture) library does this automatically and no additional instrumentation is necessary.
 
 ## Testing results
 

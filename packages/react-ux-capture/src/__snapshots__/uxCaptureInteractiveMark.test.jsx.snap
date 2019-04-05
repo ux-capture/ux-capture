@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UXCaptureInteractiveMark renders children markup 1`] = `
+<UXCaptureInteractiveMark
+  mark="bar"
+>
+  <b>
+    Bold Child
+  </b>
+</UXCaptureInteractiveMark>
+`;

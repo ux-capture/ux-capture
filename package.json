@@ -1,71 +1,56 @@
 {
-  "name": "ux-capture",
-  "version": "3.1.0",
+  "name": "ux-capture-root",
+  "version": "0.0.2",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
-  "main": "src/ux-capture.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "engineStrict": true,
-  "engines": {
-    "node": "^8.11.4",
-    "yarn": "^1.9.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/meetup/ux-capture.git"
-  },
-  "keywords": [
-    "webperf",
-    "perfmatters",
-    "web",
-    "performance",
-    "ux",
-    "speed",
-    "user-timing"
-  ],
-  "scripts": {
-    "build": "webpack",
-    "build:clean": "rm -rf lib/",
-    "lint": "eslint . --ext .js,.jsx --fix",
-    "test": "yarn test:unit",
-    "test:coverage": "yarn test:unit --coverage",
-    "test:unit": "NODE_ENV=test jest --config jest.config.json",
-    "test:watch": "jest test:unit --watch --verbose",
-    "typecheck": "flow",
-    "watch": "webpack --watch"
-  },
+  "main": "index.js",
+  "repository": "git@github.com:meetup/ux-capture.git",
   "author": "Meetup",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/meetup/ux-capture/issues"
+  "private": true,
+  "scripts": {
+    "build": "lerna run build",
+    "make-version": "lerna version",
+    "deploy": "lerna publish from-package --yes",
+    "test": "lerna run test"
   },
-  "homepage": "https://github.com/meetup/ux-capture#readme",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "devDependencies": {
-    "@babel/core": "7.1.2",
-    "@babel/preset-env": "7.1.0",
-    "@babel/preset-flow": "7.0.0",
-    "babel-core": "^7.0.0-bridge",
-    "babel-eslint": "10.0.1",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.2.3",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
     "babel-loader": "8.0.4",
-    "eslint": "5.7.0",
-    "eslint-config-prettier": "3.1.0",
-    "eslint-loader": "2.1.1",
-    "eslint-plugin-flowtype": "3.1.4",
-    "eslint-plugin-prettier": "3.0.0",
-    "flow-bin": "0.85.0",
-    "husky": "^1.1.2",
-    "jest": "23.6.0",
-    "jest-environment-jsdom": "23.4.0",
-    "jest-environment-jsdom-global": "1.1.0",
-    "lint-staged": "7.3.0",
-    "prettier": "1.14.3",
-    "semver": "5.6.0",
-    "uglify-es": "3.3.9",
-    "usertiming": "0.1.8",
-    "webpack": "4.22.0",
-    "webpack-cli": "3.1.2"
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.8.0",
+    "enzyme-to-json": "^3.3.5",
+    "eslint": "5.6.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.12.4",
+    "flow-bin": "^0.89.0",
+    "husky": "^1.2.1",
+    "jest": "^23.6.0",
+    "lerna": "^3.8.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
+    "raf": "^3.4.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "semver": "^5.6.0",
+    "uglify-es": "^3.3.9",
+    "usertiming": "^0.1.8",
+    "webpack": "4.19.1",
+    "webpack-cli": "^3.1.2"
   },
   "husky": {
     "hooks": {
