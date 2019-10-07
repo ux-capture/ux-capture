@@ -144,4 +144,48 @@ describe('UXCaptureStartView', () => {
 			expect(renderComponent(props)).toMatchSnapshot();
 		});
 	});
+	describe('shouldComponentUpdate', () => {
+		it.each([
+			'destinationVerified',
+			'primaryContentDisplayed',
+			'primaryActionAvailable',
+			'secondaryContentDisplayed',
+		])('returns true when prop has changed', prop => {
+			const initialProps = {};
+			initialProps[prop] = ['ux-1', 'ux-2'];
+			const nextProps = {};
+			nextProps[prop] = ['ux-1', 'ux-2', 'ux-3'];
+			const wrapper = renderComponent(initialProps);
+
+			expect(wrapper.instance().shouldComponentUpdate(nextProps)).toBeTruthy();
+		});
+		it.each([
+			'destinationVerified',
+			'primaryContentDisplayed',
+			'primaryActionAvailable',
+			'secondaryContentDisplayed',
+		])('returns false when props has not changed', prop => {
+			const initialProps = {};
+			initialProps[prop] = ['ux-1', 'ux-2'];
+			const wrapper = renderComponent(initialProps);
+
+			expect(
+				wrapper.instance().shouldComponentUpdate(initialProps)
+			).toBeTruthy();
+		});
+		it.each([
+			'destinationVerified',
+			'primaryContentDisplayed',
+			'primaryActionAvailable',
+			'secondaryContentDisplayed',
+		])('returns false when props has not changed even with a new array', prop => {
+			const initialProps = {};
+			initialProps[prop] = ['ux-1', 'ux-2'];
+			const nextProps = {};
+			nextProps[prop] = ['ux-1', 'ux-2'];
+			const wrapper = renderComponent(initialProps);
+
+			expect(wrapper.instance().shouldComponentUpdate(nextProps)).toBeTruthy();
+		});
+	});
 });

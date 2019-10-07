@@ -35,8 +35,38 @@ const makeZones = (props: Props): Array<ZoneConfig> =>
 		},
 	].filter(({ marks }: ZoneConfig) => marks && marks.length > 0);
 
+const isSameArray = (a?: Array<string>, b?: Array<string>): boolean => {
+	return JSON.stringify(a) === JSON.stringify(b);
+};
 export default class UXCaptureStartView extends React.Component<Props> {
 	zones = makeZones(this.props);
+
+	shouldComponentUpdate(nextProps: Props) {
+		const {
+			destinationVerified,
+			primaryContentDisplayed,
+			primaryActionAvailable,
+			secondaryContentDisplayed,
+		} = this.props;
+
+		const {
+			destinationVerified: nextDestinationVerified,
+			primaryContentDisplayed: nextPrimaryContentDisplayed,
+			primaryActionAvailable: nextPrimaryActionAvailable,
+			secondaryContentDisplayed: nextSecondaryContentDisplayed,
+		} = nextProps;
+
+		if (
+			isSameArray(destinationVerified, nextDestinationVerified) &&
+			isSameArray(primaryContentDisplayed, nextPrimaryContentDisplayed) &&
+			isSameArray(primaryActionAvailable, nextPrimaryActionAvailable) &&
+			isSameArray(secondaryContentDisplayed, nextSecondaryContentDisplayed)
+		) {
+			return false;
+		}
+
+		return true;
+	}
 	componentDidUpdate(prev: Props) {
 		// updated on client - if mark name has changed, clear old mark and trigger new
 		if (
