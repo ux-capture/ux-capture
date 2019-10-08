@@ -42,7 +42,7 @@ export const getPropsAsHTMLAttrs = (props: React$ElementProps<'img'>): string =>
 		.join(' ');
 };
 
-export const getCSSStringFromStyleObject = style => {
+export const getCSSStringFromStyleObject = (style: Object): string => {
 	return style
 		? Object.keys(style)
 				.map(s => {
