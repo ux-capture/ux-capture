@@ -42,6 +42,17 @@ export const getPropsAsHTMLAttrs = (props: React$ElementProps<'img'>): string =>
 		.join(' ');
 };
 
+export const getCSSStringFromStyleObject = style => {
+	return style
+		? Object.keys(style)
+				.map(s => {
+					const key = s.replace(/([A-Z])/g, v => `-${v[0].toLowerCase()}`);
+					return `${key}:${style[s]}`;
+				})
+				.join(';')
+		: '';
+};
+
 /**
  * Creates an image tag with provide props
  * and a UXCapture `onLoad` handler
@@ -49,16 +60,19 @@ export const getPropsAsHTMLAttrs = (props: React$ElementProps<'img'>): string =>
  * @see example https://github.com/meetup/ux-capture#image-elements
  */
 const UXCaptureImageLoad = (props: Props) => {
-	const { mark, src, ...other } = props;
-
+	const { mark, src, style, ...other } = props;
 	const onload = getOnLoadJS(mark);
 	const otherImgAttrs = getPropsAsHTMLAttrs(other);
+
+	const inlineStyles = style
+		? `style="${getCSSStringFromStyleObject(style)}""`
+		: '';
 
 	return (
 		<div
 			dangerouslySetInnerHTML={{
 				__html: `
-				<img id="ux-capture-${mark}" src="${src}" onload="${onload}" ${otherImgAttrs} />
+				<img src="${src}" onload="${onload}" ${inlineStyles} ${otherImgAttrs} />
 			`,
 			}}
 		/>
