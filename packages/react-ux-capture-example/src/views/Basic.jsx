@@ -38,6 +38,7 @@ const Basic = () => (
 				alt="kitten"
 				width="250"
 				height="250"
+				style={{ backgroundColor: 'blue', marginTop: '10px' }}
 			/>
 			<UXCaptureInlineMark mark="ux-image-inline-kitten" />
 		</div>
