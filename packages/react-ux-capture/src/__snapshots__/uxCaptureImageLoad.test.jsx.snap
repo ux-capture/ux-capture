@@ -5,7 +5,7 @@ exports[`UXCaptureImageLoad renders component markup 1`] = `
   dangerouslySetInnerHTML={
     Object {
       "__html": "
-				<img id=\\"ux-capture-ux-image-load-logo\\" src=\\"/foo.png\\" onload=\\" if (window.UXCapture && !window.UXCapture['ux-image-load-logo-LOADED']) { window.UXCapture.mark('ux-image-load-logo'); window.UXCapture['ux-image-load-logo-LOADED'] = true; } \\" class=\\"someClass\\" alt=\\"altText\\" height=\\"50\\" />
+				<img src=\\"/foo.png\\" onload=\\" if (window.UXCapture && !window.UXCapture['ux-image-load-logo-LOADED']) { window.UXCapture.mark('ux-image-load-logo'); window.UXCapture['ux-image-load-logo-LOADED'] = true; } \\"  class=\\"someClass\\" alt=\\"altText\\" height=\\"50\\" />
 			",
     }
   }
