@@ -42,7 +42,7 @@ export const getPropsAsHTMLAttrs = (props: React$ElementProps<'img'>): string =>
 		.join(' ');
 };
 
-export const getCSSTermNamesFromStyleObject = style => {
+export const getCSSStringFromStyleObject = style => {
 	return style
 		? Object.keys(style)
 				.map(s => {
@@ -65,14 +65,14 @@ const UXCaptureImageLoad = (props: Props) => {
 	const otherImgAttrs = getPropsAsHTMLAttrs(other);
 
 	const inlineStyles = style
-		? `style="${getCSSTermNamesFromStyleObject(style)}""`
+		? `style="${getCSSStringFromStyleObject(style)}""`
 		: '';
 
 	return (
 		<div
 			dangerouslySetInnerHTML={{
 				__html: `
-				<img id="ux-capture-${mark}" src="${src}" onload="${onload}" ${inlineStyles} ${otherImgAttrs} />
+				<img src="${src}" onload="${onload}" ${inlineStyles} ${otherImgAttrs} />
 			`,
 			}}
 		/>
