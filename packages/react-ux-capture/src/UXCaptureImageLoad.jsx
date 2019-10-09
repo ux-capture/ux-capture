@@ -64,12 +64,10 @@ const UXCaptureImageLoad = (props: Props) => {
 	const onload = getOnLoadJS(mark);
 	const otherImgAttrs = getPropsAsHTMLAttrs(other);
 
-	const inlineStyles = style
-		? `style="${getCSSStringFromStyleObject(style)}""`
-		: '';
+	const inlineStyles = style ? `style="${getCSSStringFromStyleObject(style)}"` : '';
 
 	return (
-		<div
+		<span
 			dangerouslySetInnerHTML={{
 				__html: `
 				<img src="${src}" onload="${onload}" ${inlineStyles} ${otherImgAttrs} />
