@@ -27,6 +27,21 @@ const MOCK_MARK_MULTIPLE = 'ux-mock-mark_multiple';
 const onMark = jest.fn();
 const onMeasure = jest.fn();
 
+function spyConsole() {
+	// https://github.com/facebook/react/issues/7047
+	let spy = {};
+
+	beforeAll(() => {
+		spy.console = jest.spyOn(console, 'error').mockImplementation(() => {});
+	});
+
+	afterAll(() => {
+		spy.console.mockRestore();
+	});
+
+	return spy;
+}
+
 describe('UXCapture', () => {
 	describe('startView', () => {
 		beforeEach(() => {
@@ -79,13 +94,15 @@ describe('UXCapture', () => {
 			expect(onMeasure).not.toHaveBeenCalled();
 		});
 
-		// it('should throw an error if called more than once, but without startTransition', () => {
-		// 	UXCapture.startView([]);
+		let spy = spyConsole();
 
-		// 	expect(() => {
-		// 		UXCapture.startView([]);
-		// 	}).toThrowError(VIEW_OVERRIDE_ERROR_MESSAGE);
-		// });
+		it('should log an error if called more than once, but without startTransition', () => {
+			UXCapture.startView([]);
+			UXCapture.startView([]);
+
+			expect(console.error).toHaveBeenCalled();
+			expect(spy.console.mock.calls[0][0]).toEqual(VIEW_OVERRIDE_ERROR_MESSAGE);
+		});
 	});
 
 	describe('create', () => {
