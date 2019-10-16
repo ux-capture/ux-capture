@@ -70,7 +70,8 @@ const UXCapture = {
 	 */
 	startView: zoneConfigs => {
 		if (_view) {
-			throw new Error(VIEW_OVERRIDE_ERROR_MESSAGE);
+			window.console.error(VIEW_OVERRIDE_ERROR_MESSAGE);
+			return;
 		}
 
 		_view = new View({

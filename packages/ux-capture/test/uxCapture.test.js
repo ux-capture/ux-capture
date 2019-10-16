@@ -79,13 +79,13 @@ describe('UXCapture', () => {
 			expect(onMeasure).not.toHaveBeenCalled();
 		});
 
-		it('should throw an error if called more than once, but without startTransition', () => {
-			UXCapture.startView([]);
+		// it('should throw an error if called more than once, but without startTransition', () => {
+		// 	UXCapture.startView([]);
 
-			expect(() => {
-				UXCapture.startView([]);
-			}).toThrowError(VIEW_OVERRIDE_ERROR_MESSAGE);
-		});
+		// 	expect(() => {
+		// 		UXCapture.startView([]);
+		// 	}).toThrowError(VIEW_OVERRIDE_ERROR_MESSAGE);
+		// });
 	});
 
 	describe('create', () => {
