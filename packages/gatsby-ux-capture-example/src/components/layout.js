@@ -1,7 +1,6 @@
 import React from "react";
 
 import UXCaptureInlineMark from "@meetup/react-ux-capture/lib/UXCaptureInlineMark";
-import UXCaptureCreate from "@meetup/react-ux-capture/lib/UXCaptureCreate";
 
 import { Link } from "gatsby";
 
@@ -12,12 +11,6 @@ import "./layout.css";
 import Logo from "./Logo";
 
 class Layout extends React.Component {
-	// componentWillUnmount() {
-	// 	if (window.UXCapture) {
-	// 		window.UXCapture.destroy();
-	// 	}
-	// }
-
 	render() {
 		let { children } = this.props;
 
@@ -25,8 +18,6 @@ class Layout extends React.Component {
 
 		return (
 			<div className="flex flex--column atLarge_flex--row">
-				<UXCaptureCreate />
-
 				<div className="flex flex-item flex--column">
 					<div className="flex flex-item">
 						<div
