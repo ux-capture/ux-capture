@@ -1,7 +1,7 @@
 {
   "name": "@meetup/gatsby-ux-capture-example",
   "description": "Example of using UX Capture within Gatsby sites",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
