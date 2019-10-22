@@ -1,6 +1,5 @@
 {
   "name": "gatsby-ux-capture-example",
-  "private": true,
   "description": "Example of using UX Capture within Gatsby sites",
   "version": "0.1.0",
   "license": "MIT",
