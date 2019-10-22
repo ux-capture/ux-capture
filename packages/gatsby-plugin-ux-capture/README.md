@@ -1,9 +1,15 @@
-### GATSBY PLUGIN STARTER
+## Gatsby UX Capture plugin
 
-Basic configuration that I use to create my gatsby plugins, is inspired by the official plugins.
+This plugin integrates [UX Capture](https://github.com/meetup/ux-capture) UX metrics instrumentation library into Gatsby.
 
-### How to use
+Add it to your `gatsby-config.js` file
 
-1. git clone --depth 1 -b master https://github.com/devrchancay/gatsby-plugin-starter.git
-2. Change the "name" in `package.json` with the conversion of gatsby plugins.
-3. Happy Hacking
+```
+module.exports = {
+	plugins: [`@meetup/gatsby-plugin-ux-capture`]
+};
+```
+
+and use UX Capture React bindings ([`@meetup\react-ux-capture`](https://github.com/meetup/ux-capture/tree/master/packages/react-ux-capture)) to instrument individual views and elements on the page.
+
+See a [Gatsby UX Capture implementation example](https://github.com/meetup/ux-capture/tree/master/packages/gatsby-ux-capture-example).
