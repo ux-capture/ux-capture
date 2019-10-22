@@ -9,7 +9,13 @@ export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) =>
 	const uxCaptureJS = fs.readFileSync(uxCaptureFilename, "utf8");
 
 	headComponents.push(
-		<script key="ux-capture" dangerouslySetInnerHTML={{ __html: uxCaptureJS }} />
+		<script key="ux-capture-library" dangerouslySetInnerHTML={{ __html: uxCaptureJS }} />
+	);
+	headComponents.push(
+		<script
+			key="ux-capture-create"
+			dangerouslySetInnerHTML={{ __html: "window && window.UXCapture.create({})" }}
+		/>
 	);
 	replaceHeadComponents(headComponents);
 };

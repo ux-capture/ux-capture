@@ -1,7 +1,7 @@
 {
-  "name": "gatsby-starter-hello-world",
+  "name": "gatsby-ux-capture-example",
   "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
+  "description": "Example of using UX Capture within Gatsby sites",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {

@@ -1,36 +1,28 @@
 export const basicZones = {
-	"ux-destination-verified": ["ux-image-inline-logo", "ux-image-onload-logo"],
-	"ux-primary-content-displayed": [
+	destinationVerified: ["ux-image-inline-logo", "ux-image-onload-logo"],
+	primaryContentDisplayed: [
 		"ux-text-primary",
 		"ux-image-inline-kitten",
 		"ux-image-onload-kitten"
 	],
-	"ux-primary-action-available": ["ux-text-button", "ux-handler-button"],
-	"ux-secondary-content-displayed": ["ux-text-secondary"]
+	primaryActionAvailable: ["ux-text-button", "ux-handler-button"],
+	secondaryContentDisplayed: ["ux-text-secondary"]
 };
 
 export const progressiveZones = {
-	"ux-destination-verified": [
-		"ux-text-title",
-		"ux-image-inline-logo",
-		"ux-image-onload-logo"
-	],
-	"ux-primary-content-displayed": ["ux-text-primary"],
-	"ux-primary-action-available": [
+	destinationVerified: ["ux-text-title", "ux-image-inline-logo", "ux-image-onload-logo"],
+	primaryContentDisplayed: ["ux-text-primary"],
+	primaryActionAvailable: [
 		"ux-text-secondary",
 		"ux-image-inline-kitten",
 		"ux-image-onload-kitten"
 	],
-	"ux-secondary-content-displayed": ["ux-text-button", "ux-handler-button"]
+	secondaryContentDisplayed: ["ux-text-button", "ux-handler-button"]
 };
 
 export const minimalZones = {
-	"ux-destination-verified": [
-		"ux-text-title",
-		"ux-image-inline-logo",
-		"ux-image-onload-logo"
-	],
-	"ux-primary-content-displayed": ["ux-text-lazy"]
+	destinationVerified: ["ux-text-title", "ux-image-inline-logo", "ux-image-onload-logo"],
+	primaryContentDisplayed: ["ux-text-lazy"]
 };
 
 export default {
