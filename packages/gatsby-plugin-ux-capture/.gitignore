@@ -1,0 +1,6 @@
+/*.js
+!index.js
+yarn.lock
+coverage
+*.log
+node_modules

@@ -5,5 +5,6 @@
  */
 
 module.exports = {
-  /* Your site config here */
-}
+	/* Your site config here */
+	plugins: [`@meetup/gatsby-plugin-ux-capture`]
+};
