@@ -10,7 +10,16 @@ import { getBoxStyle } from "../components/reports/ZoneHelper";
 
 import Layout from "../components/layout";
 
-import { progressiveZones } from "../Zones";
+import {
+	progressiveZones,
+	PROGRESSIVE_TITLE,
+	PROGRESSIVE_PRIMARY_PARAGRAPH,
+	PROGRESSIVE_SECONDARY_TEXT,
+	PROGRESSIVE_KITTEN_INLINE,
+	PROGRESSIVE_KITTEN_ONLOAD,
+	PROGRESSIVE_PRIMARY_BUTTON_DISPLAYED,
+	PROGRESSIVE_PRIMARY_BUTTON_INTERACTIVE
+} from "../Zones";
 
 const Progressive = () => (
 	<Layout>
@@ -19,7 +28,7 @@ const Progressive = () => (
 				<h1 className="text--pageTitle" style={getBoxStyle("ux-destination-verified")}>
 					Progressive View
 				</h1>
-				<UXCaptureInlineMark mark="ux-text-title" />
+				<UXCaptureInlineMark mark={PROGRESSIVE_TITLE} />
 			</div>
 			<div className="chunk">
 				<div style={getBoxStyle("ux-primary-content-displayed")}>
@@ -29,7 +38,7 @@ const Progressive = () => (
 					</p>
 					<p>Click action for the button also takes time to attach.</p>
 				</div>
-				<UXCaptureInlineMark mark="ux-text-primary" />
+				<UXCaptureInlineMark mark={PROGRESSIVE_PRIMARY_PARAGRAPH} />
 			</div>
 			<div className="chunk">
 				<Lazy
@@ -43,11 +52,11 @@ const Progressive = () => (
 							>
 								Primary action button
 							</button>
-							<UXCaptureInlineMark mark="ux-text-button" />
+							<UXCaptureInlineMark mark={PROGRESSIVE_PRIMARY_BUTTON_DISPLAYED} />
 						</React.Fragment>
 					}
 				>
-					<UXCaptureInteractiveMark mark="ux-handler-button">
+					<UXCaptureInteractiveMark mark={PROGRESSIVE_PRIMARY_BUTTON_INTERACTIVE}>
 						<button
 							className="button"
 							style={getBoxStyle("ux-primary-action-available")}
@@ -74,9 +83,9 @@ const Progressive = () => (
 							</div>
 						}
 					>
-						<UXCaptureInteractiveMark mark="ux-image-inline-kitten">
+						<UXCaptureInteractiveMark mark={PROGRESSIVE_KITTEN_INLINE}>
 							<UXCaptureImageLoad
-								mark="ux-image-onload-kitten"
+								mark={PROGRESSIVE_KITTEN_ONLOAD}
 								src="http://placekitten.com/1400/600"
 								alt="kitten"
 								width="100%"
@@ -89,7 +98,7 @@ const Progressive = () => (
 			<Lazy delay={1500}>
 				<div className="chunk">
 					<p style={getBoxStyle("ux-secondary-content-displayed")}>
-						<UXCaptureInteractiveMark mark="ux-text-secondary">
+						<UXCaptureInteractiveMark mark={PROGRESSIVE_SECONDARY_TEXT}>
 							Secondary content paragraph
 						</UXCaptureInteractiveMark>
 					</p>

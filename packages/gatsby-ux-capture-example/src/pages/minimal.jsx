@@ -9,7 +9,7 @@ import { getBoxStyle } from "../components/reports/ZoneHelper";
 
 import Layout from "../components/layout";
 
-import { minimalZones } from "../Zones";
+import { minimalZones, MINIMAL_TITLE, MINIMAL_LAZY } from "../Zones";
 
 const Minimal = () => (
 	<Layout>
@@ -18,7 +18,7 @@ const Minimal = () => (
 				<h1 className="text--pageTitle" style={getBoxStyle("ux-destination-verified")}>
 					Minimal View
 				</h1>
-				<UXCaptureInlineMark mark="ux-text-title" />
+				<UXCaptureInlineMark mark={MINIMAL_TITLE} />
 			</div>
 			<div className="chunk">
 				This view only defines two zones and cuptures corresponding measures:{" "}
@@ -28,7 +28,7 @@ const Minimal = () => (
 			<div className="chunk">Primary content in this view loads lazily below.</div>
 			<div className="chunk">
 				<Lazy delay={2000}>
-					<UXCaptureInteractiveMark mark={"ux-text-lazy"}>
+					<UXCaptureInteractiveMark mark={MINIMAL_LAZY}>
 						<div style={getBoxStyle("ux-primary-content-displayed")}>
 							Primary content paragraph was loaded lazily in 2000ms
 						</div>

@@ -10,6 +10,8 @@ import "./layout.css";
 
 import Logo from "./Logo";
 
+import { LOGO_INLINE } from "../Zones";
+
 class Layout extends React.Component {
 	render() {
 		let { children } = this.props;
@@ -28,7 +30,7 @@ class Layout extends React.Component {
 							}}
 						>
 							<Logo />
-							<UXCaptureInlineMark mark="ux-image-inline-logo" />
+							<UXCaptureInlineMark mark={LOGO_INLINE} />
 						</div>
 						<b className={navClass}>UX Capture Example: React SPA</b>
 						<Link className={navClass} to="/">

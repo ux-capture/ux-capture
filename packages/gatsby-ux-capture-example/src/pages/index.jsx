@@ -10,21 +10,29 @@ import { getBoxStyle } from "../components/reports/ZoneHelper";
 
 import Layout from "../components/layout";
 
-import { basicZones } from "../Zones";
+import {
+	basicZones,
+	BASIC_KITTEN_INLINE,
+	BASIC_KITTEN_ONLOAD,
+	BASIC_PRIMARY_PARAGRAPH,
+	BASIC_PRIMARY_BUTTON_DISPLAYED,
+	BASIC_PRIMARY_BUTTON_INTERACTIVE,
+	BASIC_SECONDARY_TEXT
+} from "../Zones";
 
 const Basic = () => (
 	<Layout>
 		<View {...basicZones}>
 			<div className="chunk" style={getBoxStyle("ux-primary-content-displayed")}>
 				<UXCaptureImageLoad
-					mark="ux-image-onload-kitten"
+					mark={BASIC_KITTEN_ONLOAD}
 					src="http://placekitten.com/1250/1250"
 					alt="kitten"
 					width="250"
 					height="250"
 					style={{ backgroundColor: "blue", marginTop: "10px" }}
 				/>
-				<UXCaptureInlineMark mark="ux-image-inline-kitten" />
+				<UXCaptureInlineMark mark={BASIC_KITTEN_INLINE} />
 			</div>
 			<div className="chunk">
 				<div style={getBoxStyle("ux-primary-content-displayed")}>
@@ -39,7 +47,7 @@ const Basic = () => (
 						is always there, recording a UserTiming with <code>0ms</code> duration.
 					</p>
 				</div>
-				<UXCaptureInlineMark mark="ux-text-primary" />
+				<UXCaptureInlineMark mark={BASIC_PRIMARY_PARAGRAPH} />
 			</div>
 			<div className="chunk">
 				<Lazy
@@ -53,11 +61,11 @@ const Basic = () => (
 							>
 								Primary action button
 							</button>
-							<UXCaptureInlineMark mark="ux-text-button" />
+							<UXCaptureInlineMark mark={BASIC_PRIMARY_BUTTON_DISPLAYED} />
 						</React.Fragment>
 					}
 				>
-					<UXCaptureInteractiveMark mark="ux-handler-button">
+					<UXCaptureInteractiveMark mark={BASIC_PRIMARY_BUTTON_INTERACTIVE}>
 						<button
 							className="button"
 							style={getBoxStyle("ux-primary-action-available")}
@@ -74,7 +82,7 @@ const Basic = () => (
 				<p style={getBoxStyle("ux-secondary-content-displayed")}>
 					Secondary content paragraph
 				</p>
-				<UXCaptureInlineMark mark="ux-text-secondary" />
+				<UXCaptureInlineMark mark={BASIC_SECONDARY_TEXT} />
 			</div>
 
 			<div className="chunk">
