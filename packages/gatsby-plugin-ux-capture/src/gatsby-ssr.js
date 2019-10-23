@@ -11,13 +11,6 @@ export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) =>
 	headComponents.push(
 		<script key="ux-capture-library" dangerouslySetInnerHTML={{ __html: uxCaptureJS }} />
 	);
-	headComponents.push(
-		<script
-			key="ux-capture-create"
-			dangerouslySetInnerHTML={{
-				__html: "UXCapture.create({})"
-			}}
-		/>
-	);
+
 	replaceHeadComponents(headComponents);
 };

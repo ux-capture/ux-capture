@@ -1,5 +1,6 @@
 import React from "react";
 
+import UXCaptureCreate from "@meetup/react-ux-capture/lib/UXCaptureCreate";
 import UXCaptureInlineMark from "@meetup/react-ux-capture/lib/UXCaptureInlineMark";
 
 import { Link } from "gatsby";
@@ -20,6 +21,7 @@ class Layout extends React.Component {
 
 		return (
 			<div className="flex flex--column atLarge_flex--row">
+				<UXCaptureCreate />
 				<div className="flex flex-item flex--column">
 					<div className="flex flex-item">
 						<div
