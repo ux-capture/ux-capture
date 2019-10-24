@@ -1,26 +1,38 @@
 import React from 'react';
 
+import getConfig from 'next/config';
+
 import UXCaptureCreate from '@meetup/react-ux-capture/lib/UXCaptureCreate';
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 
-import { Link } from 'gatsby';
+import Link from 'next/link';
+import Head from 'next/head';
 
 import { getBoxStyle } from './ZoneHelper';
-
-import './layout.css';
 
 import Logo from './Logo';
 
 import { LOGO_INLINE } from './Zones';
 
+const { serverRuntimeConfig } = getConfig();
+
 class Layout extends React.Component {
 	render() {
-		let { children } = this.props;
+		const { children } = this.props;
 
 		const navClass = 'flex-item flex-item--shrink padding--all';
 
 		return (
 			<div className="flex flex--column atLarge_flex--row">
+				<Head>
+					<link href="/layout.css" rel="stylesheet" key="maincss" />
+					<script
+						key="ux-capture-inline-script"
+						dangerouslySetInnerHTML={{
+							__html: serverRuntimeConfig.uxCaptureLibraryCode,
+						}}
+					/>
+				</Head>
 				<UXCaptureCreate />
 				<div className="flex flex-item flex--column">
 					<div className="flex flex-item">
@@ -35,14 +47,14 @@ class Layout extends React.Component {
 							<UXCaptureInlineMark mark={LOGO_INLINE} />
 						</div>
 						<b className={navClass}>UX Capture Example: React SPA</b>
-						<Link className={navClass} to="/">
-							Basic
+						<Link href="/">
+							<a className={navClass}>Basic</a>
 						</Link>
-						<Link className={navClass} to="/progressive">
-							Progressive
+						<Link href="/progressive">
+							<a className={navClass}>Progressive</a>
 						</Link>
-						<Link className={navClass} to="/minimal">
-							Minimal
+						<Link href="/minimal">
+							<a className={navClass}>Minimal</a>
 						</Link>
 					</div>
 					<div className="flex flex-item">{children}</div>
