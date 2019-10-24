@@ -7,17 +7,6 @@ const getUXCaptureInlineCode = () => {
 };
 
 module.exports = {
-	webpack: (config, { isServer }) => {
-		// solution found here: https://github.com/zeit/next.js/issues/7755
-		// Fixes npm packages that depend on `fs` module
-		if (!isServer) {
-			config.node = {
-				fs: 'empty',
-			};
-		}
-
-		return config;
-	},
 	serverRuntimeConfig: {
 		// Will only be available on the server side
 		uxCaptureLibraryCode: getUXCaptureInlineCode(),
