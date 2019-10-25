@@ -20,17 +20,14 @@ const { serverRuntimeConfig } = getConfig();
 class MyApp extends App {
 	handleRouteChange(url) {
 		window && window.UXCapture.startTransition();
-		console.log('App is changing to: ', url);
 	}
 
 	componentDidMount() {
 		Router.events.on('routeChangeStart', this.handleRouteChange);
-		console.log('App mounted');
 	}
 
 	componentDidUnMount() {
 		Router.events.off('routeChangeStart', this.handleRouteChange);
-		console.log('App un-mounted');
 	}
 	render() {
 		const { Component, pageProps } = this.props;
