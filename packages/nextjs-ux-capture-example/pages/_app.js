@@ -1,24 +1,39 @@
 import React from 'react';
+import App from 'next/app';
+import Router from 'next/router';
 
+import Link from 'next/link';
+import Head from 'next/head';
 import getConfig from 'next/config';
 
 import UXCaptureCreate from '@meetup/react-ux-capture/lib/UXCaptureCreate';
 import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
 
-import Link from 'next/link';
-import Head from 'next/head';
+import Logo from '../components/Logo';
 
-import { getBoxStyle } from './ZoneHelper';
+import { getBoxStyle } from '../components/ZoneHelper';
 
-import Logo from './Logo';
-
-import { LOGO_INLINE } from './Zones';
+import { LOGO_INLINE } from '../ux-capture-zones';
 
 const { serverRuntimeConfig } = getConfig();
 
-class Layout extends React.Component {
+class MyApp extends App {
+	handleRouteChange(url) {
+		window && window.UXCapture.startTransition();
+		console.log('App is changing to: ', url);
+	}
+
+	componentDidMount() {
+		Router.events.on('routeChangeStart', this.handleRouteChange);
+		console.log('App mounted');
+	}
+
+	componentDidUnMount() {
+		Router.events.off('routeChangeStart', this.handleRouteChange);
+		console.log('App un-mounted');
+	}
 	render() {
-		const { children } = this.props;
+		const { Component, pageProps } = this.props;
 
 		const navClass = 'flex-item flex-item--shrink padding--all';
 
@@ -26,6 +41,7 @@ class Layout extends React.Component {
 			<div className="flex flex--column atLarge_flex--row">
 				<Head>
 					<link href="/layout.css" rel="stylesheet" key="maincss" />
+					<link rel="icon" href="/favicon.ico" key="icon" />
 					<script
 						key="ux-capture-inline-script"
 						dangerouslySetInnerHTML={{
@@ -33,6 +49,7 @@ class Layout extends React.Component {
 						}}
 					/>
 				</Head>
+
 				<UXCaptureCreate />
 				<div className="flex flex-item flex--column">
 					<div className="flex flex-item">
@@ -57,10 +74,17 @@ class Layout extends React.Component {
 							<a className={navClass}>Minimal</a>
 						</Link>
 					</div>
-					<div className="flex flex-item">{children}</div>
+					<div className="flex flex-item">
+						<div className="bounds">
+							<div className="section">
+								<Component {...pageProps} />
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
-export default Layout;
+
+export default MyApp;

@@ -1,7 +1,7 @@
 import React from 'react';
 import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
 
-import { LOGO_ONLOAD } from './Zones';
+import { LOGO_ONLOAD } from '../ux-capture-zones';
 
 export default () => {
 	return (
