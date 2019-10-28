@@ -1,7 +1,13 @@
 {
   "name": "nextjs-ux-capture-example",
+  "description": "Example of using UX Capture within NextJS sites",
   "version": "0.1.0",
-  "private": true,
+  "author": "Meetup",
+  "license": "MIT",
+  "repository": "git@github.com:meetup/ux-capture.git",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
