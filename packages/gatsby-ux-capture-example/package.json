@@ -3,6 +3,11 @@
   "description": "Example of using UX Capture within Gatsby sites",
   "version": "0.1.4",
   "license": "MIT",
+  "author": "Meetup",
+  "repository": "git@github.com:meetup/ux-capture.git",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
@@ -20,12 +25,5 @@
   },
   "devDependencies": {
     "prettier": "^1.18.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
-  },
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
   }
 }

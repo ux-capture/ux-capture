@@ -5,6 +5,9 @@
   "repository": "git@github.com:meetup/ux-capture.git",
   "author": "Meetup",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "babel src --out-dir . --ignore **/__tests__",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
