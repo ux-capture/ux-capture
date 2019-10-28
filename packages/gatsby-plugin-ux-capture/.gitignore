@@ -1,0 +1,5 @@
+/*.js
+!index.js
+coverage
+*.log
+node_modules
