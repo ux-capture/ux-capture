@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-ux-capture-example",
+  "name": "@meetup/nextjs-ux-capture-example",
   "description": "Example of using UX Capture within NextJS sites",
   "version": "0.1.0",
   "author": "Meetup",
