@@ -1,7 +1,7 @@
 {
   "name": "@meetup/gatsby-ux-capture-example",
   "description": "Example of using UX Capture within Gatsby sites",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
@@ -13,7 +13,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \""
   },
   "dependencies": {
-    "@meetup/react-ux-capture": "^1.3.2",
+    "@meetup/react-ux-capture": "^1.3.3",
     "gatsby": "^2.16.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
