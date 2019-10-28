@@ -1,7 +1,7 @@
 {
   "name": "@meetup/nextjs-ux-capture-example",
   "description": "Example of using UX Capture within NextJS sites",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Meetup",
   "license": "MIT",
   "repository": "git@github.com:meetup/ux-capture.git",
