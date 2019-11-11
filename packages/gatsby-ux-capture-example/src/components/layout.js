@@ -46,7 +46,7 @@ const Layout = props => {
 				</div>
 				<div className="flex flex-item">
 					<div className="bounds">
-						<div className="section">{children}</div>{" "}
+						<div className="section">{children}</div>
 					</div>
 				</div>
 			</div>
