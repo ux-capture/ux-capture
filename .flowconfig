@@ -1,6 +1,7 @@
 [ignore]
 .*/coverage/*
 .*/examples/*
+*.d.ts
 
 [include]
 
