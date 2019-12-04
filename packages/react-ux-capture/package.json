@@ -14,6 +14,7 @@
     "prepublishOnly": "yarn build",
     "test": "jest --config jest.config.js"
   },
+  "types": "types/index.d.ts",
   "peerDependencies": {
     "react": "^16.0.0"
   },
