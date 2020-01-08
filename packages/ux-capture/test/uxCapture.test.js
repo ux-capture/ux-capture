@@ -304,6 +304,46 @@ describe('UXCapture', () => {
 			expect(View.prototype.destroy).toHaveBeenCalled();
 		});
 
+		it('should not attempt to record a measure if transitionStart mark does not exist in interactive views', () => {
+			window.performance.clearMarks();
+			window.performance.clearMeasures();
+
+			UXCapture.startTransition();
+
+			expect(
+				window.performance.getEntriesByName('transitionStart').length
+			).toBe(1);
+
+			window.performance.clearMarks('transitionStart');
+
+			expect(
+				window.performance.getEntriesByName('transitionStart').length
+			).toBe(0);
+
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+				},
+			]);
+
+			UXCapture.mark(MOCK_MARK_1_1);
+
+			// don't throw an exception
+			// (unfortunately, does not throw with UserTiming polyfill anyway, but throws in real browsers)
+			expect(() => {
+				UXCapture.mark(MOCK_MARK_1_2);
+			}).not.toThrow();
+
+			// should not attempt to record a measure
+			// (with UserTiming polyfill used in test it can try and record one empty startTime and duration)
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).not.toBeTruthy();
+		});
+
 		// intentionally-internal behavior (not exposed to tests)
 		// it('sets startMarkName to INTERACTIVE_TRANSITION_START_MARK_NAME')
 		// it('sets window.performance.mark INTERACTIVE_TRANSITION_START_MARK_NAME')
