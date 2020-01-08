@@ -72,7 +72,10 @@ Zone.prototype.measure = function(triggerName) {
 				? startMarkName
 				: triggerName;
 
-		window.performance.measure(name, startMarkName, endMarkName);
+		// do not to attempt recording measure without a valid start point
+		if (startMarkName === 'navigationStart' || startMark) {
+			window.performance.measure(name, startMarkName, endMarkName);
+		}
 	}
 
 	this.measured = true;
