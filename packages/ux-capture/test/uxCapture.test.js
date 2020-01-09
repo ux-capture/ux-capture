@@ -43,16 +43,19 @@ function spyConsole() {
 }
 
 describe('UXCapture', () => {
-	describe('startView', () => {
-		beforeEach(() => {
-			onMark.mockClear();
-			onMeasure.mockClear();
-			UXCapture.create({ onMark, onMeasure });
-		});
-		afterEach(() => {
-			UXCapture.destroy();
-		});
+	beforeEach(() => {
+		onMark.mockClear();
+		onMeasure.mockClear();
+		UXCapture.create({ onMark, onMeasure });
+		window.performance.clearMarks();
+		window.performance.clearMeasures();
+	});
 
+	afterEach(() => {
+		UXCapture.destroy();
+	});
+
+	describe('startView', () => {
 		// not needed after WP-945
 		it('must create dependencies between marks and measures', () => {
 			UXCapture.startView([
@@ -106,14 +109,6 @@ describe('UXCapture', () => {
 	});
 
 	describe('create', () => {
-		beforeEach(() => {
-			onMark.mockClear();
-			onMeasure.mockClear();
-		});
-		afterEach(() => {
-			UXCapture.destroy();
-		});
-
 		it('Should throw an error if non-object is passed', () => {
 			expect(() => {
 				UXCapture.create();
@@ -184,10 +179,6 @@ describe('UXCapture', () => {
 
 	describe('mark', () => {
 		beforeEach(() => {
-			onMark.mockClear();
-			onMeasure.mockClear();
-			UXCapture.create({ onMark, onMeasure });
-
 			UXCapture.startView([
 				{
 					name: MOCK_MEASURE_1,
@@ -202,10 +193,6 @@ describe('UXCapture', () => {
 					marks: [MOCK_MARK_MULTIPLE],
 				},
 			]);
-		});
-
-		afterEach(() => {
-			UXCapture.destroy();
 		});
 
 		it('must mark user timing api timeline', () => {
@@ -280,15 +267,6 @@ describe('UXCapture', () => {
 	});
 
 	describe('startTransition', () => {
-		beforeEach(() => {
-			onMark.mockClear();
-			onMeasure.mockClear();
-			UXCapture.create({ onMark, onMeasure });
-		});
-		afterEach(() => {
-			UXCapture.destroy();
-		});
-
 		it('destroys current view', () => {
 			// page view
 			spyOn(View.prototype, 'destroy');
@@ -305,9 +283,6 @@ describe('UXCapture', () => {
 		});
 
 		it('should not attempt to record a measure if transitionStart mark does not exist in interactive views', () => {
-			window.performance.clearMarks();
-			window.performance.clearMeasures();
-
 			UXCapture.startTransition();
 
 			expect(
