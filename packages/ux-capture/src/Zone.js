@@ -22,20 +22,24 @@ function Zone(props) {
 	this.marks = this.props.marks.map(markName => {
 		// 'state' of the measure that indicates whether it has been recorded
 		this.measured = false;
-		const mark = ExpectedMark.create(markName);
 
-		const listener = completeMark => {
+		const markListener = completeMark => {
 			// pass the event upstream
 			this.props.onMark(markName);
+		};
+
+		const mark = ExpectedMark.create(markName, markListener);
+
+		const measureListener = completeMark => {
 			if (this.marks.every(({ mark }) => mark.marked)) {
 				this.measure(markName);
 			}
 		};
 
-		return { mark, listener };
+		return { mark, measureListener };
 	});
-	this.marks.forEach(({ mark, listener }) => {
-		mark.addOnMarkListener(listener);
+	this.marks.forEach(({ mark, measureListener }) => {
+		mark.addOnMarkListener(measureListener);
 	});
 }
 
@@ -90,7 +94,9 @@ Zone.prototype.destroy = function() {
 		window.performance.clearMeasures(this.props.name);
 	}
 	// don't destroy the ExpectedMarks, because they may outlive a View/Zone, just remove reference
-	this.marks.forEach(({ mark, listener }) => mark.removeOnMarkListener(listener));
+	this.marks.forEach(({ mark, measureListener }) =>
+		mark.removeOnMarkListener(measureListener)
+	);
 	this.marks = null;
 };
 

@@ -264,6 +264,20 @@ describe('UXCapture', () => {
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
 		});
+
+		it('must only call onMark callback once per mark even if it is used in multiple zones', () => {
+			UXCapture.mark(MOCK_MARK_MULTIPLE);
+
+			expect(onMark).toHaveBeenCalledTimes(1);
+		});
+
+		it('must call onMark the same number of times as UXCapture.mark() method calls', () => {
+			UXCapture.mark(MOCK_MARK_1_1);
+			UXCapture.mark(MOCK_MARK_MULTIPLE);
+			UXCapture.mark(MOCK_MARK_MULTIPLE);
+
+			expect(onMark).toHaveBeenCalledTimes(3);
+		});
 	});
 
 	describe('startTransition', () => {
