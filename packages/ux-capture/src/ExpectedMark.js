@@ -20,10 +20,15 @@ function ExpectedMark(props) {
  *
  * @param {string} name
  */
-ExpectedMark.create = function(name) {
+ExpectedMark.create = function(name, listener) {
 	// create new mark only if one does not exist
 	if (!_expectedMarks[name]) {
-		_expectedMarks[name] = new ExpectedMark({ name });
+		var mark = new ExpectedMark({ name });
+		if (listener) {
+			mark.addOnMarkListener(listener);
+		}
+
+		_expectedMarks[name] = mark;
 	}
 	return _expectedMarks[name];
 };
