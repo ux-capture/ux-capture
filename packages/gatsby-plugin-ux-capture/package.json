@@ -1,6 +1,6 @@
 {
   "name": "@meetup/gatsby-plugin-ux-capture",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "index.js",
   "repository": "git@github.com:meetup/ux-capture.git",
   "author": "Meetup",
