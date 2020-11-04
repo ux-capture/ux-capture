@@ -15,6 +15,7 @@ Browser instrumentation approach and libraries that makes it easier to capture U
     -   [Aggregating component metrics](#aggregating-component-metrics)
     -   [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
 -   [Testing results](#testing-results)
+-   [UX Capture Lifecycle](#ux-capture-lifecycle)
 -   [Glossary](#glossary)
 
 ## Packages
@@ -245,6 +246,11 @@ You can also run W3C Performance Timeline API [`performance.getEntriesByType()`]
 method with `"mark"` and `"measure"` parameters to retrieve marks and measures respectively.
 
 ![Chrome DevTools console showing captured performance marks and measures](docs/basic-results-sample-chromedevtools-console.png)
+
+## UX Capture Lifecycle
+
+You can review full lifecycle of user experience, marks, measures and resulting metrics on the following diagram.
+![UX Capture lifecycle diagram](docs/ux-capture-lifecycle.svg)
 
 ## Glossary
 
