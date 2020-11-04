@@ -10,6 +10,7 @@ metrics using [UX Capture](../../README.md) approach
   - [Text without custom font](#text-without-custom-font)
   - [Text with custom font](#text-with-custom-font)
   - [Event handler attachment](#event-handler-attachment)
+- [UX Capture Lifecycle](#ux-capture-lifecycle)
 
 The intent of this library is to help developers instrument technical events
 (marks) on their pages and group them into "zones" that represent "phases" of page
@@ -223,3 +224,8 @@ var button_element = document.getElementById('mybutton');
 button_element.addEventListener('click', myActionHandler);
 UXCapture.mark('ux-handler-myaction');
 ```
+
+## UX Capture Lifecycle
+
+You can review full lifecycle of user experience, marks, measures and resulting metrics on the following diagram.
+![UX Capture lifecycle diagram](docs/ux-capture-lifecycle.svg)
