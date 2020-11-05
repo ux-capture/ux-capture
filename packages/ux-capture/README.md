@@ -10,6 +10,7 @@ metrics using [UX Capture](../../README.md) approach
   - [Text without custom font](#text-without-custom-font)
   - [Text with custom font](#text-with-custom-font)
   - [Event handler attachment](#event-handler-attachment)
+- [UX Capture sequence diagram](#ux-capture-sequence-diagram)
 
 The intent of this library is to help developers instrument technical events
 (marks) on their pages and group them into "zones" that represent "phases" of page
@@ -223,3 +224,8 @@ var button_element = document.getElementById('mybutton');
 button_element.addEventListener('click', myActionHandler);
 UXCapture.mark('ux-handler-myaction');
 ```
+
+## UX Capture sequence diagram
+
+API calls sequence for both page view and interactive view (SPA) modes.
+![UX Capture sequence diagram](docs/ux-capture-sequence-diagram.svg)
