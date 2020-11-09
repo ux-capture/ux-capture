@@ -211,8 +211,8 @@ Here are 4 phases defining parts of experience that matter to business from
 different perspectives:
 
 1.  [Destination verified](docs/progressive_enhancement_phases.md#ux1-destination-verified) (`ux-destination-verified`)
-2.  [Primary content displayed](docs/progressive_enhancement_phases.md#ux2-primary-content) (`ux-primary-content-displayed`)
-3.  [Primary action available](docs/progressive_enhancement_phases.md#ux3-primary-action) (`ux-primary-action-available`)
+2.  [Primary content displayed](docs/progressive_enhancement_phases.md#ux2-primary-content-displayed) (`ux-primary-content-displayed`)
+3.  [Primary action available](docs/progressive_enhancement_phases.md#ux3-primary-action-available) (`ux-primary-action-available`)
 4.  [Secondary content displayed](docs/progressive_enhancement_phases.md#ux4-secondary-content--action) (`ux-secondary-content-displayed`)
 
 Each phase's component or element metrics (marks) can be combined and recorded as UserTiming API's measures:
