@@ -2,21 +2,22 @@
 
 Browser instrumentation approach and libraries that makes it easier to capture UX performance metrics.
 
--   [Packages](#packages)
-    -   [Publish workflow](#publish-workflow)
--   [Internal documentation](#internal-documentation)
--   [Project Goals](#project-goals)
--   [Instrumentation Approach](#instrumentation-approach)
-    -   [Individual Element Instrumentation](#individual-element-instrumentation)
-        -   [Image elements](#image-elements)
-        -   [Text without custom font](#text-without-custom-font)
-        -   [Text with custom font](#text-with-custom-font)
-        -   [Event handler attachment](#event-handler-attachment)
-    -   [Aggregating component metrics](#aggregating-component-metrics)
-    -   [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
--   [Testing results](#testing-results)
--   [UX Capture Lifecycle](#ux-capture-lifecycle)
--   [Glossary](#glossary)
+- [UX Capture](#ux-capture)
+  - [Packages](#packages)
+    - [Publish workflow](#publish-workflow)
+  - [Internal documentation](#internal-documentation)
+  - [Project Goals](#project-goals)
+  - [Instrumentation Approach](#instrumentation-approach)
+    - [Individual Element Instrumentation](#individual-element-instrumentation)
+      - [Image elements](#image-elements)
+      - [Text without custom font](#text-without-custom-font)
+      - [Text with custom font](#text-with-custom-font)
+      - [Event handler attachment](#event-handler-attachment)
+    - [Aggregating component metrics](#aggregating-component-metrics)
+    - [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
+  - [Testing results](#testing-results)
+  - [UX Capture Lifecycle](#ux-capture-lifecycle)
+  - [Glossary](#glossary)
 
 ## Packages
 
@@ -209,10 +210,10 @@ task and giving them best experience in terms of percieved speed.
 Here are 4 phases defining parts of experience that matter to business from
 different perspectives:
 
-1.  Destination verified (`ux-destination-verified`)
-2.  Primary content displayed (`ux-primary-content-displayed`)
-3.  Primary action available (`ux-primary-action-available`)
-4.  Secondary content displayed (`ux-secondary-content-displayed`)
+1.  [Destination verified](docs/progressive_enhancement_phases.md#ux1-destination-verified) (`ux-destination-verified`)
+2.  [Primary content displayed](docs/progressive_enhancement_phases.md#ux2-primary-content) (`ux-primary-content-displayed`)
+3.  [Primary action available](docs/progressive_enhancement_phases.md#ux3-primary-action) (`ux-primary-action-available`)
+4.  [Secondary content displayed](docs/progressive_enhancement_phases.md#ux4-secondary-content--action) (`ux-secondary-content-displayed`)
 
 Each phase's component or element metrics (marks) can be combined and recorded as UserTiming API's measures:
 
