@@ -27,6 +27,9 @@ Other examples include:
 -   list of tags or other applied filters - for large lists of items like members list or location/zip and distance for geo-based search, e.g. for events/groups.
 -   date - for the date-sensitive material like events or news articles / blog posts
 
+Example:
+![Annotated example of UX1 zone](storyboards/youtube_annotated_ux1.jpg)
+
 ## UX2: Primary Content Displayed
 
 Primary content is content that is absolutely required for user to consume to convince them to perform a [primary action](Primary-Action) in this view.
@@ -51,6 +54,9 @@ It is usually considered a best practice to fit all primary content "above the f
 
 Note: It is important to distinguish primary content from other content, which is not necessary to perform primary action (see [Secondary Content / Action](#ux4-secondary-content-action)).
 
+Example:
+![Annotated example of UX2 zone](storyboards/youtube_annotated_ux2.jpg)
+
 ## UX3: Primary Action Available
 
 Primary action is the most important action we intend for a user to make on a particular view.
@@ -67,6 +73,9 @@ Examples include:
 
 Note: It is important to distinguish it from other actions user can perform (see [Secondary Content / Action](#ux4-secondary-content-action)).
 
+Example:
+![Annotated example of UX3 zone](storyboards/youtube_annotated_ux3.jpg)
+
 ## UX4: Secondary Content / Action
 
 Secondary content and action are the most important content and action that user would want to perform if they decided NOT to perform primary action after consuming primary content.
@@ -80,3 +89,6 @@ Common examples include:
 -   User-generated content, sharing buttons, ads
 
 Similarly to primary content, it is usually considered a best practice to fit all secondary content "above the fold" or in a visible area of the user's screen leaving out the rest of the content.
+
+Example:
+![Annotated example of UX4 zone](storyboards/youtube_annotated_ux4.jpg)
