@@ -103,7 +103,7 @@ Example:
 
 # Progressive Enhancement Documentation & Design
 
-Documenting individual zones can be done with annotating a single screenshot as a quick business interview artifact.
+Documenting multiple zones can be done with annotating a single screenshot as a quick business interview artifact.
 
 Annotation example:
 ![Annotated design screenshot](storyboards/youtube_annotated.png)
