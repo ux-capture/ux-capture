@@ -5,7 +5,7 @@ Browser instrumentation approach and libraries that makes it easier to capture U
 - [UX Capture](#ux-capture)
   - [Packages](#packages)
     - [Publish workflow](#publish-workflow)
-  - [Internal documentation](#internal-documentation)
+  - [Additional documentation](#additional-documentation)
   - [Project Goals](#project-goals)
   - [Instrumentation Approach](#instrumentation-approach)
     - [Individual Element Instrumentation](#individual-element-instrumentation)
@@ -42,12 +42,13 @@ The Travis deploy step will then publish _only updated packages_ when the PR
 merges. If you forget to bump a version, the deploy will fail and you will have
 to run `yarn make-version` to push the latest tags
 
-## Internal documentation
+## Additional documentation
 
-See [Meetup Confluence docs](https://meetup.atlassian.net/wiki/spaces/WEG/pages/718700545/UX+Capture)
-for more info.
+-  [Progressive Enhancement Phases and Corresponding Zones](docs/progressive_enhancement_phases.md)
+-  [UX Capture JavaScript Library](ux-capture/packages/ux-capture/README.md)
+   -  [UX Capture Core Library API Spec and seqence diagram](docs/ux-capture-js-api-spec.md)
+-  [React bindings for UX Capture](packages/react-ux-capture/README.md)
 
-**@TODO: move all public documentation into this README**.
 
 ---
 
