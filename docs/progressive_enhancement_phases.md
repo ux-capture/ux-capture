@@ -122,3 +122,6 @@ Example progressive storyboard:
 ![progressive storyboard example](storyboards/youtube_storyboard.jpg)
 
 Note: annotated time expectations for the storyboard can be used as a guide to realistic perception of the final product. It can also be used to produce page load animatics to aid decision making and requirements documentation. Real user measurement data should be consulted and engineers should be involved in assesment of viability of the decisions during speed design phase.
+
+Example animatic produced based on the storyboard above:
+[![progressive storyboard animatic](docs/../storyboards/youtube_animatic_thumbnail.jpg)](https://www.youtube.com/watch?v=AH8JFnRy0v4)
