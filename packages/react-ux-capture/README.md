@@ -2,7 +2,6 @@
 
 The [UX Capture Library](../ux-capture) is a browser instrumentation library that makes it easier to capture UX Speed metrics. In order to make the library easy and effective to use in React-based applications, this module implements a set of React Bindings (Components).
 
-- [`<UXCapture />`](#uxcapture-)
 - [`<UXCaptureCreate />`](#uxcapturecreate-)
 - [`<UXCaptureStartView />`](#uxcapturestartview-)
 - [`<UXCaptureInlineMark />`](#uxcaptureinlinemark-)
@@ -10,24 +9,9 @@ The [UX Capture Library](../ux-capture) is a browser instrumentation library tha
 - [`<UXCaptureInteractiveMark />`](#uxcaptureinteractivemark-)
 - [`<UXCaptureFont />`](#uxcapturefont-)
 
-## `<UXCapture />`
-
-This React component is a wrapper for `<UXCaptureCreate />` and `<UXCaptureStartView />`, along with NewRelic logging instrumentation in the `onMark` and `onMeasure` callbacks for the `View`. This should only ever be used once per page load.
-
-Usage:
-
-```jsx
-<UXCapture
-	destinationVerified={['ux-mark-header-logo', 'ux-mark-page-title']}
-	primaryContentDisplayed={['ux-mark-0']}
-	primaryActionAvailable={['ux-mark-1']}
-	secondaryContentDisplayed={['ux-mark-2']}
-/>
-```
-
 ## `<UXCaptureCreate />`
 
-This React component implements `UXCapture.create()`, which initializes the global `window.UXCapture` singleton object. This should only ever be used per page load.
+This React component implements `UXCapture.create()`, which initializes the global `window.UXCapture` singleton object. This should only ever be used once per page load.
 
 Usage:
 
@@ -54,7 +38,7 @@ render() {
 
 ## `<UXCaptureStartView />`
 
-This React component implements `UXCapture.startView()`, which creates a new `View` that manages its corresponding `Zones`. If called more than once, it will replace previous `Views`.
+This React component implements `UXCapture.startView()`, which creates a new `View` that manages its corresponding `Zones`. If called more than once, it will replace previous `View`s.
 
 Usage:
 
@@ -115,8 +99,8 @@ Usage:
 ```jsx
 render() {
     ...
-    <UXCaptureInteractiveMark mark="ux-handler-about-subnav-routable">
-    <Stripe className={cx(NAV_BAR_CLASS, className)}>
+    <UXCaptureInteractiveMark mark="ux-handler-stripe">
+    <Stripe>
         ...
     </Stripe>
     </UXCaptureInteractiveMark>
@@ -127,7 +111,7 @@ render() {
 
 Before using UXCaptureFont component, make sure the page also includes `fontLoaderInlineCode` which inlines [Web Font Loader library](https://github.com/typekit/webfontloader) on the page.
 
-It is most likely that you will include this code in global app container component as your fonts are loaded globally using CSS. Then just add the marks to zones next to the marks for individual text nodes, make sure to check which specific variation of the font is used by particular text element. See [font variation description docs](https://github.com/typekit/fvd) for details about variation notation used in fontFamily props below, e.g. after colon in "Graphik Meetup:**n4**".
+It is most likely that you will include this code in global app container component as your fonts are loaded globally using CSS. Then just add the marks to zones next to the marks for individual text nodes, make sure to check which specific variation of the font is used by particular text element. See [font variation description docs](https://github.com/typekit/fvd) for details about variation notation used in fontFamily props below, e.g. after colon in "Fancy Font:**n4**".
 
 ```jsx
 import UXCaptureFont, { fontLoaderInlineCode } from '@meetup/react-ux-capture/UXCaptureFont';
@@ -146,16 +130,16 @@ render() {
     return (
         <PageWrap head={head} ... >
         <UXCaptureFont
-                fontFamily="Graphik Meetup:n4"
-                mark="ux-font-meetup-regular-400"
+                fontFamily="Fancy Font:n4"
+                mark="ux-font-fancy-font-regular-400"
             />
         <UXCaptureFont
-                fontFamily="Graphik Meetup:n5"
-                mark="ux-font-meetup-medium-500"
+                fontFamily="Fancy Font:n5"
+                mark="ux-font-fancy-font-medium-500"
             />
         <UXCaptureFont
-                fontFamily="Graphik Meetup:n6"
-                mark="ux-font-meetup-semibold-600"
+                fontFamily="Fancy Font:n6"
+                mark="ux-font-fancy-font-semibold-600"
             />
         {children}
         </PageWrap>
