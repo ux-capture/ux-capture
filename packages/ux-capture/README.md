@@ -225,7 +225,6 @@ button_element.addEventListener('click', myActionHandler);
 UXCapture.mark('ux-handler-myaction');
 ```
 
-## UX Capture sequence diagram
+## UX Capture API Specification and sequence diagram
 
-API calls sequence for both page view and interactive view (SPA) modes.
-![UX Capture sequence diagram](docs/ux-capture-sequence-diagram.svg)
+For API specification and requirements, including sequence diagram, see [UX Capture Core Library API Spec](docs/ux-capture-js-api-spec.md) document.
