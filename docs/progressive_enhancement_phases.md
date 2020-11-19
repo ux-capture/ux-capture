@@ -6,7 +6,7 @@ Different elements should be displayed and become interactive to fulfill the goa
 
 We can group these elements together into so-called "zones" and measure appearence of each zone as individual performance metrics. We call these "UX speed metrics".
 
-Note: each phase has a numeric index (e.g. `UX1`), used to make it easier to refer to each phase, but also indicating ideal sequence in which elements withing the zone appear or become interactive.
+Note: each phase has a numeric index (e.g. `UX1`), used to make it easier to refer to each phase, but also indicating ideal sequence in which elements within the zone appear or become interactive.
 
 -   [Progressive Enhancement Phases and Corresponding Zones](#progressive-enhancement-phases-and-corresponding-zones)
     -   [UX1: Destination Verified](#ux1-destination-verified)
@@ -108,11 +108,11 @@ Documenting multiple zones can be done with annotating a single screenshot as a 
 Annotation example:
 ![Annotated design screenshot](storyboards/youtube_annotated.png)
 
-Note: multiple screenshots are usually produced for individual page depicting different data _variations_ of the view (e.g. active vs. sold product for a product details page) and different UI breakpoints (e.g. mobile, desktop and etc) and etc. It is easy to miss some of these details in conversations and having implementation engineers in the room together with product managers and designers is usually required to catch all important the variations.
+Note: multiple screenshots are usually produced for individual page depicting different data _variations_ of the view (e.g. active vs. sold product for a product details page) and different UI breakpoints (e.g. mobile, desktop and etc) and etc. It is easy to miss some of these details in conversations and having implementation engineers in the room together with product managers and designers is usually required to catch all the important variations.
 
 ## Designing for speed
 
-Annotation can be done for both, existing and new functionality and can benefit both optimization and ground-up construction of the progressively enhanced experiences.
+Annotation can be done for both existing and new functionality and can benefit both optimization and ground-up construction of the progressively enhanced experiences.
 
 Product managers, designers and engineers can work together to "design the speed" of the experience.
 
@@ -121,4 +121,4 @@ It is useful to visualize the result of the annotation as a progressive storyboa
 Example progressive storyboard:
 ![progressive storyboard example](storyboards/youtube_storyboard.jpg)
 
-Note: annotated time expectations for the storyboard which can be used as a guide to realistic perception of the final product. I can also be used to produce page load animatics to aid decision making and requirements documentation. Real user measurement data should be consulted and engineers should be involved in assesment of viability of the decisions during speed design phase.
+Note: annotated time expectations for the storyboard can be used as a guide to realistic perception of the final product. It can also be used to produce page load animatics to aid decision making and requirements documentation. Real user measurement data should be consulted and engineers should be involved in assesment of viability of the decisions during speed design phase.
