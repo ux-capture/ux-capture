@@ -1,6 +1,6 @@
 # Testing UX Capture Instrumentation
 
-Once UXCapture React bindings have been added to a route or feature, use these steps to view and evaluate the results in Chrome Devtools.
+Once [UX Capture React bindings](../packages/react-ux-capture/README.md) or [core JS library instrumentation](../packages/ux-capture/README.md) have been added to a route or feature, use these steps to view and evaluate the results in Chrome Devtools.
 
 ## Step-by-step guide
 
