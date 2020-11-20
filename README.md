@@ -44,11 +44,10 @@ to run `yarn make-version` to push the latest tags
 
 ## Additional documentation
 
--  [Progressive Enhancement Phases and Corresponding Zones](docs/progressive_enhancement_phases.md)
--  [UX Capture JavaScript Library](ux-capture/packages/ux-capture/README.md)
-   -  [UX Capture Core Library API Spec and seqence diagram](docs/ux-capture-js-api-spec.md)
--  [React bindings for UX Capture](packages/react-ux-capture/README.md)
-
+-   [Progressive Enhancement Phases and Corresponding Zones](docs/progressive_enhancement_phases.md)
+-   [UX Capture JavaScript Library](ux-capture/packages/ux-capture/README.md)
+    -   [UX Capture Core Library API Spec and seqence diagram](docs/ux-capture-js-api-spec.md)
+-   [React bindings for UX Capture](packages/react-ux-capture/README.md)
 
 ---
 
@@ -230,24 +229,12 @@ WebPageTest or [Chrome Developer Tools' Timeline tab](https://twitter.com/igrigo
 
 ## Testing results
 
-To confirm that your instrumentation was successful, open your page in Chrome
-Developer Tools Performance tab and hit reload to capture the timeline.
+To confirm that your instrumentation was successful, profile your page in Chrome
+Developer Tools Performance tab.
 
-Verify that individual marks are captured as timestamps on the timeline (small
-vertical lines on Frames band), hovering over each should show the name used
-for the mark.
+Verify that individual marks are captured at correct times and measures properly represent zone/phase completion.
 
-Also verify that measures are captured (long horizontal bars under User Timing
-band, starting at navigation and ending at the last mark comprizing the zone).
-
-Note that you might need to zoom in on the timeline to see these marks and
-measures.
-![Chrome DevTools Performance Timeline with marks and measures](docs/basic-results-sample-chromedevtools.png)
-
-You can also run W3C Performance Timeline API [`performance.getEntriesByType()`](https://www.w3.org/TR/performance-timeline-2/#extensions-to-the-performance-interface)
-method with `"mark"` and `"measure"` parameters to retrieve marks and measures respectively.
-
-![Chrome DevTools console showing captured performance marks and measures](docs/basic-results-sample-chromedevtools-console.png)
+See [Testing UX Capture Instrumentation](docs/testing-instrumentation.md) for more details.
 
 ## UX Capture Lifecycle
 
