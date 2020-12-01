@@ -234,7 +234,7 @@ Developer Tools Performance tab.
 
 Verify that individual marks are captured at correct times and measures properly represent zone/phase completion.
 
-See [Testing UX Capture Instrumentation](docs/testing-instrumentation.md) for more details.
+See [Testing UX Capture Instrumentation](docs/testing-instrumentation/README.md) for more details.
 
 ## UX Capture Lifecycle
 

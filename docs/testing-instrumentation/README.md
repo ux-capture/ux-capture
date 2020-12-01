@@ -8,19 +8,19 @@ These steps can be used either in dev or prod:
 
 1. Navigate to your page that contains the UXCapture instrumentation. Open Chrome DevTools Elements tab and delete `<head>` and `<body>` tags to keep the URL, but make the page empty. This will help show empty frames at the beginning of image capture in the next step.
 
-![Delete head and body tags](testing-instrumentation/delete_head_and_body.png)
+![Delete head and body tags](delete_head_and_body.png)
 
 2. Switch to **Performance Tab**. Click the **Reload** button so that Chrome Devtools begins profiling.
 
-![Reload the page in profiler](testing-instrumentation/Reload.png)
+![Reload the page in profiler](Reload.png)
 
 3. While the profiling is happening, you'll see a progress bar in DevTools and the page will reload/refresh itself. This step may take several seconds. See screenshot.
 
-![Profiling progress indicator](testing-instrumentation/Profiling.png)
+![Profiling progress indicator](Profiling.png)
 
 4. Once the profile is loaded, there are **three main sections** to focus on for UXCapture: **Frames**, **Timings** and **Main** (Thread). It's easier to collapse frames section (and rely on detail view) but expand Timings and Main Thread sections one at a time because they all occupy quite a lot of space and become hard to scroll between when all are expanded. See screenshot:
 
-![Profiler sections to pay attention to](testing-instrumentation/ChromeDevToolsPerfPanels.png)
+![Profiler sections to pay attention to](ChromeDevToolsPerfPanels.png)
 
 5. Expand the **User Timing** section to see all of the zones defined in the page reported as [Browser Performance Measures](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API#Performance_measures) - specifically `ux-destination-verified`, `ux-primary-content-displayed`, `ux-primary-action-available` and `ux-secondary-content-displayed`. If you didn't define one of the zones (e.g. there is no secondary content), then you will not see a corresponding measure for it in this section.
 
@@ -28,7 +28,7 @@ These steps can be used either in dev or prod:
 
 6. **Hover** over each of the measure labels to see the corresponding time at which that measure was recorded. See screenshot.
 
-![Hovering over the measure](testing-instrumentation/MeasureHover.png)
+![Hovering over the measure](MeasureHover.png)
 
 7. As of Chrome 87, [DevTools now show **performance marks** in the **Timings** section](https://developers.google.com/web/updates/2020/10/devtools#perf-mark) as vertical stripes, all in one line right above the measure bars, you can hover over individual marks to see their names.
 
@@ -36,7 +36,7 @@ These steps can be used either in dev or prod:
 
 You can zoom in and out of the timeline using mouse scroll button to better see individual marks, just make sure to zoom back out when you search as search is scoped to the zoomed in area only.
 
-![Searching for marks](testing-instrumentation/ZoomInAndHoverOverMarks.png)
+![Searching for marks](ZoomInAndHoverOverMarks.png)
 
 8. Find a frame that was displayed when mark was recorded and make sure that this is the correct moment when mark is supposed to fire, e.g. text you expected to see is actually displayed in **current frame OR the frame immediately following the current frame**.
 
@@ -46,7 +46,7 @@ You can press Shift to show a vertical blue line across all sections to help pin
 
 If you see significant discrepancies between marks timestamps and frames in which functionality you are trying to instrument is showing up, check if you picked the right instrumentation method (e.g. inline mark instead of interactive mark).
 
-![Find corresponding frame using blue line](testing-instrumentation/FindAFrameUsingBlueLine.png)
+![Find corresponding frame using blue line](FindAFrameUsingBlueLine.png)
 
 You can use search functionality by pressing `Ctrl+F` to find a mark by name. They will additionally be found in **Main Thread** section to make it easy to connect to the rest of the document events and determine reasons for delays, for example.
 
