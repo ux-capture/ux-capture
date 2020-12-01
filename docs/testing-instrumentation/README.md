@@ -42,11 +42,11 @@ You can zoom in and out of the timeline using mouse scroll button to better see 
 
 You can press Shift to show a vertical blue line across all sections to help pinpoint the frame that corresponds to the recorded mark.
 
+![Find corresponding frame using blue line](FindAFrameUsingBlueLine.png)
+
 > Keep in mind that marks that correspond to attaching event handlers will not have visual representation on the timeline. It is common however for them to correspond to React rehydration cycle which can be visible due to change in other elements.
 
 If you see significant discrepancies between marks timestamps and frames in which functionality you are trying to instrument is showing up, check if you picked the right instrumentation method (e.g. inline mark instead of interactive mark).
-
-![Find corresponding frame using blue line](FindAFrameUsingBlueLine.png)
 
 You can use search functionality by pressing `Ctrl+F` to find a mark by name. They will additionally be found in **Main Thread** section to make it easy to connect to the rest of the document events and determine reasons for delays, for example.
 
