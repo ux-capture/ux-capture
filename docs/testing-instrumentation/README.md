@@ -4,7 +4,9 @@ Once [UX Capture React bindings](../packages/react-ux-capture/README.md) or [cor
 
 ## Step-by-step guide
 
-These steps can be used either in dev or prod:
+You can find the example page tested at https://www.ux-capture.org/examples/
+
+These steps can be used either in devevelopment or production environments:
 
 1. Navigate to your page that contains the UXCapture instrumentation. Open Chrome DevTools Elements tab and delete `<head>` and `<body>` tags to keep the URL, but make the page empty. This will help show empty frames at the beginning of image capture in the next step.
 
