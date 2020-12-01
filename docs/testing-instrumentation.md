@@ -6,9 +6,9 @@ Once [UX Capture React bindings](../packages/react-ux-capture/README.md) or [cor
 
 These steps can be used either in dev or prod:
 
-1. Navigate to your page that contains the UXCapture instrumentation.
+1. Navigate to your page that contains the UXCapture instrumentation. Open Chrome DevTools Elements tab and delete `<head>` and `<body>` tags to keep the URL, but make the page empty. This will help show empty frames at the beginning of image capture in the next step.
 
-2. Open Chrome DevTools and select the **Performance Tab**. Click the **Reload** button so that Chrome Devtools begins profiling.
+2. Switch to **Performance Tab**. Click the **Reload** button so that Chrome Devtools begins profiling.
 
 ![Reload the page in profiler](testing-instrumentation/Reload.png)
 
