@@ -1,5 +1,5 @@
 # Redirect homepage to README on GitHub
-/									https://github.com/ux-capture/ux-capture
+/									https://github.com/ux-capture/ux-capture	302!
 
 # Redirect default Netlify subdomain to primary domain
 http://ux-capture.netlify.com/*		https://www.ux-capture.org/:splat 301!
