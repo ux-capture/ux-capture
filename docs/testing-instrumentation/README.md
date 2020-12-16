@@ -4,21 +4,29 @@ Once [UX Capture React bindings](../packages/react-ux-capture/README.md) or [cor
 
 ## Step-by-step guide
 
-These steps can be used either in dev or prod:
+You can find the example page tested at https://www.ux-capture.org/examples/ - it is a trivial SPA (single-page application). The guide below tests the full page view on the app with the following zones [defined](../../packages/ux-capture/examples/index.html#L28-L50):
+* [`ux-destination-verified`](../progressive_enhancement_phases.md#ux1-destination-verified) - page title (`H1` header text) is visible
+* [`ux-primary-content-displayed`](../progressive_enhancement_phases.md#ux2-primary-content-displayed) - both first paragraph and second paragraph (requires intensive JS execution) of text are shown and kitten image is show as well
+* [`ux-primary-action-available`](../progressive_enhancement_phases.md#ux3-primary-action-available) - `read more...` link is displayed and JavaScript click handler for it is attached (indicated by link color change from silver to blue)
+* [`ux-secondary-content-displayed`](../progressive_enhancement_phases.md#ux4-secondary-content--action) - `Page 2 > >` links is displayed and JavaScript click handler for it is attached (indicated by link color change from silver to blue)
 
-1. Navigate to your page that contains the UXCapture instrumentation.
+These steps can be used either in development or production environments:
 
-2. Open Chrome DevTools and select the **Performance Tab**. Click the **Reload** button so that Chrome Devtools begins profiling.
+1. Navigate to your page that contains the UXCapture instrumentation. Open Chrome DevTools Elements tab and delete `<head>` and `<body>` tags to keep the URL, but make the page empty. This will help show empty frames at the beginning of image capture in the next step.
 
-![Reload the page in profiler](testing-instrumentation/Reload.png)
+![Delete head and body tags](delete_head_and_body.png)
+
+2. Switch to **Performance Tab**. Click the **Reload** button so that Chrome Devtools begins profiling.
+
+![Reload the page in profiler](Reload.png)
 
 3. While the profiling is happening, you'll see a progress bar in DevTools and the page will reload/refresh itself. This step may take several seconds. See screenshot.
 
-![Profiling progress indicator](testing-instrumentation/Profiling.png)
+![Profiling progress indicator](Profiling.png)
 
 4. Once the profile is loaded, there are **three main sections** to focus on for UXCapture: **Frames**, **Timings** and **Main** (Thread). It's easier to collapse frames section (and rely on detail view) but expand Timings and Main Thread sections one at a time because they all occupy quite a lot of space and become hard to scroll between when all are expanded. See screenshot:
 
-![Profiler sections to pay attention to](testing-instrumentation/ChromeDevToolsPerfPanels.png)
+![Profiler sections to pay attention to](ChromeDevToolsPerfPanels.png)
 
 5. Expand the **User Timing** section to see all of the zones defined in the page reported as [Browser Performance Measures](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API#Performance_measures) - specifically `ux-destination-verified`, `ux-primary-content-displayed`, `ux-primary-action-available` and `ux-secondary-content-displayed`. If you didn't define one of the zones (e.g. there is no secondary content), then you will not see a corresponding measure for it in this section.
 
@@ -26,25 +34,27 @@ These steps can be used either in dev or prod:
 
 6. **Hover** over each of the measure labels to see the corresponding time at which that measure was recorded. See screenshot.
 
-![Hovering over the measure](testing-instrumentation/MeasureHover.png)
+![Hovering over the measure](MeasureHover.png)
 
-7. Collapse **Timings** section and expand **Main Thread** section. Press `Cmd+F` on Mac or `Ctrl+F` on Windows to search for each mark name. Marks are represented as **Timestamps** on the timeline and you will see the name of timestamp record found and a **total number of found entries displayed**, click on the arrows to switch between items or just press **Enter key** with will cycle between all the results.
+7. As of Chrome 87, [DevTools now show **performance marks** in the **Timings** section](https://developers.google.com/web/updates/2020/10/devtools#perf-mark) as vertical stripes, all in one line right above the measure bars, you can hover over individual marks to see their names.
 
-> Note that due to some bug in current version of Chrome DevTools, search results return twice the amount of entries and one every other entry is actually highlighted by **blue border** on the flame chart.
+> Note that `0` next to the name represents duration and can be ignored (e.g. momentary event).
 
 You can zoom in and out of the timeline using mouse scroll button to better see individual marks, just make sure to zoom back out when you search as search is scoped to the zoomed in area only.
 
-![Searching for marks](testing-instrumentation/marks_search.png)
+![Searching for marks](ZoomInAndHoverOverMarks.png)
 
-8. Find a frame that was displayed when mark was recorded and make sure that this is the correct moment when mark is supposed to fire, e.g. text you expected to see is actually displayed in **current frame OR the frame immediately following the current frame**. You can press Shift to show a vertical blue line across all sections to help pinpoint the frame that corresponds to the recorded mark.
+8. Find a frame that was displayed when mark was recorded and make sure that this is the correct moment when mark is supposed to fire, e.g. text you expected to see is actually displayed in **current frame OR the frame immediately following the current frame**.
+
+You can press Shift to show a vertical blue line across all sections to help pinpoint the frame that corresponds to the recorded mark.
+
+![Find corresponding frame using blue line](FindAFrameUsingBlueLine.png)
 
 > Keep in mind that marks that correspond to attaching event handlers will not have visual representation on the timeline. It is common however for them to correspond to React rehydration cycle which can be visible due to change in other elements.
 
 If you see significant discrepancies between marks timestamps and frames in which functionality you are trying to instrument is showing up, check if you picked the right instrumentation method (e.g. inline mark instead of interactive mark).
 
-![Mark highlight and blue line](testing-instrumentation/mark_highlight_and_blue_line.png)
-![Corresponding frame](testing-instrumentation/corresponding_frame.png)
-![previous frame](testing-instrumentation/previous_frame.png)
+You can use search functionality by pressing `Ctrl+F` to find a mark by name. They will additionally be found in **Main Thread** section to make it easy to connect to the rest of the document events and determine reasons for delays, for example.
 
 9. Don't forget that text display also depends on availability of the custom fonts used on the site. Good implementations rely on `font-display` CSS property to change the behavior of custom fonts so they progressively enhance fonts once they load and it can be hard to see when it happens in the screenshots and can be tempting to discard during testing. However it is still important to test if fonts are displayed to users properly and zones/plases are only considered complete when text is visible.
 
