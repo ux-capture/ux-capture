@@ -28,7 +28,11 @@ function Zone(props) {
 			this.props.onMark(markName);
 		};
 
-		const mark = ExpectedMark.create(markName, markListener);
+		const mark = ExpectedMark.create(
+			markName,
+			markListener,
+			this.props.recordTimestamps
+		);
 
 		const measureListener = completeMark => {
 			if (this.marks.every(({ mark }) => mark.marked)) {
