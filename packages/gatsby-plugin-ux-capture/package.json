@@ -38,6 +38,6 @@
     "gatsby-plugin"
   ],
   "dependencies": {
-    "@ux-capture/ux-capture": "^4.3.3"
+    "@ux-capture/ux-capture": "^4.4.0"
   }
 }

@@ -43,7 +43,7 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "@ux-capture/ux-capture": "^4.3.3"
+    "@ux-capture/ux-capture": "^4.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
