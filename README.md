@@ -21,12 +21,12 @@ Browser instrumentation approach and libraries that makes it easier to capture U
 
 ## Packages
 
--   [@meetup/ux-capture](./packages/ux-capture) - Core library
--   [@meetup/react-ux-capture](./packages/react-ux-capture) - React component wrappers around library API
--   [@meetup/react-ux-capture-example](./packages/react-ux-capture-example) - Demo of React bindings in a simple SPA
--   [@meetup/gatsby-ux-capture-example](./packages/gatsby-ux-capture-example) - Demo of React bindings in [GatsbyJS](https://www.gatsbyjs.org/) app
--   [@meetup/gatsby-plugin-ux-capture](./packages/gatsby-plugin-ux-capture) - [GatsbyJS](https://www.gatsbyjs.org/) plugin for UX Capture
--   [@meetup/nextjs-ux-capture-example](./packages/nextjs-ux-capture-example) - Demo of React bindings in [NextJS](https://nextjs.org/) app
+-   [@ux-capture/ux-capture](./packages/ux-capture) - Core library
+-   [@ux-capture/react-ux-capture](./packages/react-ux-capture) - React component wrappers around library API
+-   [@ux-capture/react-ux-capture-example](./packages/react-ux-capture-example) - Demo of React bindings in a simple SPA
+-   [@ux-capture/gatsby-ux-capture-example](./packages/gatsby-ux-capture-example) - Demo of React bindings in [GatsbyJS](https://www.gatsbyjs.org/) app
+-   [@ux-capture/gatsby-plugin-ux-capture](./packages/gatsby-plugin-ux-capture) - [GatsbyJS](https://www.gatsbyjs.org/) plugin for UX Capture
+-   [@ux-capture/nextjs-ux-capture-example](./packages/nextjs-ux-capture-example) - Demo of React bindings in [NextJS](https://nextjs.org/) app
 
 ### Publish workflow
 

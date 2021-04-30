@@ -1,10 +1,18 @@
 {
-  "name": "@meetup/gatsby-ux-capture-example",
+  "name": "@ux-capture/gatsby-ux-capture-example",
   "description": "Example of using UX Capture within Gatsby sites",
   "version": "0.1.5",
   "license": "MIT",
-  "author": "Meetup",
-  "repository": "git@github.com:meetup/ux-capture.git",
+  "contributors": [
+    {
+      "name": "Sergey Chernyshev",
+      "url": "https://www.sergeychernyshev.com/"
+    },
+    {
+      "name": "Meetup"
+    }
+  ],
+  "repository": "git@github.com:ux-capture/ux-capture.git",
   "publishConfig": {
     "access": "public"
   },
@@ -18,7 +26,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \""
   },
   "dependencies": {
-    "@meetup/react-ux-capture": "^1.3.4",
+    "@ux-capture/react-ux-capture": "^1.3.4",
     "gatsby": "^2.16.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"

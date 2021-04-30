@@ -5,7 +5,7 @@ import fs from "fs";
 export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
 	const headComponents = getHeadComponents();
 
-	const uxCaptureFilename = require.resolve("@meetup/ux-capture/lib/ux-capture.min.js");
+	const uxCaptureFilename = require.resolve("@ux-capture/ux-capture/lib/ux-capture.min.js");
 	const uxCaptureJS = fs.readFileSync(uxCaptureFilename, "utf8");
 
 	headComponents.push(

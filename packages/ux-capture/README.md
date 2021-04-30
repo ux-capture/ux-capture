@@ -17,7 +17,7 @@ The intent of this library is to help developers instrument technical events
 load, with each phase representing [distinct stages](#aggregating-experienceperception-phase-metrics)
 of user experience.
 
-React bindings for this library exists as a separate module [@meetup/react-ux-capture](../react-ux-capture/)
+React bindings for this library exists as a separate module [@ux-capture/react-ux-capture](../react-ux-capture/)
 
 ## Usage
 

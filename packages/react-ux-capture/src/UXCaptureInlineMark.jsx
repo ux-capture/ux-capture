@@ -8,7 +8,7 @@ type Props = {
 
 // inject inline UXCapture.mark() call into rendered markup, in addition to
 // UXCaptureInteractiveMark behavior
-// @see https://github.com/meetup/ux-capture#text-without-custom-font
+// @see https://github.com/ux-capture/ux-capture#text-without-custom-font
 const UXCaptureInlineMark = ({ mark }: Props) => (
 	<UXCaptureInteractiveMark mark={mark}>
 		<div

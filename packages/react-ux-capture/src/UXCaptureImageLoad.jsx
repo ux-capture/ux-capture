@@ -57,7 +57,7 @@ export const getCSSStringFromStyleObject = (style: Object): string => {
  * Creates an image tag with provide props
  * and a UXCapture `onLoad` handler
  *
- * @see example https://github.com/meetup/ux-capture#image-elements
+ * @see example https://github.com/ux-capture/ux-capture#image-elements
  */
 const UXCaptureImageLoad = (props: Props) => {
 	const { mark, src, style, ...other } = props;

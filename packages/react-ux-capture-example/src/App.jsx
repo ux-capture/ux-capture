@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import UXCapture from '@meetup/ux-capture/src/UXCapture';
-import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+import UXCapture from '@ux-capture/ux-capture/src/UXCapture';
+import UXCaptureInlineMark from '@ux-capture/react-ux-capture/lib/UXCaptureInlineMark';
 
 import Logo from './Logo';
 

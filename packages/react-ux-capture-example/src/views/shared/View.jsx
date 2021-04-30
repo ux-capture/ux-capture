@@ -1,5 +1,5 @@
 import React from 'react';
-import UXCaptureStartView from '@meetup/react-ux-capture/lib/UXCaptureStartView';
+import UXCaptureStartView from '@ux-capture/react-ux-capture/lib/UXCaptureStartView';
 
 export default props => {
 	const {

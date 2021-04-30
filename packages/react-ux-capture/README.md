@@ -114,7 +114,7 @@ Before using UXCaptureFont component, make sure the page also includes `fontLoad
 It is most likely that you will include this code in global app container component as your fonts are loaded globally using CSS. Then just add the marks to zones next to the marks for individual text nodes, make sure to check which specific variation of the font is used by particular text element. See [font variation description docs](https://github.com/typekit/fvd) for details about variation notation used in fontFamily props below, e.g. after colon in "Fancy Font:**n4**".
 
 ```jsx
-import UXCaptureFont, { fontLoaderInlineCode } from '@meetup/react-ux-capture/UXCaptureFont';
+import UXCaptureFont, { fontLoaderInlineCode } from '@ux-capture/react-ux-capture/UXCaptureFont';
 ...
 
 render() {

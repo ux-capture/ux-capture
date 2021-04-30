@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Head from 'next/head';
 import getConfig from 'next/config';
 
-import UXCaptureCreate from '@meetup/react-ux-capture/lib/UXCaptureCreate';
-import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
+import UXCaptureCreate from '@ux-capture/react-ux-capture/lib/UXCaptureCreate';
+import UXCaptureInlineMark from '@ux-capture/react-ux-capture/lib/UXCaptureInlineMark';
 
 import Logo from '../components/Logo';
 

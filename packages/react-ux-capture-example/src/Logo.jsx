@@ -1,5 +1,5 @@
 import React from 'react';
-import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
+import UXCaptureImageLoad from '@ux-capture/react-ux-capture/lib/UXCaptureImageLoad';
 
 import logo from './ux-capture-logo-up.svg';
 

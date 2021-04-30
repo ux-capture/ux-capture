@@ -1,5 +1,5 @@
 {
-  "name": "@meetup/ux-capture",
+  "name": "@ux-capture/ux-capture",
   "version": "4.3.5",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
   "main": "lib/ux-capture.min.js",
@@ -9,7 +9,7 @@
   "engineStrict": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meetup/ux-capture.git"
+    "url": "git+https://github.com/ux-capture/ux-capture.git"
   },
   "keywords": [
     "webperf",
@@ -30,12 +30,28 @@
     "test": "jest --config jest.config.js",
     "watch": "webpack --watch"
   },
-  "author": "Meetup",
+  "contributors": [
+    {
+      "name": "Sergey Chernyshev",
+      "url": "https://www.sergeychernyshev.com/"
+    },
+    {
+      "name": "Sadaf Shahsahebi",
+      "url": "https://sadafie.me/"
+    },
+    {
+      "name": "Mike McGahan",
+      "url": "https://github.com/mmcgahan"
+    },
+    {
+      "name": "Meetup"
+    }
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/meetup/ux-capture/issues"
+    "url": "https://github.com/ux-capture/ux-capture/issues"
   },
-  "homepage": "https://github.com/meetup/ux-capture#readme",
+  "homepage": "https://github.com/ux-capture/ux-capture#readme",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",

@@ -5,7 +5,7 @@ import Zone from './Zone';
  * page view or interactive view.
  *
  * Refer to ux-capture README glossary for view definitions.
- * @see: https://github.com/meetup/ux-capture#glossary
+ * @see: https://github.com/ux-capture/ux-capture#glossary
  */
 function View(props) {
 	this.props = props;

@@ -3,8 +3,32 @@
   "version": "0.0.2",
   "description": "Browser instrumentation helper that makes it easier to capture UX speed metrics",
   "main": "index.js",
-  "repository": "git@github.com:meetup/ux-capture.git",
-  "author": "Meetup",
+  "repository": "git@github.com:ux-capture/ux-capture.git",
+  "contributors": [
+    {
+      "name": "Sergey Chernyshev",
+      "url": "https://www.sergeychernyshev.com/"
+    },
+    {
+      "name": "Mike McGahan",
+      "url": "https://github.com/mmcgahan"
+    },
+    {
+      "name": "Sadaf Shahsahebi",
+      "url": "https://sadafie.me/"
+    },
+    {
+      "name": "Najati Imam",
+      "url": "https://github.com/wejati"
+    },
+    {
+      "name": "Chris Lewis",
+      "url": "https://github.com/chrislewis"
+    },
+    {
+      "name": "Meetup"
+    }
+  ],
   "license": "MIT",
   "private": true,
   "scripts": {

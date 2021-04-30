@@ -1,7 +1,7 @@
 const getUXCaptureInlineCode = () => {
 	const fs = require('fs');
 	const uxCaptureFilename = require.resolve(
-		'@meetup/ux-capture/lib/ux-capture.min.js'
+		'@ux-capture/ux-capture/lib/ux-capture.min.js'
 	);
 	return fs.readFileSync(uxCaptureFilename, 'utf8');
 };

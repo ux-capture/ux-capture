@@ -1,10 +1,18 @@
 {
-  "name": "@meetup/nextjs-ux-capture-example",
+  "name": "@ux-capture/nextjs-ux-capture-example",
   "description": "Example of using UX Capture within NextJS sites",
   "version": "0.1.2",
-  "author": "Meetup",
+  "contributors": [
+    {
+      "name": "Sergey Chernyshev",
+      "url": "https://www.sergeychernyshev.com/"
+    },
+    {
+      "name": "Meetup"
+    }
+  ],
   "license": "MIT",
-  "repository": "git@github.com:meetup/ux-capture.git",
+  "repository": "git@github.com:ux-capture/ux-capture.git",
   "publishConfig": {
     "access": "public"
   },
@@ -14,7 +22,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@meetup/react-ux-capture": "^1.3.4",
+    "@ux-capture/react-ux-capture": "^1.3.4",
     "next": "9.1.1",
     "react": "16.11.0",
     "react-dom": "16.11.0"

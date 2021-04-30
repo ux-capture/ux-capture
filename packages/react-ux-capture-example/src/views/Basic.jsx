@@ -1,8 +1,8 @@
 import React from 'react';
 
-import UXCaptureImageLoad from '@meetup/react-ux-capture/lib/UXCaptureImageLoad';
-import UXCaptureInlineMark from '@meetup/react-ux-capture/lib/UXCaptureInlineMark';
-import UXCaptureInteractiveMark from '@meetup/react-ux-capture/lib/UXCaptureInteractiveMark';
+import UXCaptureImageLoad from '@ux-capture/react-ux-capture/lib/UXCaptureImageLoad';
+import UXCaptureInlineMark from '@ux-capture/react-ux-capture/lib/UXCaptureInlineMark';
+import UXCaptureInteractiveMark from '@ux-capture/react-ux-capture/lib/UXCaptureInteractiveMark';
 
 import View from './shared/View';
 import Lazy from './shared/Lazy';

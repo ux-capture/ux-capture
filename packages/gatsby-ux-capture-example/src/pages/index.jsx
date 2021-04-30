@@ -1,10 +1,10 @@
 import React from "react";
 
-import UXCaptureStartView from "@meetup/react-ux-capture/lib/UXCaptureStartView";
+import UXCaptureStartView from "@ux-capture/react-ux-capture/lib/UXCaptureStartView";
 
-import UXCaptureImageLoad from "@meetup/react-ux-capture/lib/UXCaptureImageLoad";
-import UXCaptureInlineMark from "@meetup/react-ux-capture/lib/UXCaptureInlineMark";
-import UXCaptureInteractiveMark from "@meetup/react-ux-capture/lib/UXCaptureInteractiveMark";
+import UXCaptureImageLoad from "@ux-capture/react-ux-capture/lib/UXCaptureImageLoad";
+import UXCaptureInlineMark from "@ux-capture/react-ux-capture/lib/UXCaptureInlineMark";
+import UXCaptureInteractiveMark from "@ux-capture/react-ux-capture/lib/UXCaptureInteractiveMark";
 
 import Lazy from "../components/Lazy";
 import { getBoxStyle } from "../components/reports/ZoneHelper";
