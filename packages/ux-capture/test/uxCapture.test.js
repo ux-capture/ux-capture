@@ -15,6 +15,9 @@ window.performance.timing = {
 window.requestAnimationFrame = jest.fn(cb => cb());
 window.setTimeout = jest.fn(cb => cb());
 
+// define console.timeStamp for testing only
+console.timeStamp = jest.fn();
+
 const MOCK_MEASURE_1 = 'ux-mock-measure_1';
 const MOCK_MARK_1_1 = 'ux-mock-mark_1_1';
 const MOCK_MARK_1_2 = 'ux-mock-mark_1_2';
@@ -46,6 +49,7 @@ describe('UXCapture', () => {
 	beforeEach(() => {
 		onMark.mockClear();
 		onMeasure.mockClear();
+		console.timeStamp.mockClear();
 		UXCapture.create({ onMark, onMeasure });
 		window.performance.clearMarks();
 		window.performance.clearMeasures();
@@ -216,13 +220,10 @@ describe('UXCapture', () => {
 			).toBeTruthy();
 		});
 
-		it("should fire a console.timeStamp if it's available", () => {
-			// define console.timeStamp for testing only
-			console.timeStamp = jest.fn();
-
+		it("should not fire a console.timeStamp if it's not enabled (default)", () => {
 			UXCapture.mark(MOCK_MARK_1_1);
 
-			expect(console.timeStamp).toHaveBeenCalledWith(MOCK_MARK_1_1);
+			expect(console.timeStamp).not.toHaveBeenCalledWith(MOCK_MARK_1_1);
 		});
 
 		it('should call a custom mark callback when provided', () => {
@@ -277,6 +278,40 @@ describe('UXCapture', () => {
 			UXCapture.mark(MOCK_MARK_MULTIPLE);
 
 			expect(onMark).toHaveBeenCalledTimes(3);
+		});
+	});
+
+	describe('mark with console.timeline() enabled', () => {
+		beforeEach(() => {
+			UXCapture.destroy();
+		});
+
+		it("should fire a console.timeStamp if it's enabled and available", () => {
+			UXCapture.create({ recordTimestamps: true });
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1],
+				},
+			]);
+
+			UXCapture.mark(MOCK_MARK_1_1);
+
+			expect(console.timeStamp).toHaveBeenCalledWith(MOCK_MARK_1_1);
+		});
+
+		it("should not fire a console.timeStamp if it's explicitly disabled", () => {
+			UXCapture.create({ recordTimestamps: false });
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1],
+				},
+			]);
+
+			UXCapture.mark(MOCK_MARK_1_1);
+
+			expect(console.timeStamp).not.toHaveBeenCalledWith(MOCK_MARK_1_1);
 		});
 	});
 

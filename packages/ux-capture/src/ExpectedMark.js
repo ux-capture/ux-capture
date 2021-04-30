@@ -20,10 +20,10 @@ function ExpectedMark(props) {
  *
  * @param {string} name
  */
-ExpectedMark.create = function(name, listener) {
+ExpectedMark.create = function(name, listener, recordTimestamps) {
 	// create new mark only if one does not exist
 	if (!_expectedMarks[name]) {
-		var mark = new ExpectedMark({ name });
+		var mark = new ExpectedMark({ name, recordTimestamps });
 		if (listener) {
 			mark.addOnMarkListener(listener);
 		}
@@ -33,8 +33,8 @@ ExpectedMark.create = function(name, listener) {
 	return _expectedMarks[name];
 };
 
-ExpectedMark.record = function(name, waitForNextPaint = true) {
-	const mark = ExpectedMark.create(name);
+ExpectedMark.record = function(name, waitForNextPaint = true, recordTimestamps) {
+	const mark = ExpectedMark.create(name, null, recordTimestamps);
 	if (waitForNextPaint) {
 		// in many cases, we intend to record a mark when an element paints, not
 		// at the moment the mark.record() call is made in in JS
@@ -71,8 +71,11 @@ ExpectedMark.prototype._mark = function() {
 	 * These timestamps are counted from timeline recording start
 	 * while UserTiming marks are counted from navigationStart event.
 	 * In perf visualizations, they all will be offset by the same amount of time
+	 *
+	 * This is optional now that Chrome 87 supports mark visualization
 	 */
 	if (
+		this.props.recordTimestamps &&
 		typeof window.console !== 'undefined' &&
 		typeof window.console.timeStamp !== 'undefined'
 	) {

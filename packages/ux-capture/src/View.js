@@ -35,6 +35,7 @@ View.prototype.createZone = function(zoneConfig) {
 				onMark: this.props.onMark,
 				onMeasure: this.props.onMeasure,
 				startMarkName: this.props.startMarkName,
+				recordTimestamps: this.props.recordTimestamps,
 			},
 			zoneConfig
 		)

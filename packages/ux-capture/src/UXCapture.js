@@ -21,6 +21,7 @@ let _onMark = NOOP;
 let _onMeasure = NOOP;
 let _view;
 let _startMarkName = NAVIGATION_START_MARK_NAME;
+let _recordTimestamps = false;
 
 const UXCapture = {
 	/**
@@ -46,6 +47,7 @@ const UXCapture = {
 		_onMark = config.onMark || NOOP;
 		_onMeasure = config.onMeasure || NOOP;
 		_startMarkName = NAVIGATION_START_MARK_NAME;
+		_recordTimestamps = config.recordTimestamps || false;
 	},
 
 	/**
@@ -78,6 +80,7 @@ const UXCapture = {
 			onMark: _onMark,
 			onMeasure: _onMeasure,
 			startMarkName: _startMarkName,
+			recordTimestamps: _recordTimestamps,
 			zoneConfigs,
 		});
 	},
