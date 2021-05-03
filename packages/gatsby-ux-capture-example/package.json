@@ -1,7 +1,7 @@
 {
   "name": "@ux-capture/gatsby-ux-capture-example",
   "description": "Example of using UX Capture within Gatsby sites",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "license": "MIT",
   "contributors": [
     {
