@@ -1,7 +1,8 @@
 name: Publish UX Capture NPM modules
-on: [push]
-branches:
-  - github-actions-npm-publish
+on:
+  push:
+    branches:
+      - github-actions-npm-publish
 jobs:
   Publish-NPM-modules:
     runs-on: ubuntu-latest
