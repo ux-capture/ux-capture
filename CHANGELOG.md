@@ -7,6 +7,7 @@
 -   **New feature** `UXCapture.destroy()` to clean up existing UXCapture data
 -   Implementation update: mostly ES5 implementation to minimize overhead in
     transpiled bundle size
+-   Updated testing docs
 
 ## [3.0.0] (November 7, 2018)
 
