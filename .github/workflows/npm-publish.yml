@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - github-actions-npm-publish
+env:
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 jobs:
   Publish-NPM-modules:
     runs-on: ubuntu-latest
@@ -28,5 +30,3 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       # - name: Run lerna to publish NPM packages
       #   run: yarn deploy
-      #   env:
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
