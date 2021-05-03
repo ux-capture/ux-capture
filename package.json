@@ -34,7 +34,7 @@
   "scripts": {
     "build": "lerna run build",
     "make-version": "lerna version",
-    "deploy": "lerna publish from-package --yes",
+    "deploy": "lerna publish from-package --yes --no-verify-access",
     "test": "lerna run test"
   },
   "workspaces": {
