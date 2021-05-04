@@ -2,7 +2,7 @@ name: Publish UX Capture NPM modules
 on:
   push:
     branches:
-      - yarn-cache-test
+      - main
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 jobs:
@@ -22,7 +22,7 @@ jobs:
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Get yarn cache
+      - name: Yarn cache
         uses: actions/cache@v1
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
