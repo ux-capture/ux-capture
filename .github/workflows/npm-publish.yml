@@ -23,5 +23,7 @@ jobs:
         run: yarn install
       - name: Run tests
         run: yarn test
+      - name: Setup NPM publishing token in user-level ~/.npmrc file
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - name: Run lerna to publish NPM packages
         run: yarn deploy
