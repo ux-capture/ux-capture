@@ -1,7 +1,7 @@
 {
   "name": "@ux-capture/nextjs-ux-capture-example",
   "description": "Example of using UX Capture within NextJS sites",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "contributors": [
     {
       "name": "Sergey Chernyshev",
