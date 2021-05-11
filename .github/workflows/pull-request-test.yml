@@ -1,7 +1,4 @@
 name: Run tests on pull request
-branding:
-  icon: 'check-circle'
-  color: 'orange'
 on: pull_request
 jobs:
   Run-tests:
