@@ -1,7 +1,7 @@
-name: Publish UX Capture NPM modules
+name: Run tests on pull request
 on: pull_request
 jobs:
-  Publish-NPM-modules:
+  Run-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
