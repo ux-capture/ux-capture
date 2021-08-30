@@ -112,6 +112,65 @@ describe('UXCapture', () => {
 		});
 	});
 
+	describe('getViewConfig', () => {
+		it('Should return null if there is no config yet', () => {
+			expect(UXCapture.getViewConfig()).toEqual(null);
+		});
+
+		it('Should return null after startTransition() but before startView()', () => {
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [],
+				},
+			]);
+
+			UXCapture.startTransition();
+
+			expect(UXCapture.getViewConfig()).toEqual(null);
+		});
+
+		it('Should return configuration object as it was passed in', () => {
+			const zoneConfigs = [
+				{
+					name: MOCK_MEASURE_1,
+					marks: [],
+				},
+			];
+
+			UXCapture.startView(zoneConfigs);
+
+			expect(UXCapture.getViewConfig()).toEqual(zoneConfigs);
+		});
+
+		it("should return updated configuration when zone config is updated", () => {
+			UXCapture.startView([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [],
+				},
+			]);
+
+			UXCapture.updateView([
+				{
+					name: MOCK_MEASURE_2,
+					marks: [],
+				},
+			]);
+
+			expect(UXCapture.getViewConfig()).toEqual([
+				{
+					name: MOCK_MEASURE_1,
+					marks: [],
+				},
+				{
+					name: MOCK_MEASURE_2,
+					marks: [],
+				},
+			])
+		})
+	});
+
 	describe('create', () => {
 		it('Should throw an error if non-object is passed', () => {
 			expect(() => {

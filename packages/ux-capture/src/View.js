@@ -15,6 +15,9 @@ function View(props) {
 // TODO: determine if we need to support appending new marks
 // to exisiting zones or new zones or both
 View.prototype.update = function (zoneConfigs) {
+	// Append configuration, same way we append the zones themselves
+	this.props.zoneConfigs.push.apply(this.props.zoneConfigs, zoneConfigs);
+
 	// Append new zones to existing config
 	this.expectedZones.push.apply(this.expectedZones, this.setZones(zoneConfigs));
 };
