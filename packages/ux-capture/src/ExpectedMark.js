@@ -20,7 +20,7 @@ function ExpectedMark(props) {
  *
  * @param {string} name
  */
-ExpectedMark.create = function(name, listener, recordTimestamps) {
+ExpectedMark.create = function (name, listener, recordTimestamps) {
 	// create new mark only if one does not exist
 	if (!_expectedMarks[name]) {
 		var mark = new ExpectedMark({ name, recordTimestamps });
@@ -33,7 +33,7 @@ ExpectedMark.create = function(name, listener, recordTimestamps) {
 	return _expectedMarks[name];
 };
 
-ExpectedMark.record = function(name, waitForNextPaint = true, recordTimestamps) {
+ExpectedMark.record = function (name, waitForNextPaint = true, recordTimestamps) {
 	const mark = ExpectedMark.create(name, null, recordTimestamps);
 	if (waitForNextPaint) {
 		// in many cases, we intend to record a mark when an element paints, not
@@ -45,7 +45,7 @@ ExpectedMark.record = function(name, waitForNextPaint = true, recordTimestamps) 
 	mark._mark();
 };
 
-ExpectedMark.destroy = function(name) {
+ExpectedMark.destroy = function (name) {
 	if (typeof window.performance !== 'undefined') {
 		window.performance.clearMarks(name);
 	}
@@ -56,7 +56,7 @@ ExpectedMark.destroy = function(name) {
 	_expectedMarks = {};
 };
 
-ExpectedMark.prototype._mark = function() {
+ExpectedMark.prototype._mark = function () {
 	if (
 		typeof window.performance !== 'undefined' &&
 		typeof window.performance.mark !== 'undefined'
@@ -88,7 +88,7 @@ ExpectedMark.prototype._mark = function() {
 };
 
 // registers mark callback
-ExpectedMark.prototype.addOnMarkListener = function(listener) {
+ExpectedMark.prototype.addOnMarkListener = function (listener) {
 	if (this.marked) {
 		// call immediately if already marked - still need to keep track in `onMarkListeners`
 		// for correct cleanup in `removeOnMarkListener`
@@ -98,7 +98,7 @@ ExpectedMark.prototype.addOnMarkListener = function(listener) {
 };
 
 // unregisters mark callback
-ExpectedMark.prototype.removeOnMarkListener = function(listenerToRemove) {
+ExpectedMark.prototype.removeOnMarkListener = function (listenerToRemove) {
 	this.onMarkListeners = this.onMarkListeners.filter(
 		listener => listener !== listenerToRemove
 	);

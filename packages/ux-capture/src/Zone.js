@@ -52,7 +52,7 @@ function Zone(props) {
  *
  * @param {ExpectedMark} lastMark last mark that triggered completion
  */
-Zone.prototype.measure = function(triggerName) {
+Zone.prototype.measure = function (triggerName) {
 	if (this.measured) {
 		// only need to respond to first call of zone.measure - subsequent calls allowed but ignored
 		return;
@@ -90,7 +90,7 @@ Zone.prototype.measure = function(triggerName) {
 	onMeasure(name);
 };
 
-Zone.prototype.destroy = function() {
+Zone.prototype.destroy = function () {
 	if (
 		typeof window.performance !== 'undefined' &&
 		typeof window.performance.measure !== 'undefined'

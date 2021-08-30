@@ -2,11 +2,11 @@
 
 import UXCapture from './UXCapture';
 
-(function() {
+(function () {
 	// Export initializer function for UX Capture to the appropriate location.
 	if (typeof define === 'function' && define.amd) {
 		// AMD / RequireJS
-		define([], function() {
+		define([], function () {
 			return UXCapture;
 		});
 	} else if (
