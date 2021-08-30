@@ -42,4 +42,8 @@ View.prototype.createZone = function (zoneConfig) {
 	);
 };
 
+View.prototype.getZoneConfigs = function () {
+	return this.props.zoneConfigs;
+};
+
 export default View;
