@@ -143,6 +143,31 @@ describe('UXCapture', () => {
 			expect(UXCapture.getViewConfig()).toEqual(zoneConfigs);
 		});
 
+		it('Should return new view config after startTransition() and subsequent startView()', () => {
+			const firstViewConfig = [
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_1],
+				},
+			];
+
+			const secondViewConfig = [
+				{
+					name: MOCK_MEASURE_1,
+					marks: [MOCK_MARK_1_2],
+				},
+			];
+
+
+			UXCapture.startView(firstViewConfig);
+			expect(UXCapture.getViewConfig()).toEqual(firstViewConfig);
+
+			UXCapture.startTransition();
+
+			UXCapture.startView(secondViewConfig);
+			expect(UXCapture.getViewConfig()).toEqual(secondViewConfig);
+		});
+
 		it("should return updated configuration when zone config is updated", () => {
 			UXCapture.startView([
 				{
