@@ -28,6 +28,7 @@ export interface UXCapture {
  static clearMarks: (name?) => void,
  static startTransition: () => void,
  static startView: (Array<ZoneConfig>) => void,
+ static getViewConfig: () => Array<ZoneConfig>,
  static updateView: (Array<ZoneConfig>) => void, // lazily-defined marks
  static mark: (name: string, waitForNextPaint?: boolean) => void
 }
@@ -106,6 +107,11 @@ Creates new `View` and stores a reference to the instance
 Merge new `zoneConfig`s with existing view’s `zoneConfig`s
 - a new `Zone` will be created for any name that has not already been defined
 - The `ExpectedMark`s will be merged with any existing `Zone` with the same name
+
+### `UXCapture.getViewConfig`
+Returns current view's configuration as it was passed to `startView()` or updated later using `updateView()`.
+
+This is useful for debugging your instrumentation in browser console or for additional tools like [`progressive-enhancement-designer`](https://github.com/ux-capture/progressive-enhancement-designer) to consume as input.
 
 ## Public API Requirements
 1. Define views before transition happens to assure minimal lookup time for this information, e.g. without any network requests to load the code required for the view
