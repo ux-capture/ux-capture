@@ -1,16 +1,36 @@
 import ExpectedMark from './ExpectedMark';
 
+import { INTERACTIVE_TRANSITION_START_MARK_NAME } from './UXCapture';
+
 /**
  * A `Zone` is a collection of DOM elements on a page that correspond
  * to a given phase of page load. (e.g. all elements in `ux-destination-verfied`)
  *
  * Example props:
  *
+ * // New, selector configuration syntax:
  * {
- *  name: "ux-destination-verified",
- *  marks: ["ux-image-online-logo", "ux-image-inline-logo"]
- *  onMeasure: measureName => {},
- *  onMark: markName => {}
+ *   name: "ux-destination-verified",
+ *   elements: [
+ *     {
+ *       label: "Global nav with the logo",
+ *       selector: `#logo`,
+ *       marks: [
+ *         'ux-image-logo-inline',
+ *         'ux-image-logo-onload'
+ *       ]
+ *     }
+ *   ],
+ *   onMeasure: measureName => {},
+ *   onMark: markName => {}
+ * }
+ *
+ * // Legacy (just mark strings)
+ * {
+ *   name: "ux-destination-verified",
+ *   marks: ["ux-image-inline-logo", "ux-image-onload-logo"]
+ *   onMeasure: measureName => {},
+ *   onMark: markName => {}
  * }
  */
 function Zone(props) {
@@ -19,7 +39,36 @@ function Zone(props) {
 	this.measureName = this.props.name;
 
 	// Create a new `ExpectedMark` for each mark
-	this.marks = this.props.marks.map(markName => {
+	const configuredMarkNames = this.props.elements
+		? // new elements array on zone object
+		this.props.elements.map(element => element.marks).flat()
+		: // legacy with direct marks array on zone object
+		this.props.marks;
+
+	// mark names for elements already on the page after interactive transition
+	let elementsAlreadyOnThePage = [];
+
+	if (this.props.startMarkName === INTERACTIVE_TRANSITION_START_MARK_NAME &&
+		this.props.elements &&
+		Array.isArray(this.props.elements)
+	) {
+		elementsAlreadyOnThePage = this.props.elements.filter(element => {
+			const nodes = this.selectDOMNodes(element);
+
+			// if array or element list is returned, check if it has one or more entries
+			return (nodes && (typeof nodes.length === 'undefined' || nodes.length > 0));
+		})
+	}
+
+	// do not create marks for elements that are already on the page
+	const markNamesToExpect = configuredMarkNames.filter(
+		configured => !elementsAlreadyOnThePage.find(
+			existingElement => existingElement.marks.find(existing => existing === configured)
+		)
+	);
+
+	// Create a new `ExpectedMark` for each mark
+	this.marks = markNamesToExpect.map(markName => {
 		// 'state' of the measure that indicates whether it has been recorded
 		this.measured = false;
 
@@ -45,6 +94,35 @@ function Zone(props) {
 	this.marks.forEach(({ mark, measureListener }) => {
 		mark.addOnMarkListener(measureListener);
 	});
+
+	// if expected some marks, but all are already on the page,
+	// create zero-length measure
+	if (configuredMarkNames.length > 0 && markNamesToExpect.length === 0) {
+		this.measure(this.props.startMarkName);
+	}
+}
+
+/**
+ * Returns DOM nodes collection / array or individual DOM Node based on selector configuration
+ *
+ * @param {Object} element - individual element configuration object
+ * @returns {Node|Node[]|null}
+ */
+Zone.prototype.selectDOMNodes = function (element) {
+	// if elements have selectors defined or global element selector is configured,
+	// use them to find marks to record
+	if (element.selector) {
+		if (typeof element.selector === 'function') {
+			return element.selector();
+		} else {
+			// if not a function, treat it as CSS selector argument
+			return document.querySelectorAll(element.selector);
+		}
+	} else if (this.props.selector) {
+		return this.props.selector(element);
+	} else {
+		return null;
+	}
 }
 
 /**
