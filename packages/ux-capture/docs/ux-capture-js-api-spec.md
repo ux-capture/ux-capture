@@ -139,39 +139,3 @@ A collection of `ExpectedMarks` that fires `onMeasure` when every corresponding 
 A class that ensures each unique mark name corresponds to a single call to the `window.performance.mark` when `UXCapture.mark` is called.
 
 Also provides interface for clearing/destroying marks.
-
-### General design pattern
-Each class constructor takes a configuration object as an argument, similar to React component classes. This object is assigned to the instance’s
-`this.props` property. This ‘standard’ behavior is provided by a `UXBase` class and allows most/all classes to avoid explicitly defining a constructor
-at all – instead, class properties can assign values based on `this.props`.
-
-Example implementation:
-```javascript
-class UXBase {
- constructor(props) {
- this.props = props;
- }
-}
-
-class ExpectedMark extends UXBase {
- // this.name not needed - use `this.props.name`
- // no constructor
-}
-
-class View extends UXBase {
- this.expectedZones = this.props.zoneConfigs.map(...);
- // no constructor
-}
-
-class Zone extends UXBase {
- marks = this.props.marks.map(...);
- // measureName not needed - use this.props.name
- // onMeasure not needed - use this.props.onMeasure
- // onMark not needed - use this.props.onMark
- // startMarkName not needed (default to 'navigationStart')
- // no constructor
-}
-```
-
-The `UXBase` class both reduces boilerplate and enforces structural consistency. Since it also matches React's constructor behavior it would also
-feel familiar anyone with React experience.
