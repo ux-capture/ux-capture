@@ -57,7 +57,7 @@ function Zone(props) {
 
 			// if array or element list is returned, check if it has one or more entries
 			return (nodes && (typeof nodes.length === 'undefined' || nodes.length > 0));
-		})
+		});
 	}
 
 	// do not create marks for elements that are already on the page
@@ -123,7 +123,7 @@ Zone.prototype.selectDOMNodes = function (element) {
 	} else {
 		return null;
 	}
-}
+};
 
 /**
  * Records measure on Performance Timeline and calls onMeasure callback
