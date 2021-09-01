@@ -493,17 +493,8 @@ describe('UXCapture', () => {
 		it("should consider existing element if selector returns it", () => {
 			const config = [
 				{
-					label: 'Does not use selectors, just mark',
-					name: MOCK_MEASURE_1,
-					elements: [
-						{
-							marks: [MOCK_MARK_1_2],
-						}
-					]
-				},
-				{
 					label: 'Requires both selector and a mark to work',
-					name: MOCK_MEASURE_2,
+					name: MOCK_MEASURE_1,
 					elements: [
 						{
 							label: "Component 1",
@@ -515,17 +506,7 @@ describe('UXCapture', () => {
 							marks: [MOCK_MARK_1_2],
 						}
 					]
-				},
-				{
-					label: 'Selector alone should be enough',
-					name: MOCK_MEASURE_3,
-					elements: [
-						{
-							selector: ".component1",
-							marks: [MOCK_MARK_1_1],
-						}
-					]
-				},
+				}
 			];
 
 			// first view
@@ -547,18 +528,112 @@ describe('UXCapture', () => {
 					.getEntriesByType('measure')
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
+		});
+
+		it("should satisfy the zone if all elements are already on the page", () => {
+			const config = [
+				{
+					label: 'Selector alone should be enough',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							selector: ".component1",
+							marks: [MOCK_MARK_1_1],
+						}
+					]
+				},
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
 
 			expect(
 				window.performance
 					.getEntriesByType('measure')
-					.find(measure => measure.name === MOCK_MEASURE_2)
+					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
+		});
+
+		it("should work with selector functions", () => {
+			const config = [
+				{
+					label: 'Selector alone should be enough',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							selector: function () { return document.getElementsByTagName("p"); },
+							marks: [MOCK_MARK_1_1],
+						}
+					]
+				},
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
 
 			expect(
 				window.performance
 					.getEntriesByType('measure')
-					.find(measure => measure.name === MOCK_MEASURE_3)
+					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
-		})
-	})
+		});
+
+		it("should work with zone-level selector function", () => {
+			const config = [
+				{
+					label: 'Selector alone should be enough',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							marks: [MOCK_MARK_1_1],
+						},
+						{
+							marks: [MOCK_MARK_1_2],
+						}
+					],
+					selector: function (element) {
+						return document.querySelectorAll("." + element.marks[0]);
+					}
+				},
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="' + MOCK_MARK_1_1 + '">Hello, World!</p>' +
+				'<div class="' + MOCK_MARK_1_2 + '">Hello again!</div>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			expect(
+				document.querySelectorAll('.' + MOCK_MARK_1_1).length
+			).toBe(1);
+
+			expect(
+				document.querySelectorAll('.' + MOCK_MARK_1_2).length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
+	});
 });
