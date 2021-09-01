@@ -1,6 +1,6 @@
 {
   "name": "@ux-capture/react-ux-capture",
-  "version": "1.3.7",
+  "version": "1.4.0",
   "description": "React bindings for the ux-capture UX speed library",
   "main": "index.js",
   "repository": "git@github.com:ux-capture/ux-capture.git",
