@@ -68,12 +68,12 @@ Initialize UXCapture using `UXCapture.create()`, optionally with mark and
 measure event handlers, e.g.
 
 ```jsx
-    <script>
-        UXCapture.create({
-            onMark: name => console.log('marked', name),
-            onMeasure: name => console.log('measured', name),
-        });
-    </script>
+<script>
+UXCapture.create({
+    onMark: name => console.log('marked', name),
+    onMeasure: name => console.log('measured', name),
+});
+</script>
 ```
 
 Custom event handlers are useful in cases where the monitoring solution you use
@@ -92,30 +92,30 @@ marks with `UXCapture.startView()`, e.g.
 
 ```jsx
 <script>
-    UXCapture.startView([
-        {
-            name: 'ux-destination-verified',
-            elements: [
-                {
-                    selector: "#logo",
-                    marks: ['ux-1', 'ux-2']
-                },
-            ]
-        }, {
-            name: 'ux-primary-content-available',
-            elements: [
-                {
-                    selector: "#intro",
-                    marks: ['ux-3']
-                },
-                {
-                    selector: "a.moreinfo",
-                    marks: ['ux-4']
-                },
-            ]
-        }
-        ...
-    ]);
+UXCapture.startView([
+    {
+        name: 'ux-destination-verified',
+        elements: [
+            {
+                selector: "#logo",
+                marks: ['ux-1', 'ux-2']
+            },
+        ]
+    }, {
+        name: 'ux-primary-content-available',
+        elements: [
+            {
+                selector: "#intro",
+                marks: ['ux-3']
+            },
+            {
+                selector: "a.moreinfo",
+                marks: ['ux-4']
+            },
+        ]
+    }
+    ...
+]);
 </script>
 ```
 
