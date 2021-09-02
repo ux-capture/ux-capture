@@ -3,14 +3,24 @@
 Browser instrumentation JavaScript library that makes it easier to capture UX performance
 metrics using [UX Capture](../../README.md) approach
 
-- [Usage](#usage)
-- [Sample page](#sample-page)
-- [Instrumentation](#instrumentation)
-  - [Image elements](#image-elements)
-  - [Text without custom font](#text-without-custom-font)
-  - [Text with custom font](#text-with-custom-font)
-  - [Event handler attachment](#event-handler-attachment)
-- [UX Capture sequence diagram](#ux-capture-sequence-diagram)
+-   [Usage](#usage)
+    -   [Step 1: Inline the library in the `<head>` tag](#)
+    -   [Step 2: Initialize the library](#)
+    -   [Step 3: Configure expected zones for the view](#)
+    -   [Step 4: (optionally) Updatate zone configuration as page loads](#)
+    -   [Step 5: Mark individual events on the page](#)
+    -   [Step 6: SPA views / transitions (if applicable)](#)
+        -   [Step 6A: Indicate which elements will persists or removed](#)
+            -   [Method 1: Use Selectors](#)
+            -   [Method 2: Clear Marks for Removed Elements](#)
+    -   [Repeat](#)
+-   [Sample page](#sample-page)
+-   [Instrumentation](#instrumentation)
+    -   [Image elements](#image-elements)
+    -   [Text without custom font](#text-without-custom-font)
+    -   [Text with custom font](#text-with-custom-font)
+    -   [Event handler attachment](#event-handler-attachment)
+-   [UX Capture sequence diagram](#ux-capture-sequence-diagram)
 
 The intent of this library is to help developers instrument technical events
 (marks) on their pages and group them into "zones" that represent "phases" of page
@@ -25,8 +35,10 @@ React bindings for this library exists as a separate module [@ux-capture/react-u
 in the browser, but should not break if it doesn't. You can
 [use a polyfill](https://www.npmjs.com/package/usertiming) if you want to support older browsers.
 
-1. Load the library by inlining the contents of ux-capture.min.js in a `<script>`
-   tag in the HTML document `<head>`. Here's an example using server-side React:
+### Step 1: Inline the library in the `<head>` tag
+
+Load the library by inlining the contents of ux-capture.min.js in a `<script>`
+tag in the HTML document `<head>`. Here's an example using server-side React:
 
     ```jsx
     const uxCaptureFilename = require.resolve('ux-capture/lib/ux-capture.min.js');
@@ -50,8 +62,10 @@ in the browser, but should not break if it doesn't. You can
     we need to instrument events that happen as early as HTML parsing, so ideally in
     the `<head>`.
 
-2. Initialize UXCapture using `UXCapture.create()`, optionally with mark and
-   measure event handlers, e.g.
+### Step 2: Initialize the library
+
+Initialize UXCapture using `UXCapture.create()`, optionally with mark and
+measure event handlers, e.g.
 
     ```jsx
         <script>
@@ -71,18 +85,34 @@ in the browser, but should not break if it doesn't. You can
     - `onMeasure` - provides a custom handler to be called every time a measure is
       recorded with the name of the measure as the only argument
 
-3. At the top of the view markup, define the expected zones and corresponding
-   marks with `UXCapture.startView()`, e.g.
+### Step 3: Configure expected zones for the view
+
+At the top of the view markup, define the expected zones and corresponding
+marks with `UXCapture.startView()`, e.g.
 
     ```jsx
         <script>
             UXCapture.startView([
                 {
                     name: 'ux-destination-verified',
-                    marks: ['ux-1', 'ux-2']
-                },{
+                    elements: [
+                        {
+                            selector: "#logo",
+                            marks: ['ux-1', 'ux-2']
+                        },
+                    ]
+                }, {
                     name: 'ux-primary-content-available',
-                    marks: ['ux-3', 'ux-4']
+                    elements: [
+                        {
+                            selector: "#intro",
+                            marks: ['ux-3']
+                        },
+                        {
+                            selector: "a.moreinfo",
+                            marks: ['ux-4']
+                        },
+                    ]
                 }
                 ...
             ]);
@@ -93,17 +123,20 @@ in the browser, but should not break if it doesn't. You can
     view is active, so be careful to only call it once.
 
     Each individual zone configuration object contains of zone's `name` that will be
-    used as a name of corresponding
-    [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure)
-    and `marks` array of individual event name strings that zone groups together,
-    each individual name will be used when recording corresponding events as
-    [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
+    used as a name of corresponding [W3C UserTiming API `measure`](https://www.w3.org/TR/user-timing/#performancemeasure)
+    and a list of elements comprising the zone with CSS or JS function selector that returns the node
+    and `marks` array of individual event name strings, each individual mark name will be used
+    when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
 
-4. You can optionally update a view that has already been started and add more
-   zones by calling `UXCapture.updateView()`.
+### Step 4: (optionally) Updatate zone configuration as page loads
 
-5. Call UXCapture.mark in the HTML markup for each ‘mark’ name passed into
-   `UXCapture.startView()`/`updateView()`.
+You can optionally update a view that has already been started and add more
+zones by calling `UXCapture.updateView()`.
+
+### Step 5: Mark individual events on the page
+
+Call UXCapture.mark in the HTML markup for each ‘mark’ name passed into
+`UXCapture.startView()`/`updateView()`.
 
     ```jsx
         <script>UXCapture.mark('ux-1')</script>
@@ -111,14 +144,11 @@ in the browser, but should not break if it doesn't. You can
         ...
     ```
 
-6. (SPA support) For 'interactive' view changes (usually associated with a route
-   change), the client app must imperatively indicate when the current view is
-   no longer valid using `UXCapture.startTransition`, and clear any marks that
-   should not be considered valid for the subsequent view using
-   `UXCapture.clearMarks(name)`. To clear all marks, omit the name argument. Do not clear
-   marks that are associated with elements that do not change between views.
+### Step 6: SPA views / transitions (if applicable)
 
-    The call to `UXCapture.startTransition` does not need to be in the markup (and generally shouldn’t be).
+    For "interactive" view changes (usually associated with a route change),
+    the client app must imperatively indicate when the current view is
+    no longer valid using `UXCapture.startTransition()` call.
 
     ```jsx
         history.push(‘/foo’)
@@ -143,12 +173,42 @@ in the browser, but should not break if it doesn't. You can
     };
     ```
 
-    Summary: A SPA view transition is comprised of the following calls:
+    `UXCapture.startTransition()` call creates additional `transitionStart` UserTiming API mark to indicate the moment user interaction happened.
 
-    1. `UXCapture.startTransition()` – required
-    2. `UXCapture.clearMarks(name)` – optional, but should be called for each existing mark that is no longer valid
+    All measures in this interactive view will be recorded from this moment,
+    rather than "natural" zero of page view's `navigationStart` provided by Navigation Timing API.
 
-7. Repeat from step 3.
+    The call to `UXCapture.startTransition` does not need to be in the markup (and generally shouldn’t be).
+
+#### Step 6A: Indicate which elements will persists or removed
+
+There are two methods of defining pre-existing elements on the page,
+by configuring selectors for elements in the zone
+or by explicitly clearing marks that correspond to these elements before next `UXCapture.startView()` is called.
+
+If Zone is fully satisfied by pre-existing elements, it will be measured from and to `transitionStart` mark making it effectively a `0ms` long.
+
+##### Method 1: Use Selectors
+
+When you configure Zones and corresponding elements in `UXCapture.startView()` call (see Step 3 above), you include `selector` property for each element
+which is either a CSS Selector string or a JS function that returns DOM nodes corresponding to the element.
+
+Alternatively, you can select a `selector` attribute set to a JS function on the zone object as a whole
+and it will be called for each element in the zone passing element configuration as input.
+
+These selectors would be used to determine if element is still present on the page and UX Capture will satisfy the immediately without expecting the marks fired for them.
+
+##### Method 2: Clear Marks for Removed Elements
+
+Clear any marks for elements that will not be resent on the subsequent view using `UXCapture.clearMarks(name)`.
+To clear all marks, omit the name argument.
+Do not clear marks that are associated with elements that do not change between views.
+
+_Note:_ This method is used by `react-ux-capture` because it fits well with React's lifecycle methods, but might be hard to maintain in other applications.
+
+### Repeat
+
+Repeat from the start for regular page views and from step 3 for SPA applications.
 
 ## Sample page
 
