@@ -10,7 +10,7 @@ metrics using [UX Capture](../../README.md) approach
     -   [Step 4: (optionally) Updatate zone configuration as page loads](#step-4-optionally-updatate-zone-configuration-as-page-loads)
     -   [Step 5: Mark individual events on the page](#step-5-mark-individual-events-on-the-page)
     -   [Step 6: SPA views / transitions (if applicable)](#step-6-spa-views--transitions-if-applicable)
-        -   [Step 6A: Indicate which elements will persists or removed](#step-6a-indicate-which-elements-will-persists-or-removed)
+        -   [Step 6A: Indicate which elements will persist or get removed](#step-6a-indicate-which-elements-will-persist-or-get-removed)
             -   [Method 1: Use Selectors](#method-1-use-selectors)
             -   [Method 2: Clear Marks for Removed Elements](#method-2-clear-marks-for-removed-elements)
     -   [Repeat](#repeat)
@@ -180,7 +180,7 @@ rather than "natural" zero of page view's `navigationStart` provided by Navigati
 
 The call to `UXCapture.startTransition` does not need to be in the markup (and generally shouldn’t be).
 
-#### Step 6A: Indicate which elements will persists or removed
+#### Step 6A: Indicate which elements will persist or get removed
 
 There are two methods of defining pre-existing elements on the page,
 by configuring selectors for elements in the zone
