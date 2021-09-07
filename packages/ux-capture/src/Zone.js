@@ -38,8 +38,7 @@ function Zone(props) {
 	// Name used for UserTiming measures
 	this.measureName = this.props.name;
 
-	// Create a new `ExpectedMark` for each mark
-	const configuredMarkNames = this.props.elements
+	const configuredMarkNames = this.props.elements && Array.isArray(this.props.elements)
 		? // new elements array on zone object
 		this.props.elements.map(element => element.marks).flat()
 		: // legacy with direct marks array on zone object
@@ -60,11 +59,11 @@ function Zone(props) {
 		});
 	}
 
+	const existingMarkNames = new Set(elementsAlreadyOnThePage.map(element => element.marks).flat());
+
 	// do not create marks for elements that are already on the page
 	const markNamesToExpect = configuredMarkNames.filter(
-		configured => !elementsAlreadyOnThePage.find(
-			existingElement => existingElement.marks.find(existing => existing === configured)
-		)
+		configuredMarkName => !existingMarkNames.has(configuredMarkName)
 	);
 
 	// Create a new `ExpectedMark` for each mark

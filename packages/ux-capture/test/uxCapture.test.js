@@ -635,5 +635,44 @@ describe('UXCapture', () => {
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
 		});
+
+		it('should not create multiple expected marks if multiple elements use the same mark name', () => {
+			const config = [
+				{
+					label: 'Requires both selector and a mark to work',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							label: "Component 1",
+							selector: ".component1",
+							marks: [MOCK_MARK_1_1],
+						},
+						{
+							label: "Component 2",
+							marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+						}
+					]
+				}
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			UXCapture.mark(MOCK_MARK_1_2);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
 	});
 });
