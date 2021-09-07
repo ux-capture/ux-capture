@@ -101,6 +101,15 @@ const UXCapture = {
 		_view.update(zoneConfigs);
 	},
 
+	/**
+	 * Returns view configuration object or null if there is no current view
+	 *
+	 * @returns {object}|null
+	 */
+	getViewConfig: () => {
+		return _view ? _view.getZoneConfigs() : null;
+	},
+
 	/*
 	 * Start view transition will end/destroy current View and set a new 'start mark'
 	 * Existing marks are _not_ removed automatically (they may outlive the view).

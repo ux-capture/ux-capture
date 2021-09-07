@@ -13,6 +13,7 @@ describe('ux-capture', () => {
 			expect(UXCapture.startView).toBeDefined();
 			expect(UXCapture.updateView).toBeDefined();
 			expect(UXCapture.startTransition).toBeDefined();
+			expect(UXCapture.getViewConfig).toBeDefined();
 			expect(UXCapture.mark).toBeDefined();
 		});
 	});

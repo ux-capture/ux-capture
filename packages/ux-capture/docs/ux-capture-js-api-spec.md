@@ -28,6 +28,7 @@ export interface UXCapture {
  static clearMarks: (name?) => void,
  static startTransition: () => void,
  static startView: (Array<ZoneConfig>) => void,
+ static getViewConfig: () => Array<ZoneConfig>,
  static updateView: (Array<ZoneConfig>) => void, // lazily-defined marks
  static mark: (name: string, waitForNextPaint?: boolean) => void
 }
@@ -107,6 +108,11 @@ Merge new `zoneConfig`s with existing view’s `zoneConfig`s
 - a new `Zone` will be created for any name that has not already been defined
 - The `ExpectedMark`s will be merged with any existing `Zone` with the same name
 
+### `UXCapture.getViewConfig`
+Returns current view's configuration as it was passed to `startView()` or updated later using `updateView()`.
+
+This is useful for debugging your instrumentation in browser console or for additional tools like [`progressive-enhancement-designer`](https://github.com/ux-capture/progressive-enhancement-designer) to consume as input.
+
 ## Public API Requirements
 1. Define views before transition happens to assure minimal lookup time for this information, e.g. without any network requests to load the code required for the view
 2. Have a step for activating new set of expected zones, e.g. `UXCapture.startView()`; which also marks beginning of the view (takes care of differences between single page view tracking and multiple view tracking, e.g. resetting marks, creating new "transitionStart" mark, etc.)
@@ -133,39 +139,3 @@ A collection of `ExpectedMarks` that fires `onMeasure` when every corresponding 
 A class that ensures each unique mark name corresponds to a single call to the `window.performance.mark` when `UXCapture.mark` is called.
 
 Also provides interface for clearing/destroying marks.
-
-### General design pattern
-Each class constructor takes a configuration object as an argument, similar to React component classes. This object is assigned to the instance’s
-`this.props` property. This ‘standard’ behavior is provided by a `UXBase` class and allows most/all classes to avoid explicitly defining a constructor
-at all – instead, class properties can assign values based on `this.props`.
-
-Example implementation:
-```javascript
-class UXBase {
- constructor(props) {
- this.props = props;
- }
-}
-
-class ExpectedMark extends UXBase {
- // this.name not needed - use `this.props.name`
- // no constructor
-}
-
-class View extends UXBase {
- this.expectedZones = this.props.zoneConfigs.map(...);
- // no constructor
-}
-
-class Zone extends UXBase {
- marks = this.props.marks.map(...);
- // measureName not needed - use this.props.name
- // onMeasure not needed - use this.props.onMeasure
- // onMark not needed - use this.props.onMark
- // startMarkName not needed (default to 'navigationStart')
- // no constructor
-}
-```
-
-The `UXBase` class both reduces boilerplate and enforces structural consistency. Since it also matches React's constructor behavior it would also
-feel familiar anyone with React experience.
