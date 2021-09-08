@@ -38,7 +38,7 @@ function Zone(props) {
 	// Name used for UserTiming measures
 	this.measureName = this.props.name;
 
-	const configuredMarkNames = this.props.elements && Array.isArray(this.props.elements)
+	const configuredMarkNames = this.props.elements
 		? // new elements array on zone object
 		this.props.elements.map(element => element.marks).flat()
 		: // legacy with direct marks array on zone object
@@ -48,8 +48,7 @@ function Zone(props) {
 	let elementsAlreadyOnThePage = [];
 
 	if (this.props.startMarkName === INTERACTIVE_TRANSITION_START_MARK_NAME &&
-		this.props.elements &&
-		Array.isArray(this.props.elements)
+		this.props.elements
 	) {
 		elementsAlreadyOnThePage = this.props.elements.filter(element => {
 			const nodes = this.selectDOMNodes(element);
