@@ -26,7 +26,7 @@ describe('Compatibility', () => {
 		}).not.toThrow();
 	});
 
-	it('Should not throw an error when window.UX is already defined', () => {
+	it('Should not throw an error when window.UXCapture is already defined', () => {
 		expect(() => {
 			require('../src/ux-capture');
 			require('../src/ux-capture');

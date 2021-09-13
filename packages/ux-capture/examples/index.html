@@ -1,124 +1,143 @@
 <html>
-	<head>
-		<title>Sample Page | UX capture</title>
 
-		<!-- don't do this in production, but inline it instead -->
-		<script src="../lib/ux-capture.min.js"></script>
+<head>
+	<title>Sample Page | UX capture</title>
 
-		<script>
-			// sample custom reporter function for collected measures
-			const customMeasureRecordingFunction = name => {
-				// there can be multiple entries with the same name, get the latest
-				const measure = performance
-					.getEntriesByType('measure')
-					.filter(entry => entry.name === name)
-					.pop();
+	<!-- don't do this in production, but inline it instead -->
+	<script src="../lib/ux-capture.min.js"></script>
 
-				if (measure) {
-					// in real world you might be sending this to your custom monitoring solution
-					// (because it does not support W3C UserTiming API natively)
-					console.log('Measure', name, ':', measure.duration);
-				}
-			};
+	<script>
+		// sample custom reporter function for collected measures
+		const customMeasureRecordingFunction = name => {
+			// there can be multiple entries with the same name, get the latest
+			const measure = performance
+				.getEntriesByType('measure')
+				.filter(entry => entry.name === name)
+				.pop();
 
-			UXCapture.create({
-				onMeasure: customMeasureRecordingFunction,
-			});
+			if (measure) {
+				// in real world you might be sending this to your custom monitoring solution
+				// (because it does not support W3C UserTiming API natively)
+				console.log('Measure', name, ':', measure.duration);
+			}
+		};
 
-			UXCapture.startView([
-				{
-					name: 'ux-destination-verified',
-					marks: ['ux-text-title'],
-				},
-				{
-					name: 'ux-primary-content-displayed',
-					marks: [
-						'ux-text-intro',
-						'ux-text-story',
-						'ux-image-inline-kitten',
-						'ux-image-onload-kitten',
-					],
-				},
-				{
-					name: 'ux-primary-action-available',
-					marks: ['ux-text-story-details-link', 'ux-handler-moreclickable'],
-				},
-				{
-					name: 'ux-secondary-content-displayed',
+		UXCapture.create({
+			onMeasure: customMeasureRecordingFunction,
+		});
+
+		UXCapture.startView([
+			{
+				name: 'ux-destination-verified',
+				elements: [
+					{
+						label: "Page Title",
+						selector: "h1",
+						marks: ['ux-text-title'],
+					}
+				]
+			},
+			{
+				name: 'ux-primary-content-displayed',
+				elements: [{
+					label: "Intro paragraph",
+					selector: "#intro",
+					marks: ['ux-text-intro']
+				}, {
+					label: "Story paragraph",
+					selector: "#story",
+					marks: ['ux-text-story']
+				}, {
+					label: "Image of a kitten",
+					selector: ".cute",
+					marks: ['ux-image-inline-kitten', 'ux-image-onload-kitten']
+				}]
+			},
+			{
+				name: 'ux-primary-action-available',
+				elements: [{
+					label: "Story details link",
+					selector: "#morelink",
+					marks: ['ux-text-story-details-link', 'ux-handler-moreclickable']
+				}]
+			},
+			{
+				name: 'ux-secondary-content-displayed',
+				elements: [{
+					label: "Link to page 2",
+					selector: "#page2link",
 					marks: ['ux-text-page2', 'ux-handler-page2-clickable'],
-				},
-			]);
-		</script>
-		<script src="micro_spa.js" async></script>
-	</head>
+				}]
+			},
+		]);
+	</script>
+	<script src="micro_spa.js" async></script>
+</head>
 
-	<body>
-		<h1>UX Capture library sample page</h1>
+<body>
+	<h1>UX Capture library sample page</h1>
+	<script>
+		UXCapture.mark('ux-text-title');
+	</script>
+
+	<div id="content">
+		<p id="intro">
+			<img class="cute" src="//placekitten.com/2000/2000" style="float: left; margin: 0 1em 1em 0"
+				onload="UXCapture.mark('ux-image-onload-kitten')" width="30%" />
+			<script>
+				UXCapture.mark('ux-image-inline-kitten');
+			</script>
+			<!-- http://www.catipsum.com/ -->
+			Decide to want nothing to do with my owner today. When in doubt, wash
+			being gorgeous with belly side up sweet beast, but poop in the plant
+			pot but munch on tasty moths. Brown cats with pink ears. Caticus
+			cuteicus when in doubt, wash stare at ceiling, and scream at teh bath,
+			lies down but cough hairball on conveniently placed pants claw your
+			carpet in places everyone can see - why hide my amazing artistic
+			clawing skills?. Meow in empty rooms.
+		</p>
 		<script>
-			UXCapture.mark('ux-text-title');
+			UXCapture.mark('ux-text-intro');
 		</script>
 
-		<div id="content">
-			<p id="intro">
-				<img
-					class="cute"
-					src="//placekitten.com/2000/2000"
-					style="float: left; margin: 0 1em 1em 0"
-					onload="UXCapture.mark('ux-image-onload-kitten')"
-					width="30%"
-				/>
-				<script>
-					UXCapture.mark('ux-image-inline-kitten');
-				</script>
-				Decide to want nothing to do with my owner today. When in doubt, wash
-				being gorgeous with belly side up sweet beast, but poop in the plant
-				pot but munch on tasty moths. Brown cats with pink ears. Caticus
-				cuteicus when in doubt, wash stare at ceiling, and scream at teh bath,
-				lies down but cough hairball on conveniently placed pants claw your
-				carpet in places everyone can see - why hide my amazing artistic
-				clawing skills?. Meow in empty rooms.
-			</p>
+		<script>
+			// delaying this loop a tiny bit to show the difference
+			var y = 0;
+
+			for (var i = 0; i < 100000; i++) {
+				y += i;
+			}
+		</script>
+
+		<p id="story">
+			<!-- https://baconipsum.com/ -->
+			Bacon ipsum dolor amet jowl swine brisket, drumstick pig chicken
+			meatball ham hock ham salami andouille hamburger. Ribeye alcatra
+			porchetta flank. Venison chicken meatloaf landjaeger. Porchetta
+			burgdoggen ham hock, pork belly beef ribs chicken meatloaf jowl strip
+			steak t-bone. Pork chop turducken drumstick kevin leberkas jowl
+			chicken prosciutto salami meatloaf, tri-tip doner boudin ground round
+			<a href="story-details.html" id="morelink" style="color: silver">read more...</a>
 			<script>
-				UXCapture.mark('ux-text-intro');
+				UXCapture.mark('ux-text-story-details-link');
 			</script>
+		</p>
+		<script>
+			UXCapture.mark('ux-text-story');
+		</script>
 
-			<script>
-				// delaying this loop a tiny bit to show the difference
-				var y = 0;
+		<p>
+			<!-- https://www.lipsum.com/ -->
+			Lorem non. Aperiam exercitationem omnis. Consequatur rem labore
+			architecto. Ad molestiae explicabo but nemo for doloremque. Aliquip
+			dolor, yet velitesse so omnis vitae aspernatur. Modi. Aliqua.
+		</p>
 
-				for (var i = 0; i < 100000; i++) {
-					y += i;
-				}
-			</script>
+		<a id="page2link" href="page2.html" style="color: silver">Page 2 &gt; &gt;</a>
+		<script>
+			UXCapture.mark('ux-text-page2');
+		</script>
+	</div>
+</body>
 
-			<p id="story">
-				Bacon ipsum dolor amet jowl swine brisket, drumstick pig chicken
-				meatball ham hock ham salami andouille hamburger. Ribeye alcatra
-				porchetta flank. Venison chicken meatloaf landjaeger. Porchetta
-				burgdoggen ham hock, pork belly beef ribs chicken meatloaf jowl strip
-				steak t-bone. Pork chop turducken drumstick kevin leberkas jowl
-				chicken prosciutto salami meatloaf, tri-tip doner boudin ground round
-				<a href="story-details.html" id="morelink" style="color: silver"
-					>read more...</a
-				>
-				<script>
-					UXCapture.mark('ux-text-story-details-link');
-				</script>
-			</p>
-			<script>
-				UXCapture.mark('ux-text-story');
-			</script>
-
-			<p>
-				Lorem non. Aperiam exercitationem omnis. Consequatur rem labore
-				architecto. Ad molestiae explicabo but nemo for doloremque. Aliquip
-				dolor, yet velitesse so omnis vitae aspernatur. Modi. Aliqua.
-			</p>
-
-			<a href="page2.html" style="color: silver">Page 2 &gt; &gt;</a>
-			<script>
-				UXCapture.mark('ux-text-page2');
-			</script>
-		</div>
-	</body>
 </html>

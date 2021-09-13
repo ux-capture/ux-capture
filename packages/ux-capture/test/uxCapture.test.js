@@ -265,9 +265,33 @@ describe('UXCapture', () => {
 		});
 	});
 
-	describe('mark', () => {
-		beforeEach(() => {
-			UXCapture.startView([
+	const markConfigs = [
+		{
+			label: "elements config",
+			config: [
+				{
+					name: MOCK_MEASURE_1,
+					elements: [{
+						marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+					}]
+				},
+				{
+					name: MOCK_MEASURE_2,
+					elements: [{
+						marks: [MOCK_MARK_MULTIPLE],
+					}]
+				},
+				{
+					name: MOCK_MEASURE_3,
+					elements: [{
+						marks: [MOCK_MARK_MULTIPLE],
+					}]
+				},
+			]
+		},
+		{
+			label: "legacy config",
+			config: [
 				{
 					name: MOCK_MEASURE_1,
 					marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
@@ -280,88 +304,96 @@ describe('UXCapture', () => {
 					name: MOCK_MEASURE_3,
 					marks: [MOCK_MARK_MULTIPLE],
 				},
-			]);
-		});
+			]
+		}
+	]
 
-		it('must mark user timing api timeline', () => {
-			UXCapture.mark(MOCK_MARK_1_1);
+	markConfigs.forEach(({ label, config }) => {
+		describe(`mark: ${label}`, () => {
+			beforeEach(() => {
+				UXCapture.startView(config);
+			});
 
-			expect(
-				window.performance
-					.getEntriesByType('mark')
-					.find(mark => mark.name === MOCK_MARK_1_1)
-			).toBeTruthy();
-		});
+			it('must mark user timing api timeline', () => {
+				UXCapture.mark(MOCK_MARK_1_1);
 
-		it('should trigger recording of a measure if last mark in chain', () => {
-			UXCapture.mark(MOCK_MARK_1_1);
-			UXCapture.mark(MOCK_MARK_1_2);
+				expect(
+					window.performance
+						.getEntriesByType('mark')
+						.find(mark => mark.name === MOCK_MARK_1_1)
+				).toBeTruthy();
+			});
 
-			expect(
-				window.performance
-					.getEntriesByType('measure')
-					.find(measure => measure.name === MOCK_MEASURE_1)
-			).toBeTruthy();
-		});
+			it('should trigger recording of a measure if last mark in chain', () => {
+				UXCapture.mark(MOCK_MARK_1_1);
+				UXCapture.mark(MOCK_MARK_1_2);
 
-		it("should not fire a console.timeStamp if it's not enabled (default)", () => {
-			UXCapture.mark(MOCK_MARK_1_1);
+				expect(
+					window.performance
+						.getEntriesByType('measure')
+						.find(measure => measure.name === MOCK_MEASURE_1)
+				).toBeTruthy();
+			});
 
-			expect(console.timeStamp).not.toHaveBeenCalledWith(MOCK_MARK_1_1);
-		});
+			it("should not fire a console.timeStamp if it's not enabled (default)", () => {
+				UXCapture.mark(MOCK_MARK_1_1);
 
-		it('should call a custom mark callback when provided', () => {
-			UXCapture.mark(MOCK_MARK_1_1);
+				expect(console.timeStamp).not.toHaveBeenCalledWith(MOCK_MARK_1_1);
+			});
 
-			expect(onMark).toHaveBeenCalledWith(MOCK_MARK_1_1);
-		});
+			it('should call a custom mark callback when provided', () => {
+				UXCapture.mark(MOCK_MARK_1_1);
 
-		it('should contribute to multiple measures if same mark is defined for multiple zones', () => {
-			UXCapture.mark(MOCK_MARK_MULTIPLE);
+				expect(onMark).toHaveBeenCalledWith(MOCK_MARK_1_1);
+			});
 
-			expect(
-				window.performance
-					.getEntriesByType('measure')
-					.find(measure => measure.name === MOCK_MEASURE_2)
-			).toBeTruthy();
+			it('should contribute to multiple measures if same mark is defined for multiple zones', () => {
+				UXCapture.mark(MOCK_MARK_MULTIPLE);
 
-			expect(
-				window.performance
-					.getEntriesByType('measure')
-					.find(measure => measure.name === MOCK_MEASURE_3)
-			).toBeTruthy();
-		});
+				expect(
+					window.performance
+						.getEntriesByType('measure')
+						.find(measure => measure.name === MOCK_MEASURE_2)
+				).toBeTruthy();
 
-		it('must work when called without waiting for next paint flag', () => {
-			UXCapture.mark(MOCK_MARK_1_1, false);
+				expect(
+					window.performance
+						.getEntriesByType('measure')
+						.find(measure => measure.name === MOCK_MEASURE_3)
+				).toBeTruthy();
+			});
 
-			expect(
-				window.performance
-					.getEntriesByType('mark')
-					.find(mark => mark.name === MOCK_MARK_1_1)
-			).toBeTruthy();
+			it('must work when called without waiting for next paint flag', () => {
+				UXCapture.mark(MOCK_MARK_1_1, false);
 
-			UXCapture.mark(MOCK_MARK_1_2, false);
+				expect(
+					window.performance
+						.getEntriesByType('mark')
+						.find(mark => mark.name === MOCK_MARK_1_1)
+				).toBeTruthy();
 
-			expect(
-				window.performance
-					.getEntriesByType('measure')
-					.find(measure => measure.name === MOCK_MEASURE_1)
-			).toBeTruthy();
-		});
+				UXCapture.mark(MOCK_MARK_1_2, false);
 
-		it('must only call onMark callback once per mark even if it is used in multiple zones', () => {
-			UXCapture.mark(MOCK_MARK_MULTIPLE);
+				expect(
+					window.performance
+						.getEntriesByType('measure')
+						.find(measure => measure.name === MOCK_MEASURE_1)
+				).toBeTruthy();
+			});
 
-			expect(onMark).toHaveBeenCalledTimes(1);
-		});
+			it('must only call onMark callback once per mark even if it is used in multiple zones', () => {
+				UXCapture.mark(MOCK_MARK_MULTIPLE);
 
-		it('must call onMark the same number of times as UXCapture.mark() method calls', () => {
-			UXCapture.mark(MOCK_MARK_1_1);
-			UXCapture.mark(MOCK_MARK_MULTIPLE);
-			UXCapture.mark(MOCK_MARK_MULTIPLE);
+				expect(onMark).toHaveBeenCalledTimes(1);
+			});
 
-			expect(onMark).toHaveBeenCalledTimes(3);
+			it('must call onMark the same number of times as UXCapture.mark() method calls', () => {
+				UXCapture.mark(MOCK_MARK_1_1);
+				UXCapture.mark(MOCK_MARK_MULTIPLE);
+				UXCapture.mark(MOCK_MARK_MULTIPLE);
+
+				expect(onMark).toHaveBeenCalledTimes(3);
+			});
 		});
 	});
 
@@ -455,5 +487,192 @@ describe('UXCapture', () => {
 		// intentionally-internal behavior (not exposed to tests)
 		// it('sets startMarkName to INTERACTIVE_TRANSITION_START_MARK_NAME')
 		// it('sets window.performance.mark INTERACTIVE_TRANSITION_START_MARK_NAME')
+	});
+
+	describe("Selectors", () => {
+		it("should consider existing element if selector returns it", () => {
+			const config = [
+				{
+					label: 'Requires both selector and a mark to work',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							label: "Component 1",
+							selector: ".component1",
+							marks: [MOCK_MARK_1_1],
+						},
+						{
+							label: "Component 2",
+							marks: [MOCK_MARK_1_2],
+						}
+					]
+				}
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			// only second mark is required, should be enough
+			UXCapture.mark(MOCK_MARK_1_2);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
+
+		it("should satisfy the zone if all elements are already on the page", () => {
+			const config = [
+				{
+					label: 'Selector alone should be enough',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							selector: ".component1",
+							marks: [MOCK_MARK_1_1],
+						}
+					]
+				},
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
+
+		it("should work with selector functions", () => {
+			const config = [
+				{
+					label: 'Selector alone should be enough',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							selector: function () { return document.getElementsByTagName("p"); },
+							marks: [MOCK_MARK_1_1],
+						}
+					]
+				},
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
+
+		it("should work with zone-level selector function", () => {
+			const config = [
+				{
+					label: 'Selector alone should be enough',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							marks: [MOCK_MARK_1_1],
+						},
+						{
+							marks: [MOCK_MARK_1_2],
+						}
+					],
+					selector: function (element) {
+						return document.querySelectorAll("." + element.marks[0]);
+					}
+				},
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="' + MOCK_MARK_1_1 + '">Hello, World!</p>' +
+				'<div class="' + MOCK_MARK_1_2 + '">Hello again!</div>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			expect(
+				document.querySelectorAll('.' + MOCK_MARK_1_1).length
+			).toBe(1);
+
+			expect(
+				document.querySelectorAll('.' + MOCK_MARK_1_2).length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
+
+		it('should not create multiple expected marks if multiple elements use the same mark name', () => {
+			const config = [
+				{
+					label: 'Requires both selector and a mark to work',
+					name: MOCK_MEASURE_1,
+					elements: [
+						{
+							label: "Component 1",
+							selector: ".component1",
+							marks: [MOCK_MARK_1_1],
+						},
+						{
+							label: "Component 2",
+							marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+						}
+					]
+				}
+			];
+
+			// first view
+			document.body.innerHTML = '<p class="component1">Hello, World!</p>';
+
+			// second view
+			UXCapture.startTransition();
+			UXCapture.startView(config);
+
+			UXCapture.mark(MOCK_MARK_1_2);
+
+			expect(
+				document.querySelectorAll('.component1').length
+			).toBe(1);
+
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+		});
 	});
 });

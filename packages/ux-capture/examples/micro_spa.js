@@ -2,7 +2,7 @@
 setTimeout(() => {
 	const morelink = document.getElementById('morelink');
 	morelink.style.color = 'blue';
-	morelink.addEventListener('click', function(e) {
+	morelink.addEventListener('click', function (e) {
 		e.preventDefault();
 
 		alert('More kittens there');
@@ -13,7 +13,7 @@ setTimeout(() => {
 
 // mini-SPA
 setTimeout(() => {
-	const page2link = document.querySelector('a[href="page2.html"]');
+	const page2link = document.querySelector('#page2link');
 	page2link.style.color = 'blue';
 	page2link.addEventListener('click', e => {
 		e.preventDefault();
@@ -25,26 +25,27 @@ setTimeout(() => {
 			'<i>... loading page 2 ...</i>';
 
 		setTimeout(() => {
-			[
-				'ux-text-intro',
-				'ux-text-story',
-				'ux-image-inline-kitten',
-				'ux-image-onload-kitten',
-				'ux-text-story-details-link',
-				'ux-handler-moreclickable',
-				'ux-text-page2',
-				'ux-handler-page2-clickable',
-			].map(UXCapture.clearMarks);
-
 			// sets new view expectations
 			UXCapture.startView([
 				{
 					name: 'ux-destination-verified',
-					marks: ['ux-text-title'],
+					elements: [
+						{
+							label: "Page Title",
+							selector: "h1",
+							marks: ['ux-text-title'],
+						}
+					]
 				},
 				{
 					name: 'ux-primary-content-displayed',
-					marks: ['ux-text-page2-content'],
+					elements: [
+						{
+							label: "Page 2 content",
+							selector: "#page2content",
+							marks: ['ux-text-page2-content'],
+						}
+					]
 				},
 			]);
 
