@@ -7,7 +7,7 @@ metrics using [UX Capture](../../README.md) approach
     -   [Step 1: Inline the library in the `<head>` tag](#step-1-inline-the-library-in-the-head-tag)
     -   [Step 2: Initialize the library](#step-2-initialize-the-library)
     -   [Step 3: Configure expected zones for the view](#step-3-configure-expected-zones-for-the-view)
-    -   [Step 4: (optionally) Updatate zone configuration as page loads](#step-4-optionally-updatate-zone-configuration-as-page-loads)
+    -   [Step 4: (optionally) Update zone configuration as page loads](#step-4-optionally-updatate-zone-configuration-as-page-loads)
     -   [Step 5: Mark individual events on the page](#step-5-mark-individual-events-on-the-page)
     -   [Step 6: SPA views / transitions (if applicable)](#step-6-spa-views--transitions-if-applicable)
         -   [Step 6A: Indicate which elements will persist or get removed](#step-6a-indicate-which-elements-will-persist-or-get-removed)
@@ -128,7 +128,7 @@ and a list of elements comprising the zone with CSS or JS function selector that
 and `marks` array of individual event name strings, each individual mark name will be used
 when recording corresponding events as [W3C UserTiming API `mark`](https://www.w3.org/TR/user-timing/#performancemark).
 
-### Step 4: (optionally) Updatate zone configuration as page loads
+### Step 4: (optionally) Update zone configuration as page loads
 
 You can optionally update a view that has already been started and add more
 zones by calling `UXCapture.updateView()`.
@@ -196,7 +196,7 @@ which is either a CSS Selector string or a JS function that returns DOM nodes co
 Alternatively, you can select a `selector` attribute set to a JS function on the zone object as a whole
 and it will be called for each element in the zone passing element configuration as input.
 
-These selectors would be used to determine if element is still present on the page and UX Capture will satisfy the immediately without expecting the marks fired for them.
+These selectors would be used to determine if element is still present on the page and UX Capture will satisfy them immediately without expecting the marks fired for them.
 
 ##### Method 2: Clear Marks for Removed Elements
 
