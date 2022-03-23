@@ -1,3 +1,5 @@
+import { ExpectedMarkObject, ExpectedMarkProps, Listener } from "./UXCaptureTypes";
+
 // private map of { name: mark } for all expected marks
 let _expectedMarks = {};
 
@@ -5,7 +7,7 @@ let _expectedMarks = {};
  * Class describes expected marks
  * These marks that have to be recorded before zone is considered complete
  */
-function ExpectedMark(props) {
+function ExpectedMark(props: ExpectedMarkProps) {
 	this.props = props;
 	// list of zone callbacks to call on completion
 	this.onMarkListeners = [];
@@ -20,7 +22,7 @@ function ExpectedMark(props) {
  *
  * @param {string} name
  */
-ExpectedMark.create = function (name, listener, recordTimestamps) {
+ExpectedMark.create = function (name: string, listener: Listener, recordTimestamps: any): ExpectedMarkObject {
 	// create new mark only if one does not exist
 	if (!_expectedMarks[name]) {
 		var mark = new ExpectedMark({ name, recordTimestamps });
@@ -33,7 +35,7 @@ ExpectedMark.create = function (name, listener, recordTimestamps) {
 	return _expectedMarks[name];
 };
 
-ExpectedMark.record = function (name, waitForNextPaint = true, recordTimestamps) {
+ExpectedMark.record = function (name: string, waitForNextPaint: boolean = true, recordTimestamps: any): void {
 	const mark = ExpectedMark.create(name, null, recordTimestamps);
 	if (waitForNextPaint) {
 		// in many cases, we intend to record a mark when an element paints, not
@@ -45,7 +47,7 @@ ExpectedMark.record = function (name, waitForNextPaint = true, recordTimestamps)
 	mark._mark();
 };
 
-ExpectedMark.destroy = function (name) {
+ExpectedMark.destroy = function (name: string): void {
 	if (typeof window.performance !== 'undefined') {
 		window.performance.clearMarks(name);
 	}
@@ -84,11 +86,11 @@ ExpectedMark.prototype._mark = function () {
 	this.marked = true;
 
 	// call all registered zone callbacks
-	this.onMarkListeners.forEach(listener => listener(this));
+	this.onMarkListeners.forEach((listener: Listener) => listener(this));
 };
 
 // registers mark callback
-ExpectedMark.prototype.addOnMarkListener = function (listener) {
+ExpectedMark.prototype.addOnMarkListener = function (listener: Listener) {
 	if (this.marked) {
 		// call immediately if already marked - still need to keep track in `onMarkListeners`
 		// for correct cleanup in `removeOnMarkListener`
@@ -98,9 +100,9 @@ ExpectedMark.prototype.addOnMarkListener = function (listener) {
 };
 
 // unregisters mark callback
-ExpectedMark.prototype.removeOnMarkListener = function (listenerToRemove) {
+ExpectedMark.prototype.removeOnMarkListener = function (listenerToRemove: Listener) {
 	this.onMarkListeners = this.onMarkListeners.filter(
-		listener => listener !== listenerToRemove
+		(listener: Listener) => listener !== listenerToRemove
 	);
 };
 

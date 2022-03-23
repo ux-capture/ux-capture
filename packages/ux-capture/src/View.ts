@@ -1,5 +1,6 @@
 import Zone from './Zone';
-
+import { ViewProps } from './UXCaptureTypes';
+import { ZoneConfig, ZoneObject } from './UXCaptureTypes';
 /**
  * A `View` is a collection of zones representing a single
  * page view or interactive view.
@@ -7,14 +8,14 @@ import Zone from './Zone';
  * Refer to ux-capture README glossary for view definitions.
  * @see: https://github.com/ux-capture/ux-capture#glossary
  */
-function View(props) {
+function View(props: ViewProps) {
 	this.props = props;
 	this.expectedZones = this.setZones(this.props.zoneConfigs);
 }
 
 // TODO: determine if we need to support appending new marks
 // to exisiting zones or new zones or both
-View.prototype.update = function (zoneConfigs) {
+View.prototype.update = function (zoneConfigs: ZoneConfig[]) {
 	// Append configuration, same way we append the zones themselves
 	this.props.zoneConfigs.push(...zoneConfigs);
 
@@ -22,16 +23,16 @@ View.prototype.update = function (zoneConfigs) {
 	this.expectedZones.push(...this.setZones(zoneConfigs));
 };
 
-View.prototype.setZones = function (zoneConfigs) {
-	return zoneConfigs.map(zoneConfig => this.createZone(zoneConfig));
+View.prototype.setZones = function (zoneConfigs: ZoneConfig[]): ZoneObject[] {
+	return zoneConfigs.map((zoneConfig: ZoneConfig) => this.createZone(zoneConfig));
 };
 
 View.prototype.destroy = function () {
-	this.expectedZones.forEach(z => z.destroy());
+	this.expectedZones.forEach((z: ZoneObject) => z.destroy());
 	this.expectedZones = null;
 };
 
-View.prototype.createZone = function (zoneConfig) {
+View.prototype.createZone = function (zoneConfig: ZoneConfig): ZoneObject {
 	return new Zone(
 		Object.assign(
 			{
@@ -45,7 +46,7 @@ View.prototype.createZone = function (zoneConfig) {
 	);
 };
 
-View.prototype.getZoneConfigs = function () {
+View.prototype.getZoneConfigs = function (): ZoneConfig[] {
 	return this.props.zoneConfigs;
 };
 
