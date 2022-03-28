@@ -65,7 +65,7 @@ function Zone(props) {
 	);
 
 	// Create a new `ExpectedMark` for each mark
-	this.marks = markNamesToExpect.map(markName  => {
+	this.marks = markNamesToExpect.map(markName => {
 		// 'state' of the measure that indicates whether it has been recorded
 		this.measured = false;
 

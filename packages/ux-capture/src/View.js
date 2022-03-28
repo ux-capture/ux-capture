@@ -9,6 +9,7 @@ import Zone from './Zone';
 function View(props) {
 	this.props = props;
 	this.expectedZones = this.setZones(this.props.zoneConfigs);
+}
 	// TODO: determine if we need to support appending new marks
 	// to exisiting zones or new zones or both
 	View.prototype.update = function (zoneConfigs) {
@@ -45,11 +46,5 @@ function View(props) {
 	View.prototype.getZoneConfigs = function () {
 		return this.props.zoneConfigs;
 	};
-}
-
-
-
-
-
 
 export default View;
