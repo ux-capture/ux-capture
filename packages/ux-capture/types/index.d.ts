@@ -8,8 +8,7 @@ type GenericCallbackType = () => void;
 type ExpectedMarkRecordFunction = (name: string, waitForNextPaint: boolean, recordTimestamps: any) => void;
 type OnMarkFunction = (markName?: string) => void;
 type OnMeasureFunction = (measureName?: string) => void;
-
-interface UXCaptureCommonProps {
+type UXCaptureCommonProps = {
     startMarkName: string;
     recordTimestamps: any;
     onMark?: OnMarkFunction;
@@ -52,6 +51,6 @@ export declare interface ZoneConfig {
     elements: ZoneElement[];
 }
 
-export declare type ExpectedMarkType = (props: ExpectedMarkProps) => void;
-export declare type ViewType = (props: ViewProps) => void;
-export declare type ZoneType = (props: ZoneProps) => void;
+export declare type ExpectedMark = (props: ExpectedMarkProps) => void;
+export declare type View = (props: ViewProps) => void;
+export declare type Zone = (props: ZoneProps) => void;
