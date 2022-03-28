@@ -1,5 +1,4 @@
 import ExpectedMark from './ExpectedMark';
-import { UXCaptureCommonProps, ZoneConfig } from './UXCaptureTypes';
 import View from './View';
 
 const NOOP = () => {};
@@ -34,7 +33,7 @@ const UXCapture = {
 	 * @param {String} optional name for individual mark to clear
 	 *                 (follows window.performance.clearMarks interface)
 	 */
-	clearMarks: (name?: string) => {
+	clearMarks: (name) => {
 		ExpectedMark.destroy(name);
 	},
 
@@ -44,7 +43,7 @@ const UXCapture = {
 	 *
 	 * @param {object} config
 	 */
-	create: (config: UXCaptureCommonProps) => {
+	create: (config) => {
 		_onMark = config.onMark || NOOP;
 		_onMeasure = config.onMeasure || NOOP;
 		_startMarkName = NAVIGATION_START_MARK_NAME;
@@ -71,7 +70,7 @@ const UXCapture = {
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	startView: (zoneConfigs: ZoneConfig[]) => {
+	startView: (zoneConfigs) => {
 		if (_view) {
 			window.console.error(VIEW_OVERRIDE_ERROR_MESSAGE);
 			return;
@@ -91,7 +90,7 @@ const UXCapture = {
 	 *
 	 * @param {object} zoneConfigs
 	 */
-	updateView: (zoneConfigs: ZoneConfig[]) => {
+	updateView: (zoneConfigs) => {
 		if (!_view) {
 			window.console.error(
 				'[Error] No view to update. Call UXCapture.startView() before UXCapture.updateView()'
@@ -107,7 +106,7 @@ const UXCapture = {
 	 *
 	 * @returns {object}|null
 	 */
-	getViewConfig: (): ZoneConfig[]|null => { 
+	getViewConfig: () => { 
 		return _view ? _view.getZoneConfigs() : null;
 	},
 

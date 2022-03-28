@@ -18,29 +18,8 @@ interface UXCaptureCommonProps {
     onMeasure: (measureName?: string) => void;
 }
 
-interface ZoneObject extends ZoneProps {
-    destroy: DestroyFunction;
-    measure: MesasureFunction;
-    selectDOMNodes: SelectDOMNodesFunction;
-}
-
-interface ViewObject extends ViewProps {
-    update: UpdateFunction;
-    setZones: SetZonesFunction;
-    destroy: DestroyFunction;
-    createZone: createZoneFunction;
-    getZoneConfigs: getZoneConfigsFunction;
-}
-
-interface ExpectedMarkObject extends ExpectedMarkProps {
-    _mark: MarkFunction;
-    addOnMarkListener: addOnMarkListenerFunction;
-    removeOnMarkListener: removeOnMarkListenerFunction;
-}
-
-interface ExpectedMarkProps {
+interface ExpectedMarkProps extends UXCaptureCommonProps {
     name: string;
-    recordTimestamps: any;
 }
 
 interface ViewProps extends UXCaptureCommonProps {
@@ -52,26 +31,34 @@ interface ZoneProps extends UXCaptureCommonProps {
     marks?: string[];
 }
 
-interface ZoneElement {
+export declare interface Zone extends ZoneProps {
+    destroy: DestroyFunction;
+    measure: MesasureFunction;
+    selectDOMNodes: SelectDOMNodesFunction;
+}
+
+export declare interface View extends ViewProps {
+    update: UpdateFunction;
+    setZones: SetZonesFunction;
+    destroy: DestroyFunction;
+    createZone: createZoneFunction;
+    getZoneConfigs: getZoneConfigsFunction;
+}
+
+export declare interface ExpectedMark extends ExpectedMarkProps {
+    _mark: MarkFunction;
+    addOnMarkListener: addOnMarkListenerFunction;
+    removeOnMarkListener: removeOnMarkListenerFunction;
+}
+
+export declare interface ZoneElement {
     label: string;
     selector: SelectorFunction | string;
     marks: string[];
 }
 
-interface ZoneConfig {
+export declare interface ZoneConfig {
     name: string;
     esitmated_latency: number;
     elements: ZoneElement[];
-}
-
-export {
-    UXCaptureCommonProps,
-    ViewProps,
-    ZoneProps,
-    ZoneElement,
-    ZoneConfig,
-    ZoneObject,
-    Listener,
-    ExpectedMarkObject,
-    ExpectedMarkProps
 }

@@ -1,5 +1,4 @@
 import ExpectedMark from './ExpectedMark';
-import { ZoneProps, ZoneElement } from './UXCaptureTypes';
 import { INTERACTIVE_TRANSITION_START_MARK_NAME } from './UXCapture';
 
 /**
@@ -33,14 +32,14 @@ import { INTERACTIVE_TRANSITION_START_MARK_NAME } from './UXCapture';
  *   onMark: markName => {}
  * }
  */
-function Zone(props: ZoneProps) {
+function Zone(props) {
 	this.props = props;
 	// Name used for UserTiming measures
 	this.measureName = this.props.name;
 
 	const configuredMarkNames = this.props.elements
 		? // new elements array on zone object
-		this.props.elements.map((element: ZoneElement) => element.marks).flat()
+		this.props.elements.map((element) => element.marks).flat()
 		: // legacy with direct marks array on zone object
 		this.props.marks;
 
@@ -50,7 +49,7 @@ function Zone(props: ZoneProps) {
 	if (this.props.startMarkName === INTERACTIVE_TRANSITION_START_MARK_NAME &&
 		this.props.elements
 	) {
-		elementsAlreadyOnThePage = this.props.elements.filter((element: ZoneElement) => {
+		elementsAlreadyOnThePage = this.props.elements.filter((element) => {
 			const nodes = this.selectDOMNodes(element);
 
 			// if array or element list is returned, check if it has one or more entries
@@ -62,15 +61,15 @@ function Zone(props: ZoneProps) {
 
 	// do not create marks for elements that are already on the page
 	const markNamesToExpect = configuredMarkNames.filter(
-		(configuredMarkName: String) => !existingMarkNames.has(configuredMarkName)
+		(configuredMarkName) => !existingMarkNames.has(configuredMarkName)
 	);
 
 	// Create a new `ExpectedMark` for each mark
-	this.marks = markNamesToExpect.map((markName: string)  => {
+	this.marks = markNamesToExpect.map((markName)  => {
 		// 'state' of the measure that indicates whether it has been recorded
 		this.measured = false;
 
-		const markListener = (completeMark?: string) => {
+		const markListener = completeMark => {
 			// pass the event upstream
 			this.props.onMark(markName);
 		};
@@ -81,7 +80,7 @@ function Zone(props: ZoneProps) {
 			this.props.recordTimestamps
 		);
 
-		const measureListener = (completeMark?: string) => {
+		const measureListener = completeMark => {
 			if (this.marks.every(({ mark }) => mark.marked)) {
 				this.measure(markName);
 			}
@@ -106,7 +105,7 @@ function Zone(props: ZoneProps) {
  * @param {Object} element - individual element configuration object
  * @returns {Node|Node[]|null}
  */
-Zone.prototype.selectDOMNodes = function (element: ZoneElement): HTMLElement | NodeListOf<HTMLElement> | null {
+Zone.prototype.selectDOMNodes = function (element) {
 	// if elements have selectors defined or global element selector is configured,
 	// use them to find marks to record
 	if (element.selector) {
@@ -128,7 +127,7 @@ Zone.prototype.selectDOMNodes = function (element: ZoneElement): HTMLElement | N
  *
  * @param {ExpectedMark} lastMark last mark that triggered completion
  */
-Zone.prototype.measure = function (triggerName: string): void {
+Zone.prototype.measure = function (triggerName) {
 	if (this.measured) {
 		// only need to respond to first call of zone.measure - subsequent calls allowed but ignored
 		return;
