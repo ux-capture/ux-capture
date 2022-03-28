@@ -39,7 +39,7 @@ function Zone(props) {
 
 	const configuredMarkNames = this.props.elements
 		? // new elements array on zone object
-		this.props.elements.map((element) => element.marks).flat()
+		this.props.elements.map(element => element.marks).flat()
 		: // legacy with direct marks array on zone object
 		this.props.marks;
 
@@ -49,7 +49,7 @@ function Zone(props) {
 	if (this.props.startMarkName === INTERACTIVE_TRANSITION_START_MARK_NAME &&
 		this.props.elements
 	) {
-		elementsAlreadyOnThePage = this.props.elements.filter((element) => {
+		elementsAlreadyOnThePage = this.props.elements.filter(element => {
 			const nodes = this.selectDOMNodes(element);
 
 			// if array or element list is returned, check if it has one or more entries
@@ -61,11 +61,11 @@ function Zone(props) {
 
 	// do not create marks for elements that are already on the page
 	const markNamesToExpect = configuredMarkNames.filter(
-		(configuredMarkName) => !existingMarkNames.has(configuredMarkName)
+		configuredMarkName => !existingMarkNames.has(configuredMarkName)
 	);
 
 	// Create a new `ExpectedMark` for each mark
-	this.marks = markNamesToExpect.map((markName)  => {
+	this.marks = markNamesToExpect.map(markName  => {
 		// 'state' of the measure that indicates whether it has been recorded
 		this.measured = false;
 

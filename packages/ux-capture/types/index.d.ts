@@ -1,54 +1,43 @@
 type SelectorFunction = (element?: ZoneElement) => HTMLElement | NodeListOf<HTMLElement>;
-type SelectDOMNodesFunction = (element: ZoneElement) => HTMLElement | NodeListOf<HTMLElement> | null;
-type MesasureFunction = (triggerName: string) => void;
-type DestroyFunction = () => void;
-type Listener = (listener: any) => void;
-type UpdateFunction = (zoneConfigs: ZoneConfig[]) => void;
-type SetZonesFunction = (zoneConfigs: ZoneConfig[]) => ZoneObject[];
-type createZoneFunction = (zoneConfig: ZoneConfig) => ZoneObject;
-type getZoneConfigsFunction = () => ZoneConfig[];
-type MarkFunction = () => void;
-type addOnMarkListenerFunction = (listener: Listener) => void;
-type removeOnMarkListenerFunction = (listenerToRemove: Listener) => void;
+type ClearMarksFunction = (name: string) => void;
+type CreateFunction = (config: ZoneConfig) => void;
+type StartViewFunction = (zoneConfigs: ZoneConfig[]) => void;
+type UpdateViewFunction = (zoneConfigs: ZoneConfig[]) => void;
+type GetViewConfigFunction = () => View | ZoneConfig[];
+type GenericCallbackType = () => void;
+type ExpectedMarkRecordFunction = (name: string, waitForNextPaint: boolean, recordTimestamps: any) => void;
+type OnMarkFunction = (markName?: string) => void;
+type OnMeasureFunction = (measureName?: string) => void;
 
 interface UXCaptureCommonProps {
     startMarkName: string;
     recordTimestamps: any;
-    onMark: (markName?: string) => void;
-    onMeasure: (measureName?: string) => void;
+    onMark?: OnMarkFunction;
+    onMeasure?: OnMeasureFunction;
 }
 
-interface ExpectedMarkProps extends UXCaptureCommonProps {
-    name: string;
+export declare interface UXCapture {
+    clearMarks: ClearMarksFunction;
+    create: CreateFunction;
+    destroy: GenericCallbackType;
+    startView: StartViewFunction;
+    updateView: UpdateViewFunction;
+    getViewConfig: GetViewConfigFunction;
+    startTransition: GenericCallbackType;
+    mark: ExpectedMarkRecordFunction;
 }
 
-interface ViewProps extends UXCaptureCommonProps {
-    zoneConfigs: ZoneConfig[];
-}
-
-interface ZoneProps extends UXCaptureCommonProps {
+export declare interface ZoneProps extends UXCaptureCommonProps {
     elements?: ZoneElement[];
     marks?: string[];
 }
 
-export declare interface Zone extends ZoneProps {
-    destroy: DestroyFunction;
-    measure: MesasureFunction;
-    selectDOMNodes: SelectDOMNodesFunction;
+export declare interface ViewProps extends UXCaptureCommonProps {
+    zoneConfigs: ZoneConfig[];
 }
 
-export declare interface View extends ViewProps {
-    update: UpdateFunction;
-    setZones: SetZonesFunction;
-    destroy: DestroyFunction;
-    createZone: createZoneFunction;
-    getZoneConfigs: getZoneConfigsFunction;
-}
-
-export declare interface ExpectedMark extends ExpectedMarkProps {
-    _mark: MarkFunction;
-    addOnMarkListener: addOnMarkListenerFunction;
-    removeOnMarkListener: removeOnMarkListenerFunction;
+export declare interface ExpectedMarkProps extends UXCaptureCommonProps {
+    name: string;
 }
 
 export declare interface ZoneElement {
@@ -62,3 +51,7 @@ export declare interface ZoneConfig {
     esitmated_latency: number;
     elements: ZoneElement[];
 }
+
+export declare type ExpectedMarkType = (props: ExpectedMarkProps) => void;
+export declare type ViewType = (props: ViewProps) => void;
+export declare type ZoneType = (props: ZoneProps) => void;

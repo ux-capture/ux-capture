@@ -84,7 +84,7 @@ ExpectedMark.prototype._mark = function () {
 	this.marked = true;
 
 	// call all registered zone callbacks
-	this.onMarkListeners.forEach((listener) => listener(this));
+	this.onMarkListeners.forEach(listener => listener(this));
 };
 
 // registers mark callback
@@ -100,7 +100,7 @@ ExpectedMark.prototype.addOnMarkListener = function (listener) {
 // unregisters mark callback
 ExpectedMark.prototype.removeOnMarkListener = function (listenerToRemove) {
 	this.onMarkListeners = this.onMarkListeners.filter(
-		(listener) => listener !== listenerToRemove
+		listener => listener !== listenerToRemove
 	);
 };
 

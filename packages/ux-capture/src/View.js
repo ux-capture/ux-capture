@@ -6,28 +6,29 @@ import Zone from './Zone';
  * Refer to ux-capture README glossary for view definitions.
  * @see: https://github.com/ux-capture/ux-capture#glossary
  */
-class View {
-	constructor(props) {
-		this.props = props;
-		this.expectedZones = this.setZones(this.props.zoneConfigs);
-	}
+function View(props) {
+	this.props = props;
+	this.expectedZones = this.setZones(this.props.zoneConfigs);
 	// TODO: determine if we need to support appending new marks
 	// to exisiting zones or new zones or both
-	update(zoneConfigs) {
+	View.prototype.update = function (zoneConfigs) {
 		// Append configuration, same way we append the zones themselves
 		this.props.zoneConfigs.push(...zoneConfigs);
 
 		// Append new zones to existing config
 		this.expectedZones.push(...this.setZones(zoneConfigs));
-	}
-	setZones(zoneConfigs) {
-		return zoneConfigs.map((zoneConfig) => this.createZone(zoneConfig));
-	}
-	destroy() {
-		this.expectedZones.forEach((z) => z.destroy());
+	};
+
+	View.prototype.setZones = function (zoneConfigs) {
+		return zoneConfigs.map(zoneConfig => this.createZone(zoneConfig));
+	};
+
+	View.prototype.destroy = function () {
+		this.expectedZones.forEach(z => z.destroy());
 		this.expectedZones = null;
-	}
-	createZone(zoneConfig) {
+	};
+
+	View.prototype.createZone = function (zoneConfig) {
 		return new Zone(
 			Object.assign(
 				{
@@ -39,10 +40,11 @@ class View {
 				zoneConfig
 			)
 		);
-	}
-	getZoneConfigs() {
+	};
+
+	View.prototype.getZoneConfigs = function () {
 		return this.props.zoneConfigs;
-	}
+	};
 }
 
 
