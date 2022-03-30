@@ -1,4 +1,5 @@
 import ExpectedMark from './ExpectedMark';
+
 import { INTERACTIVE_TRANSITION_START_MARK_NAME } from './UXCapture';
 
 /**
