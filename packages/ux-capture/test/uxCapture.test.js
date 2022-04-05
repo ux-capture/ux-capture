@@ -192,8 +192,8 @@ describe('UXCapture', () => {
 					name: MOCK_MEASURE_2,
 					marks: [],
 				},
-			])
-		})
+			]);
+		});
 	});
 
 	describe('create', () => {
@@ -306,7 +306,7 @@ describe('UXCapture', () => {
 				},
 			]
 		}
-	]
+	];
 
 	markConfigs.forEach(({ label, config }) => {
 		describe(`mark: ${label}`, () => {
@@ -674,5 +674,57 @@ describe('UXCapture', () => {
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
 		});
+	});
+});
+
+describe("UXCapture early tasks", () => {
+	beforeEach(() => {
+		onMark.mockClear();
+		onMeasure.mockClear();
+	});
+
+	afterEach(() => {
+		UXCapture.destroy();
+	});
+
+	it("supports firing of marks before calling create" , () => {
+		expect(() => {
+			UXCapture.mark(MOCK_MARK_1_1);
+		}).not.toThrow();
+		UXCapture.mark(MOCK_MARK_1_1);
+		expect(
+			window.performance
+				.getEntriesByType('mark')
+				.find(mark => mark.name === MOCK_MARK_1_1)
+		).toBeTruthy();
+		UXCapture.create({ onMark, onMeasure });
+		expect(() => {
+			UXCapture.mark(MOCK_MARK_1_2);
+		}).not.toThrow();
+		UXCapture.mark(MOCK_MARK_1_2);
+		expect(
+			window.performance
+				.getEntriesByType('mark')
+				.find(mark => mark.name === MOCK_MARK_1_2)
+		).toBeTruthy();
+	});
+
+	it("supports firing of marks before calling startView", () => {
+		const zoneConfig = [
+			{
+				name: MOCK_MEASURE_1,
+				marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
+			},
+		];
+		expect(() => {
+			UXCapture.mark(MOCK_MARK_1_1);
+		}).not.toThrow();
+		UXCapture.mark(MOCK_MARK_1_1);
+		expect(
+			window.performance
+				.getEntriesByType('mark')
+				.find(mark => mark.name === MOCK_MARK_1_1)
+		).toBeTruthy();
+		UXCapture.startView(zoneConfig);
 	});
 });
