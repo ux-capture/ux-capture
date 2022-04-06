@@ -679,38 +679,15 @@ describe('UXCapture', () => {
 
 describe("UXCapture early tasks", () => {
 	beforeEach(() => {
-		onMark.mockClear();
-		onMeasure.mockClear();
+		window.performance.clearMarks();
 	});
 
 	afterEach(() => {
 		UXCapture.destroy();
 	});
 
-	it("supports firing of marks before calling create" , () => {
-		expect(() => {
-			UXCapture.mark(MOCK_MARK_1_1);
-		}).not.toThrow();
-		UXCapture.mark(MOCK_MARK_1_1);
-		expect(
-			window.performance
-				.getEntriesByType('mark')
-				.find(mark => mark.name === MOCK_MARK_1_1)
-		).toBeTruthy();
-		UXCapture.create({ onMark, onMeasure });
-		expect(() => {
-			UXCapture.mark(MOCK_MARK_1_2);
-		}).not.toThrow();
-		UXCapture.mark(MOCK_MARK_1_2);
-		expect(
-			window.performance
-				.getEntriesByType('mark')
-				.find(mark => mark.name === MOCK_MARK_1_2)
-		).toBeTruthy();
-	});
-
-	it("supports firing of marks before calling startView", () => {
-		const zoneConfig = [
+	it("supports firing of marks before calling create or startView" , () => {
+		const config = [
 			{
 				name: MOCK_MEASURE_1,
 				marks: [MOCK_MARK_1_1, MOCK_MARK_1_2],
@@ -720,11 +697,20 @@ describe("UXCapture early tasks", () => {
 			UXCapture.mark(MOCK_MARK_1_1);
 		}).not.toThrow();
 		UXCapture.mark(MOCK_MARK_1_1);
+		expect(onMark).toHaveBeenCalledTimes(1);
 		expect(
 			window.performance
 				.getEntriesByType('mark')
 				.find(mark => mark.name === MOCK_MARK_1_1)
 		).toBeTruthy();
-		UXCapture.startView(zoneConfig);
+		UXCapture.create({onMark, onMeasure});
+		UXCapture.startView(config);
+		UXCapture.mark(MOCK_MARK_1_2);
+		expect(
+			window.performance
+				.getEntriesByType('measure')
+				.find(measure => measure.name === MOCK_MEASURE_1)
+		).toBeTruthy();
+		expect(onMark).toHaveBeenCalledTimes(2);
 	});
 });
