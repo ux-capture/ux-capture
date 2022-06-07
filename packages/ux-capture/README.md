@@ -144,6 +144,8 @@ Call UXCapture.mark in the HTML markup for each ‘mark’ name passed into
 ...
 ```
 
+**NOTE:** UXCapture will record and remember marks even before the page's UXCapture configuration has executed. This still works because UXCapture remembers all the recorded marks irrespective of whether or not it was first declared because ExpectedMark instances are created and cached when `UXCapture.mark()` is called. When `UXCapture.startView()` is executed and zone-mark dependencies are established, mark's callbacks are immediately fired if mark was already cached and marked as marked.
+
 ### Step 6: SPA views / transitions (if applicable)
 
 For "interactive" view changes (usually associated with a route change),

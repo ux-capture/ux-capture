@@ -192,8 +192,8 @@ describe('UXCapture', () => {
 					name: MOCK_MEASURE_2,
 					marks: [],
 				},
-			])
-		})
+			]);
+		});
 	});
 
 	describe('create', () => {
@@ -306,7 +306,7 @@ describe('UXCapture', () => {
 				},
 			]
 		}
-	]
+	];
 
 	markConfigs.forEach(({ label, config }) => {
 		describe(`mark: ${label}`, () => {
@@ -673,6 +673,37 @@ describe('UXCapture', () => {
 					.getEntriesByType('measure')
 					.find(measure => measure.name === MOCK_MEASURE_1)
 			).toBeTruthy();
+		});
+	});
+
+	describe("Early tasks", () => {
+		beforeEach(() => {
+			UXCapture.destroy();
+		});
+		it("supports firing of marks before calling create or startView" , () => {
+			const config = [
+				{
+					name: MOCK_MEASURE_1,
+					marks: ['early_mark', MOCK_MARK_1_1],
+				},
+			];
+			// recording the mark before creation
+			ExpectedMark.record('early_mark');
+			expect(
+				window.performance
+					.getEntriesByType('mark')
+					.find(mark => mark.name === 'early_mark')
+			).toBeTruthy();
+			UXCapture.create({onMark, onMeasure});
+			UXCapture.startView(config);
+			UXCapture.mark(MOCK_MARK_1_1);
+			expect(
+				window.performance
+					.getEntriesByType('measure')
+					.find(measure => measure.name === MOCK_MEASURE_1)
+			).toBeTruthy();
+			expect(onMark).toHaveBeenCalledTimes(1);
+			expect(onMeasure).toHaveBeenCalledTimes(1);
 		});
 	});
 });
