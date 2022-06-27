@@ -680,21 +680,24 @@ describe('UXCapture', () => {
 		beforeEach(() => {
 			UXCapture.destroy();
 		});
-		it("supports firing of marks before calling create or startView" , () => {
+		it('supports firing of marks before calling create or startView', () => {
 			const config = [
 				{
 					name: MOCK_MEASURE_1,
 					marks: ['early_mark', MOCK_MARK_1_1],
 				},
 			];
-			// recording the mark before creation
-			ExpectedMark.record('early_mark');
+			// recording the mark before library initialization
+			UXCapture.mark('early_mark');
 			expect(
 				window.performance
 					.getEntriesByType('mark')
 					.find(mark => mark.name === 'early_mark')
 			).toBeTruthy();
-			UXCapture.create({onMark, onMeasure});
+			UXCapture.create({
+				onMark,
+				onMeasure,
+			});
 			UXCapture.startView(config);
 			UXCapture.mark(MOCK_MARK_1_1);
 			expect(
