@@ -1,46 +1,30 @@
+<div style="padding: 1em; border: 2px solid red; margin-bottom: 2em;">
+This branch is for a version 5.x (currently in DRAFT mode), a complete rewrite of the UX Capture libraries using PerformanceObservers. We will try to introduce as few breaking changes as possible, but some are inevitable.</div>
+
 # UX Capture
 
 Browser instrumentation approach and libraries that makes it easier to capture UX performance metrics.
 
-- [UX Capture](#ux-capture)
-  - [Packages](#packages)
-    - [Publish workflow](#publish-workflow)
-  - [Additional documentation](#additional-documentation)
-  - [Project Goals](#project-goals)
-  - [Instrumentation Approach](#instrumentation-approach)
-    - [Individual Element Instrumentation](#individual-element-instrumentation)
-      - [Image elements](#image-elements)
-      - [Text without custom font](#text-without-custom-font)
-      - [Text with custom font](#text-with-custom-font)
-      - [Event handler attachment](#event-handler-attachment)
-    - [Aggregating component metrics](#aggregating-component-metrics)
-    - [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
-  - [Testing results](#testing-results)
-  - [UX Capture Lifecycle](#ux-capture-lifecycle)
-  - [Glossary](#glossary)
+-   [UX Capture](#ux-capture)
+    -   [Packages](#packages)
+        -   [Publish workflow](#publish-workflow)
+    -   [Additional documentation](#additional-documentation)
+    -   [Project Goals](#project-goals)
+    -   [Instrumentation Approach](#instrumentation-approach)
+        -   [Individual Element Instrumentation](#individual-element-instrumentation)
+            -   [Image elements](#image-elements)
+            -   [Text without custom font](#text-without-custom-font)
+            -   [Text with custom font](#text-with-custom-font)
+            -   [Event handler attachment](#event-handler-attachment)
+        -   [Aggregating component metrics](#aggregating-component-metrics)
+        -   [Aggregating experience/perception phase metrics](#aggregating-experienceperception-phase-metrics)
+    -   [Testing results](#testing-results)
+    -   [UX Capture Lifecycle](#ux-capture-lifecycle)
+    -   [Glossary](#glossary)
 
 ## Packages
 
 -   [@ux-capture/ux-capture](./packages/ux-capture) - Core library
--   [@ux-capture/react-ux-capture](./packages/react-ux-capture) - React component wrappers around library API
--   [@ux-capture/react-ux-capture-example](./packages/react-ux-capture-example) - Demo of React bindings in a simple SPA
--   [@ux-capture/gatsby-ux-capture-example](./packages/gatsby-ux-capture-example) - Demo of React bindings in [GatsbyJS](https://www.gatsbyjs.org/) app
--   [@ux-capture/gatsby-plugin-ux-capture](./packages/gatsby-plugin-ux-capture) - [GatsbyJS](https://www.gatsbyjs.org/) plugin for UX Capture
--   [@ux-capture/nextjs-ux-capture-example](./packages/nextjs-ux-capture-example) - Demo of React bindings in [NextJS](https://nextjs.org/) app
-
-### Publish workflow
-
-The packages are published with independent versions, which must be updated
-manually _before_ a PR is merged. Lerna will walk you through the process of
-tagging new versions when you run
-
-```
-$ yarn make-version
-```
-
-The Travis deploy step will then publish _only updated packages_ when the PR
-merges. If you forget to bump a version, the deploy will fail and you will have
-to run `yarn make-version` to push the latest tags
 
 ## Additional documentation
 
@@ -53,7 +37,7 @@ to run `yarn make-version` to push the latest tags
 
 ## Project Goals
 
-There are multiple goals for this project, many dictated by the lack of real
+There are multiple goals for this project, many dictated by the lack of full
 rendering instrumentation of paint events in the browser. These include:
 
 -   Capture display and interactivity events for various UI elements (e.g. images,
@@ -64,18 +48,18 @@ rendering instrumentation of paint events in the browser. These include:
 -   Collect captured events and [_UX speed metrics_](#UX_speed_metrics) for all users using RUM (Real User Measurement) tools.
 -   Calibrate in-browser instrumentation by recording page load video using
     synthetic tools and deriving same [_UX speed metrics_](#UX_speed_metrics)
--   Create uniform instrumentation for both [_page views_](#page_view) and
-    [_interactive views_](#interactive_view), to be usable with any back-end and front-end framework
--   Future compatibility with [Element Timing API](https://wicg.github.io/element-timing/)
-    that aims at adding instrumentation directly into browser and other similar innovations
+-   Uniform instrumentation for both [_hard_](#hard_navigation) and
+    [_soft_](#soft_navitaion) navigations, to be usable with any back-end and front-end framework
+-   Compatibility with [Element Timing API](https://wicg.github.io/element-timing/)
+    that aims at adding instrumentation directly into browser and other events available on Performance Timeline
 
 ## Instrumentation Approach
 
-To understand speed of user's experience as it relates to specific product rather than using generic technical metrics metrics captured using the browser or automated tools.
+To understand speed of user's experience as it relates to specific product rather than using generic technical metrics automatically captured using the browser or other tools.
 
-Documentation below describes generic approach using Browser's native [UserTiming API](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API), but this project also maintains a [UX Capture JavaScript Library](./packages/ux-capture), which replaces `performance.mark()` method with `UXCapture.mark()` method and aggregates multiple elements into multiple elements in the zone into a single measurement recorded as [UserTiming API's measures](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure) to be used as [_UX speed metrics_](#UX_speed_metrics).
+Documentation below describes generic approach using Browser's native APIs (including [UserTiming](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API), [Element Timing](https://wicg.github.io/element-timing/)), but this project also maintains a [UX Capture JavaScript Library](./packages/ux-capture), which aggregates multiple performance events corresponding to a [zone](docs/progressive_enhancement_phases.md) into a single measurement recorded as [UserTiming API's measures](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure) to be used as [_UX speed metrics_](#UX_speed_metrics).
 
-### Individual Element Instrumentation
+### Individual Element Instrumentation using UserTiming API
 
 Each element that needs to be instrumented might require one or more snippets
 of code injected into a page to approximate browser events, they are then
@@ -176,13 +160,17 @@ performance.mark('ux-handler-myaction');
 
 Element aggregation algorythm: no aggregation, just one event.
 
+### Element Timing API
+
+### Other Performance Events
+
 ### Aggregating component metrics
 
 Most design components on web page consist of multiple elements, e.g. tweet
 contains text, name of the person tweeting and their userpic.
 
 On this level, it is very business-specific and needs attention of a product
-manager and/or graphics designer to identify. It is suggested to conduct business
+manager and/or graphics designer to identify. We suggest conducting business
 interviews to identify the elements and to group them into components accordingly.
 
 Most common way / algorythm to aggregate performance metrics for individual
@@ -259,13 +247,14 @@ You can review full lifecycle of user experience, marks, measures and resulting 
   <dt>view</dt>
   <dd>phase of page rendering following user interaction</dd>
 
-  <dt id="page_view">page view</dt>
-  <dd>view resulting in full browser navigation and re-creation of browser DOM
+  <dt id="hard_navigation">hard navigation</dt>
+  <dd>navigation resulting in full browser navigation and re-creation of browser DOM
   (technical performance metrics are captured using W3C Navigation Timing API)</dd>
 
-  <dt id="interactive_view">interactive view</dt>
-  <dd>view resulting in partial updates of browser DOM, method used in so-called
+  <dt id="soft_navigation">soft navigation</dt>
+  <dd>navigation resulting in partial updates of browser DOM, method used in so-called
   "single-page application" or just as interactive part of more traditional pages,
-  e.g. multi-step forms, etc. Custom instrumentation is required, metrics can be
-  captured using W3C User Timing API</dd>
+  e.g. multi-step forms, etc. Emering [Soft Navigations API](https://github.com/WICG/soft-navigations)
+  will allow native instrumentation, but browsers that do not support it, will require custom JS-based
+  instrumentation with soft navigation events captured using User Timing API.</dd>
 </dl>

@@ -4,11 +4,12 @@ Once [UX Capture React bindings](../packages/react-ux-capture/README.md) or [cor
 
 ## Step-by-step guide
 
-You can find the example page tested at https://www.ux-capture.org/examples/ - it is a trivial SPA (single-page application). The guide below tests the full page view on the app with the following zones [defined](../../packages/ux-capture/examples/index.html#L28-L50):
-* [`ux-destination-verified`](../progressive_enhancement_phases.md#ux1-destination-verified) - page title (`H1` header text) is visible
-* [`ux-primary-content-displayed`](../progressive_enhancement_phases.md#ux2-primary-content-displayed) - both first paragraph and second paragraph (requires intensive JS execution) of text are shown and kitten image is show as well
-* [`ux-primary-action-available`](../progressive_enhancement_phases.md#ux3-primary-action-available) - `read more...` link is displayed and JavaScript click handler for it is attached (indicated by link color change from silver to blue)
-* [`ux-secondary-content-displayed`](../progressive_enhancement_phases.md#ux4-secondary-content--action) - `Page 2 > >` links is displayed and JavaScript click handler for it is attached (indicated by link color change from silver to blue)
+You can find the example page tested at https://www.ux-capture.org/examples/ - it is a trivial SPA (single-page application). The guide below tests the hard navigation on the app with the following zones [defined](../../packages/ux-capture/examples/index.html#L28-L50):
+
+-   [`ux-destination-verified`](../progressive_enhancement_phases.md#ux1-destination-verified) - page title (`H1` header text) is visible
+-   [`ux-primary-content-displayed`](../progressive_enhancement_phases.md#ux2-primary-content-displayed) - both first paragraph and second paragraph (requires intensive JS execution) of text are shown and kitten image is show as well
+-   [`ux-primary-action-available`](../progressive_enhancement_phases.md#ux3-primary-action-available) - `read more...` link is displayed and JavaScript click handler for it is attached (indicated by link color change from silver to blue)
+-   [`ux-secondary-content-displayed`](../progressive_enhancement_phases.md#ux4-secondary-content--action) - `Page 2 > >` links is displayed and JavaScript click handler for it is attached (indicated by link color change from silver to blue)
 
 These steps can be used either in development or production environments:
 
